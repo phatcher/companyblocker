@@ -1,0 +1,72 @@
+@startuml
+!include _style.puml
+
+title Match stage: one source labelled against one target
+
+participant "process_companies.py" as CLI
+participant "pipeline_runner\nexecute_match" as Runner
+participant "match_ops\nmaterialize_match_uri_artifact" as Match
+participant "DuckDB\n(in-memory, PRAGMA threads=4)" as Duck
+database "data/<source>/\ncanonical/<latest date>/" as SrcCanon
+database "data/<target>/\ncanonical/<latest date>/" as TgtCanon
+database "data/<source>/\nmatched/current/" as Matched
+
+note over CLI, Runner: PIPELINE_STAGE_NAMES lists match between cleanse and tokenize,\nbut match reads canonical, not cleansed, and tokenize does not read matched/
+
+CLI -> CLI: refuse unless exactly one system in --systems\nand match.target-system is given
+CLI -> Runner: execute_match(system_code, roots, target_system)
+alt target_system is None
+  Runner --> CLI: raise ValueError
+end
+
+Runner -> Match: materialize_match_uri_artifact(roots,\nsource_system, target_system)
+Match -> SrcCanon: latest_canonical_snapshot_dir\n+ partition_values (source countries)
+Match -> TgtCanon: _resolve_explicit_target_system\n(latest snapshot, target countries)
+Match -> Match: _resolve_match_country_for_explicit_target\n(single source country, else single target country,\nelse single overlap, else ValueError)
+
+Match -> Matched: rmtree then mkdir\nprimary/jurisdiction_code=<country>/
+note right of Matched: no staged swap: the country's partition\nis deleted and rewritten in place;\nother countries' partitions are untouched
+
+Match -> Duck: source_raw = read_parquet(source partition)
+Duck -> SrcCanon: read jurisdiction_code=<country>/*.parquet
+Match -> Duck: source_enriched: _row_id, jurisdiction_key,\ncompany_number_key, is_valid_key
+note right of Duck
+  jurisdiction_key = lower(trim(jurisdiction_code))
+  company_number_key = company_number upper-cased,
+  non-alphanumerics stripped, leading zeros stripped
+  from numeric keys; de drops a trailing letter suffix,
+  fr cuts a 14-digit SIRET to its 9-digit SIREN
+  is_valid_key = both keys non-empty
+end note
+Match -> Duck: _source_key_stats (rows, valid, invalid, duplicate keys)
+
+Match -> Duck: _build_target_lookup
+Duck -> TgtCanon: target_raw = read_parquet(same country partition)
+alt target has match_uri
+  Duck -> Duck: target_match_uri =\ncoalesce(system_uri, match_uri)
+else
+  Duck -> Duck: target_match_uri = system_uri
+end
+Duck -> Duck: target_lookup: valid keys with count(*) = 1\n(ambiguous keys excluded)
+
+Match -> Matched: _write_duplicate_key_report\n-> _duplicate_keys.parquet (always written)
+
+loop each source part file
+  Match -> Duck: source_chunk_enriched, then\nLEFT JOIN target_lookup ON\njurisdiction_key AND company_number_key
+  Duck -> Matched: COPY part-NNNNN.parquet\n(source columns, match_uri = target_match_uri,\nordered by _row_id)
+end
+
+Match -> Matched: _merge_matched_target_systems: union with\nexisting _match_metadata.json target_systems
+Match -> Matched: write _match_metadata.json\n(counts, join_type "left", elapsed_seconds)
+Match --> Runner: MatchRunSummary
+
+alt source or target duplicate keys
+  Runner -> Runner: print [warn] pointing at _duplicate_keys.parquet
+end
+alt FileNotFoundError or ValueError
+  Runner --> CLI: (True, 0): stage failed
+else
+  Runner --> CLI: (False, rows_written)
+end
+
+@enduml

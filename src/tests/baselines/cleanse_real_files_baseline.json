@@ -1,0 +1,25 @@
+{
+  "test": "cleanse_real_files",
+  "benchmark_mode": "regression",
+  "system": "gb",
+  "timestamp_utc": "2026-06-20T09:06:49.297817+00:00",
+  "rows": 1198275,
+  "runs": 3,
+  "elapsed_seconds": [
+    97.6551009999821,
+    95.47425310005201,
+    94.92218929994851
+  ],
+  "median_elapsed_seconds": 95.47425310005201,
+  "throughput_rows_per_sec": 12550.765898574464,
+  "dataset": {
+    "kind": "real_files",
+    "system": "gb",
+    "layer": "canonical",
+    "selection_mode": "explicit_files",
+    "glob": null,
+    "selected_file_count": 12,
+    "selected_total_bytes": 144344856,
+    "selected_file_list_sha256": "8360bf8bd881561628b51408361b9ced3e6d3a76e2eefebe9e2b9278cbf8d272"
+  }
+}

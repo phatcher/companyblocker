@@ -1,0 +1,126 @@
+[analysis]
+exclude_patterns = [
+    "**/test_*.py",
+    "**/*_test.py",
+    "**/__pycache__/*",
+    "**/*.pyc",
+    "**/.pytest_cache/",
+    ".tox/",
+    "venv/",
+    "env/",
+    ".venv/",
+    ".env/",
+    "**/migrations/**",
+    "tooling/**",
+    "tmp/**",
+    ".worktrees/**",
+]
+
+# One layer per tach.toml module, each rule's allow list being that module plus its
+# depends_on. tach.toml is the source: change it there first, then mirror it here.
+# Layer names are dotted where they can be, since pyscn matches a layer's package name
+# anywhere in a module's name and a bare "blocking" also claims scripts.run_blocking.
+# Raised upstream: https://github.com/ludo-technologies/pyscn/discussions/352
+# Like tach, only src-to-src edges are enforced: pyscn does not resolve an import of a
+# company_* package to its packages/ source, so planted src-to-package and
+# package-to-package violations both passed (2026-09-15).
+[architecture]
+enabled = true
+validate_layers = true
+strict_mode = false
+
+[[architecture.layers]]
+name = "workspace"
+packages = ["src.workspace"]
+
+[[architecture.layers]]
+name = "acquisition"
+packages = ["src.acquisition"]
+
+[[architecture.layers]]
+name = "analysis"
+packages = ["src.analysis"]
+
+[[architecture.layers]]
+name = "training"
+packages = ["src.training"]
+
+[[architecture.layers]]
+name = "validation"
+packages = ["src.validation"]
+
+[[architecture.layers]]
+name = "blocking"
+packages = ["src.blocking"]
+
+[[architecture.layers]]
+name = "company_cleanse"
+packages = ["company_cleanse"]
+
+[[architecture.layers]]
+name = "company_perturbation"
+packages = ["company_perturbation"]
+
+[[architecture.layers]]
+name = "company_classify"
+packages = ["company_classify"]
+
+[[architecture.layers]]
+name = "company_tokenize"
+packages = ["company_tokenize"]
+
+[[architecture.layers]]
+name = "company_vectorize"
+packages = ["company_vectorize"]
+
+[[architecture.layers]]
+name = "company_resolvers"
+packages = ["company_resolvers"]
+
+[[architecture.rules]]
+from = "workspace"
+allow = ["workspace"]
+
+[[architecture.rules]]
+from = "acquisition"
+allow = ["acquisition", "workspace", "company_cleanse", "company_tokenize", "company_vectorize"]
+
+[[architecture.rules]]
+from = "analysis"
+allow = ["analysis", "acquisition", "validation", "workspace", "company_tokenize"]
+
+[[architecture.rules]]
+from = "training"
+allow = ["training", "acquisition", "analysis", "workspace", "company_tokenize"]
+
+[[architecture.rules]]
+from = "validation"
+allow = ["validation", "acquisition", "workspace", "company_cleanse", "company_perturbation", "company_tokenize", "company_vectorize"]
+
+[[architecture.rules]]
+from = "blocking"
+allow = ["blocking", "workspace", "company_vectorize", "company_tokenize", "company_cleanse", "validation"]
+
+[[architecture.rules]]
+from = "company_cleanse"
+allow = ["company_cleanse"]
+
+[[architecture.rules]]
+from = "company_perturbation"
+allow = ["company_perturbation", "company_cleanse"]
+
+[[architecture.rules]]
+from = "company_classify"
+allow = ["company_classify", "company_perturbation"]
+
+[[architecture.rules]]
+from = "company_tokenize"
+allow = ["company_tokenize", "company_cleanse"]
+
+[[architecture.rules]]
+from = "company_vectorize"
+allow = ["company_vectorize", "company_cleanse"]
+
+[[architecture.rules]]
+from = "company_resolvers"
+allow = ["company_resolvers"]

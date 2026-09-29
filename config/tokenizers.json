@@ -1,0 +1,98 @@
+{
+  "naive": {
+    "tokenizer://fr/sentencepiece_bpe": {
+      "reference": "tokenizer://fr/sentencepiece_bpe/4453a59f_v40000_mf1_339ea323",
+      "replaced": null
+    },
+    "tokenizer://fr/sentencepiece_unigram": {
+      "reference": "tokenizer://fr/sentencepiece_unigram/4453a59f_v40000_mf1_2b5acfef",
+      "replaced": null
+    },
+    "tokenizer://fr/wordpiece": {
+      "reference": "tokenizer://fr/wordpiece/4453a59f_v40000_mf1_bb14b385",
+      "replaced": null
+    },
+    "tokenizer://gb/sentencepiece_bpe": {
+      "reference": "tokenizer://gb/sentencepiece_bpe/dc651da3_v40000_mf1_3cc4289e",
+      "replaced": null
+    },
+    "tokenizer://gb/sentencepiece_unigram": {
+      "reference": "tokenizer://gb/sentencepiece_unigram/dc651da3_v40000_mf1_d4d5b2b3",
+      "replaced": null
+    },
+    "tokenizer://gb/wordpiece": {
+      "reference": "tokenizer://gb/wordpiece/dc651da3_v40000_mf1_3826f98a",
+      "replaced": null
+    },
+    "tokenizer://ie/sentencepiece_bpe": {
+      "reference": "tokenizer://ie/sentencepiece_bpe/344aa760_v40000_mf1_d48cb9dd",
+      "replaced": "tokenizer://ie/sentencepiece_bpe/344aa760_v40000_mf1_b46b38a2"
+    },
+    "tokenizer://ie/sentencepiece_unigram": {
+      "reference": "tokenizer://ie/sentencepiece_unigram/344aa760_v40000_mf1_d29e5ace",
+      "replaced": null
+    },
+    "tokenizer://ie/wordpiece": {
+      "reference": "tokenizer://ie/wordpiece/344aa760_v40000_mf1_af3a5bb2",
+      "replaced": "tokenizer://ie/wordpiece/344aa760_v40000_mf1_a0f74a6c"
+    },
+    "tokenizer://offeneregister/sentencepiece_bpe": {
+      "reference": "tokenizer://offeneregister/sentencepiece_bpe/270766a0_v40000_mf1_99bc8907",
+      "replaced": null
+    },
+    "tokenizer://offeneregister/sentencepiece_unigram": {
+      "reference": "tokenizer://offeneregister/sentencepiece_unigram/270766a0_v40000_mf1_1c75bec8",
+      "replaced": null
+    },
+    "tokenizer://offeneregister/wordpiece": {
+      "reference": "tokenizer://offeneregister/wordpiece/270766a0_v40000_mf1_b66137f0",
+      "replaced": null
+    }
+  },
+  "promoted": {
+    "tokenizer://fr/sentencepiece_bpe": {
+      "reference": "tokenizer://fr/sentencepiece_bpe/4453a59f_v56167_mf1_7302ca48",
+      "replaced": null
+    },
+    "tokenizer://fr/wordpiece": {
+      "reference": "tokenizer://fr/wordpiece/4453a59f_v120000_mf1_5f54c039",
+      "replaced": null
+    },
+    "tokenizer://gb/sentencepiece_bpe": {
+      "reference": "tokenizer://gb/sentencepiece_bpe/dc651da3_v10000_mf1_c2582326",
+      "replaced": null
+    },
+    "tokenizer://gb/sentencepiece_unigram": {
+      "reference": "tokenizer://gb/sentencepiece_unigram/dc651da3_v20000_mf1_0d79fe4c",
+      "replaced": null
+    },
+    "tokenizer://gb/wordpiece": {
+      "reference": "tokenizer://gb/wordpiece/dc651da3_v25780_mf1_d3bd7d47",
+      "replaced": null
+    },
+    "tokenizer://ie/sentencepiece_bpe": {
+      "reference": "tokenizer://ie/sentencepiece_bpe/344aa760_v10000_mf1_56453dd6",
+      "replaced": null
+    },
+    "tokenizer://ie/sentencepiece_unigram": {
+      "reference": "tokenizer://ie/sentencepiece_unigram/344aa760_v12585_mf1_ee375934",
+      "replaced": null
+    },
+    "tokenizer://ie/wordpiece": {
+      "reference": "tokenizer://ie/wordpiece/344aa760_v22700_mf1_1fc9ab77",
+      "replaced": "tokenizer://ie/wordpiece/344aa760_v22700_mf1_0e438908"
+    },
+    "tokenizer://offeneregister/sentencepiece_bpe": {
+      "reference": "tokenizer://offeneregister/sentencepiece_bpe/270766a0_v24699_mf1_0697a403",
+      "replaced": null
+    },
+    "tokenizer://offeneregister/sentencepiece_unigram": {
+      "reference": "tokenizer://offeneregister/sentencepiece_unigram/270766a0_v21669_mf1_691b79c7",
+      "replaced": null
+    },
+    "tokenizer://offeneregister/wordpiece": {
+      "reference": "tokenizer://offeneregister/wordpiece/270766a0_v38603_mf1_69e0ab1c",
+      "replaced": "tokenizer://offeneregister/wordpiece/270766a0_v200000_mf12_71bc8b07"
+    }
+  }
+}

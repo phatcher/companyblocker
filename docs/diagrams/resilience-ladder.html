@@ -1,0 +1,410 @@
+<title>Resilience Ladder</title>
+<link rel="stylesheet" href="house-style.css">
+<div class="page">
+
+  <header class="intro">
+    <div class="eyebrow">robustness testing · three tiers, one mechanism</div>
+    <h1>Resilience Ladder</h1>
+    <p class="dek">
+      Blocking runs independently at three data-quality tiers, not once at the end of a
+      pipeline: clean base names, known real aliases, and synthetic perturbations of
+      either. <strong>Comparing precision and recall across those tiers, per algorithm
+      and per noise family, is a resilience profile</strong> — a curve, not one number.
+    </p>
+  </header>
+
+  <div class="legend">
+    <div class="legend-item">
+      <span class="swatch line accent"></span>
+      <span><b>source_uri</b> — lineage back-reference, one hop at a time</span>
+    </div>
+    <div class="legend-item">
+      <span class="swatch line amber dashed"></span>
+      <span><b>match_uri</b> — cross-system truth, copied through unchanged</span>
+    </div>
+  </div>
+
+  <div class="steps">
+
+    <!-- DIAGRAM 1: three tiers, one mechanism -->
+    <div class="step">
+      <div class="step-head">
+        <span class="step-eyebrow">Mechanism</span>
+        <h2 class="step-title">Three tiers, one blocking run, compared for resilience</h2>
+      </div>
+      <figure>
+        <div class="diagram-wrap">
+         <svg id="tier-a-baseline" viewBox="20 24 900 226" width="900" height="226" role="img" aria-label="Tier A, the baseline. Two inputs feed one blocking run: the population under test, gleif primary records with clean canonical names, and the reference dataset, the real gb target records that stay identical in every tier. The run is parameterised by which algorithm it uses, one representation and backend per run, chosen from tfidf, wordpiece, sentencepiece, or sbert. It produces precision and recall against match_uri truth.">
+
+            <text x="180" y="50" text-anchor="middle" font-family="var(--font-mono)" font-size="11.5" letter-spacing="0.1em" fill="var(--muted)">INPUT POPULATION</text>
+            <text x="480" y="50" text-anchor="middle" font-family="var(--font-mono)" font-size="11.5" letter-spacing="0.1em" fill="var(--muted)">BLOCKING RUN</text>
+            <text x="770" y="50" text-anchor="middle" font-family="var(--font-mono)" font-size="11.5" letter-spacing="0.1em" fill="var(--muted)">RESULT</text>
+            <line x1="40" y1="66" x2="900" y2="66" stroke="var(--line)" stroke-width="1.5"/>
+
+            <!-- TIER A -->
+
+            <!-- input 1: the population under test -->
+            <rect x="40" y="88" width="280" height="56" rx="8" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/>
+            <text x="58" y="112" font-family="var(--font-body)" font-size="12" font-weight="600" fill="var(--ink)">base names</text>
+            <text x="58" y="131" font-family="var(--font-body)" font-size="10" font-style="italic" fill="var(--muted)">gleif primary records, clean canonical names</text>
+
+            <!-- input 2: the reference dataset, drawn as a whole materialized artifact -->
+            <rect x="40" y="168" width="280" height="56" rx="8" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.5"/>
+            <ellipse cx="66" cy="188" rx="13" ry="3.5" fill="var(--surface)" stroke="var(--line)"/>
+            <line x1="53" y1="188" x2="53" y2="200" stroke="var(--line)"/>
+            <line x1="79" y1="188" x2="79" y2="200" stroke="var(--line)"/>
+            <ellipse cx="66" cy="200" rx="13" ry="3.5" fill="var(--surface)" stroke="var(--line)"/>
+            <text x="92" y="192" font-family="var(--font-body)" font-size="12" font-weight="600" fill="var(--ink)">gb target records</text>
+            <text x="92" y="209" font-family="var(--font-body)" font-size="9.5" font-style="italic" fill="var(--muted)">reference dataset, identical in every tier</text>
+
+            <!-- both inputs converge on the run -->
+            <path d="M320 116 H340 V136 H350" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
+            <polygon points="360,136 350,131 350,141" fill="var(--ink)"/>
+            <path d="M320 196 H340 V168 H350" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
+            <polygon points="360,168 350,163 350,173" fill="var(--ink)"/>
+
+            <!-- the run, parameterised by which algorithm it uses -->
+            <rect x="360" y="108" width="240" height="100" rx="8" fill="var(--surface-2)" stroke="var(--line)"/>
+            <rect x="360" y="108" width="28" height="100" rx="8" fill="var(--surface)" stroke="var(--line)"/>
+            <text x="374" y="158" transform="rotate(-90 374 158)" text-anchor="middle" font-family="var(--font-mono)" font-size="8.5" letter-spacing="0.08em" fill="var(--muted)">cleanse</text>
+            <text x="494" y="130" text-anchor="middle" font-family="var(--font-body)" font-size="11" fill="var(--ink)">blocking run</text>
+
+            <rect x="396" y="140" width="94" height="20" rx="10" fill="var(--surface)" stroke="var(--line)"/>
+            <text x="443" y="154" text-anchor="middle" font-family="var(--font-mono)" font-size="8.5" fill="var(--muted)">tfidf</text>
+            <rect x="498" y="140" width="94" height="20" rx="10" fill="var(--surface)" stroke="var(--line)"/>
+            <text x="545" y="154" text-anchor="middle" font-family="var(--font-mono)" font-size="8.5" fill="var(--muted)">wordpiece</text>
+            <rect x="396" y="164" width="94" height="20" rx="10" fill="var(--surface)" stroke="var(--line)"/>
+            <text x="443" y="178" text-anchor="middle" font-family="var(--font-mono)" font-size="8.5" fill="var(--muted)">sentencepiece</text>
+            <rect x="498" y="164" width="94" height="20" rx="10" fill="var(--surface)" stroke="var(--line)"/>
+            <text x="545" y="178" text-anchor="middle" font-family="var(--font-mono)" font-size="8.5" fill="var(--muted)">sbert</text>
+
+            <text x="494" y="199" text-anchor="middle" font-family="var(--font-body)" font-size="9" font-style="italic" fill="var(--muted)">one representation + backend per run</text>
+
+            <line x1="600" y1="158" x2="636" y2="158" stroke="var(--ink)" stroke-width="1.5"/>
+            <polygon points="640,158 630,153 630,163" fill="var(--ink)"/>
+
+            <rect x="640" y="116" width="260" height="84" rx="8" fill="var(--surface-2)" stroke="var(--line)"/>
+            <rect x="656" y="130" width="110" height="20" rx="10" fill="var(--surface)" stroke="var(--amber)"/>
+            <text x="711" y="144" text-anchor="middle" font-family="var(--font-mono)" font-size="9" font-weight="600" fill="var(--amber)">precision</text>
+            <rect x="776" y="130" width="110" height="20" rx="10" fill="var(--surface)" stroke="var(--amber)"/>
+            <text x="831" y="144" text-anchor="middle" font-family="var(--font-mono)" font-size="9" font-weight="600" fill="var(--amber)">recall</text>
+            <rect x="656" y="154" width="110" height="20" rx="10" fill="var(--surface)" stroke="var(--amber)"/>
+            <text x="711" y="168" text-anchor="middle" font-family="var(--font-mono)" font-size="9" font-weight="600" fill="var(--amber)">F<tspan font-size="7" dy="2">β</tspan></text>
+            <rect x="776" y="154" width="110" height="20" rx="10" fill="var(--surface)" stroke="var(--amber)"/>
+            <text x="831" y="168" text-anchor="middle" font-family="var(--font-mono)" font-size="9" font-weight="600" fill="var(--amber)">reduction ratio</text>
+            <text x="770" y="190" text-anchor="middle" font-family="var(--font-body)" font-size="9" font-style="italic" fill="var(--muted)">scored against match_uri truth</text>
+          </svg>
+        </div>
+        <figcaption>
+          The baseline. Clean canonical names go in, so whatever precision and recall come
+          out is the ceiling: this is the representation working under the easiest
+          conditions it will ever see. Every later tier is read against this number.
+        </figcaption>
+      </figure>
+
+      <figure>
+        <div class="diagram-wrap">
+         <svg id="tier-b-real-world-noise" viewBox="20 24 900 226" width="900" height="226" role="img" aria-label="Tier B, real-world noise. Two inputs feed one blocking run: the population under test, known aliases from the gleif name-variant sidecar, real previous and trading names, and the same reference dataset of gb target records used in every tier. The run is parameterised by which algorithm it uses, one representation and backend per run, chosen from tfidf, wordpiece, sentencepiece, or sbert. It produces precision and recall against the same match_uri truth as tier A.">
+
+            <text x="180" y="50" text-anchor="middle" font-family="var(--font-mono)" font-size="11.5" letter-spacing="0.1em" fill="var(--muted)">INPUT POPULATION</text>
+            <text x="480" y="50" text-anchor="middle" font-family="var(--font-mono)" font-size="11.5" letter-spacing="0.1em" fill="var(--muted)">BLOCKING RUN</text>
+            <text x="770" y="50" text-anchor="middle" font-family="var(--font-mono)" font-size="11.5" letter-spacing="0.1em" fill="var(--muted)">RESULT</text>
+            <line x1="40" y1="66" x2="900" y2="66" stroke="var(--line)" stroke-width="1.5"/>
+
+            <!-- TIER B -->
+
+            <!-- input 1: the population under test -->
+            <rect x="40" y="88" width="280" height="56" rx="8" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/>
+            <text x="58" y="112" font-family="var(--font-body)" font-size="12" font-weight="600" fill="var(--ink)">known aliases</text>
+            <text x="58" y="131" font-family="var(--font-body)" font-size="10" font-style="italic" fill="var(--muted)">gleif name-variant sidecar, real previous/trading names</text>
+
+            <!-- input 2: the reference dataset, identical to tier A -->
+            <rect x="40" y="168" width="280" height="56" rx="8" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.5"/>
+            <ellipse cx="66" cy="188" rx="13" ry="3.5" fill="var(--surface)" stroke="var(--line)"/>
+            <line x1="53" y1="188" x2="53" y2="200" stroke="var(--line)"/>
+            <line x1="79" y1="188" x2="79" y2="200" stroke="var(--line)"/>
+            <ellipse cx="66" cy="200" rx="13" ry="3.5" fill="var(--surface)" stroke="var(--line)"/>
+            <text x="92" y="192" font-family="var(--font-body)" font-size="12" font-weight="600" fill="var(--ink)">gb target records</text>
+            <text x="92" y="209" font-family="var(--font-body)" font-size="9.5" font-style="italic" fill="var(--muted)">reference dataset, identical in every tier</text>
+
+            <!-- both inputs converge on the run -->
+            <path d="M320 116 H340 V136 H350" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
+            <polygon points="360,136 350,131 350,141" fill="var(--ink)"/>
+            <path d="M320 196 H340 V168 H350" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
+            <polygon points="360,168 350,163 350,173" fill="var(--ink)"/>
+
+            <!-- the run, parameterised by which algorithm it uses -->
+            <rect x="360" y="108" width="240" height="100" rx="8" fill="var(--surface-2)" stroke="var(--line)"/>
+            <rect x="360" y="108" width="28" height="100" rx="8" fill="var(--surface)" stroke="var(--line)"/>
+            <text x="374" y="158" transform="rotate(-90 374 158)" text-anchor="middle" font-family="var(--font-mono)" font-size="8.5" letter-spacing="0.08em" fill="var(--muted)">cleanse</text>
+            <text x="494" y="130" text-anchor="middle" font-family="var(--font-body)" font-size="11" fill="var(--ink)">blocking run</text>
+
+            <rect x="396" y="140" width="94" height="20" rx="10" fill="var(--surface)" stroke="var(--line)"/>
+            <text x="443" y="154" text-anchor="middle" font-family="var(--font-mono)" font-size="8.5" fill="var(--muted)">tfidf</text>
+            <rect x="498" y="140" width="94" height="20" rx="10" fill="var(--surface)" stroke="var(--line)"/>
+            <text x="545" y="154" text-anchor="middle" font-family="var(--font-mono)" font-size="8.5" fill="var(--muted)">wordpiece</text>
+            <rect x="396" y="164" width="94" height="20" rx="10" fill="var(--surface)" stroke="var(--line)"/>
+            <text x="443" y="178" text-anchor="middle" font-family="var(--font-mono)" font-size="8.5" fill="var(--muted)">sentencepiece</text>
+            <rect x="498" y="164" width="94" height="20" rx="10" fill="var(--surface)" stroke="var(--line)"/>
+            <text x="545" y="178" text-anchor="middle" font-family="var(--font-mono)" font-size="8.5" fill="var(--muted)">sbert</text>
+
+            <text x="494" y="199" text-anchor="middle" font-family="var(--font-body)" font-size="9" font-style="italic" fill="var(--muted)">same algorithm as tier A, different input</text>
+
+            <line x1="600" y1="158" x2="636" y2="158" stroke="var(--ink)" stroke-width="1.5"/>
+            <polygon points="640,158 630,153 630,163" fill="var(--ink)"/>
+
+            <rect x="640" y="116" width="260" height="84" rx="8" fill="var(--surface-2)" stroke="var(--line)"/>
+            <rect x="656" y="130" width="110" height="20" rx="10" fill="var(--surface)" stroke="var(--amber)"/>
+            <text x="711" y="144" text-anchor="middle" font-family="var(--font-mono)" font-size="9" font-weight="600" fill="var(--amber)">precision</text>
+            <rect x="776" y="130" width="110" height="20" rx="10" fill="var(--surface)" stroke="var(--amber)"/>
+            <text x="831" y="144" text-anchor="middle" font-family="var(--font-mono)" font-size="9" font-weight="600" fill="var(--amber)">recall</text>
+            <rect x="656" y="154" width="110" height="20" rx="10" fill="var(--surface)" stroke="var(--amber)"/>
+            <text x="711" y="168" text-anchor="middle" font-family="var(--font-mono)" font-size="9" font-weight="600" fill="var(--amber)">F<tspan font-size="7" dy="2">β</tspan></text>
+            <rect x="776" y="154" width="110" height="20" rx="10" fill="var(--surface)" stroke="var(--amber)"/>
+            <text x="831" y="168" text-anchor="middle" font-family="var(--font-mono)" font-size="9" font-weight="600" fill="var(--amber)">reduction ratio</text>
+            <text x="770" y="190" text-anchor="middle" font-family="var(--font-body)" font-size="9" font-style="italic" fill="var(--muted)">scored against match_uri truth</text>
+          </svg>
+        </div>
+        <figcaption>
+          The same run, same target, same truth, fed names the world actually produced:
+          previous names, trading names, and the other variants the source system already
+          records. Nothing here is synthetic, so the drop against tier A is a measurement
+          of real-world noise rather than an artefact of how the noise was generated.
+        </figcaption>
+      </figure>
+
+      <figure>
+        <div class="diagram-wrap">
+         <svg id="tier-c-synthetic-noise" viewBox="20 24 900 296" width="900" height="296" role="img" aria-label="Tier C, synthetic noise under control. Either a base name or an alias name is perturbed by one scenario drawn per record from an authored profile, producing the population under test. That, together with the same reference dataset of gb target records used in every tier, feeds the same blocking run, parameterised by which algorithm it uses, chosen from tfidf, wordpiece, sentencepiece, or sbert. It produces precision and recall against the same match_uri truth, reported per scenario.">
+
+            <text x="180" y="50" text-anchor="middle" font-family="var(--font-mono)" font-size="11.5" letter-spacing="0.1em" fill="var(--muted)">INPUT POPULATION</text>
+            <text x="480" y="50" text-anchor="middle" font-family="var(--font-mono)" font-size="11.5" letter-spacing="0.1em" fill="var(--muted)">BLOCKING RUN</text>
+            <text x="770" y="50" text-anchor="middle" font-family="var(--font-mono)" font-size="11.5" letter-spacing="0.1em" fill="var(--muted)">RESULT</text>
+            <line x1="40" y1="66" x2="900" y2="66" stroke="var(--line)" stroke-width="1.5"/>
+
+            <!-- TIER C -->
+
+            <!-- input 1: either source name, perturbed, becomes the population under test -->
+            <rect x="60" y="88" width="90" height="24" rx="12" fill="var(--surface-2)" stroke="var(--line)"/>
+            <text x="105" y="104" text-anchor="middle" font-family="var(--font-body)" font-size="9.5" fill="var(--ink)">base name</text>
+            <rect x="170" y="88" width="90" height="24" rx="12" fill="var(--surface-2)" stroke="var(--line)"/>
+            <text x="215" y="104" text-anchor="middle" font-family="var(--font-body)" font-size="9.5" fill="var(--ink)">alias name</text>
+
+            <line x1="105" y1="112" x2="155" y2="128" stroke="var(--muted)" stroke-width="1.25"/>
+            <line x1="215" y1="112" x2="165" y2="128" stroke="var(--muted)" stroke-width="1.25"/>
+            <circle cx="160" cy="132" r="13" fill="var(--surface-2)" stroke="var(--muted)" stroke-width="1.5"/>
+            <text x="178" y="136" font-family="var(--font-body)" font-size="9.5" font-style="italic" fill="var(--muted)">perturb: one scenario drawn per record</text>
+
+            <line x1="160" y1="145" x2="160" y2="157" stroke="var(--muted)" stroke-width="1.5"/>
+            <polygon points="160,160 155,151 165,151" fill="var(--muted)"/>
+
+            <rect x="40" y="160" width="280" height="56" rx="8" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/>
+            <text x="58" y="184" font-family="var(--font-body)" font-size="12" font-weight="600" fill="var(--ink)">perturbed</text>
+            <text x="58" y="203" font-family="var(--font-body)" font-size="10" font-style="italic" fill="var(--muted)">e.g. a suffix-then-typo chain on a base or alias name</text>
+
+            <!-- input 2: the reference dataset, identical to tiers A and B -->
+            <rect x="40" y="240" width="280" height="56" rx="8" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.5"/>
+            <ellipse cx="66" cy="260" rx="13" ry="3.5" fill="var(--surface)" stroke="var(--line)"/>
+            <line x1="53" y1="260" x2="53" y2="272" stroke="var(--line)"/>
+            <line x1="79" y1="260" x2="79" y2="272" stroke="var(--line)"/>
+            <ellipse cx="66" cy="272" rx="13" ry="3.5" fill="var(--surface)" stroke="var(--line)"/>
+            <text x="92" y="264" font-family="var(--font-body)" font-size="12" font-weight="600" fill="var(--ink)">gb target records</text>
+            <text x="92" y="281" font-family="var(--font-body)" font-size="9.5" font-style="italic" fill="var(--muted)">reference dataset, identical in every tier</text>
+
+            <!-- both inputs converge on the run -->
+            <path d="M320 188 H340 V206 H350" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
+            <polygon points="360,206 350,201 350,211" fill="var(--ink)"/>
+            <path d="M320 268 H340 V250 H350" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
+            <polygon points="360,250 350,245 350,255" fill="var(--ink)"/>
+
+            <!-- the run, parameterised by which algorithm it uses -->
+            <rect x="360" y="178" width="240" height="100" rx="8" fill="var(--surface-2)" stroke="var(--line)"/>
+            <rect x="360" y="178" width="28" height="100" rx="8" fill="var(--surface)" stroke="var(--line)"/>
+            <text x="374" y="228" transform="rotate(-90 374 228)" text-anchor="middle" font-family="var(--font-mono)" font-size="8.5" letter-spacing="0.08em" fill="var(--muted)">cleanse</text>
+            <text x="494" y="200" text-anchor="middle" font-family="var(--font-body)" font-size="11" fill="var(--ink)">blocking run</text>
+
+            <rect x="396" y="210" width="94" height="20" rx="10" fill="var(--surface)" stroke="var(--line)"/>
+            <text x="443" y="224" text-anchor="middle" font-family="var(--font-mono)" font-size="8.5" fill="var(--muted)">tfidf</text>
+            <rect x="498" y="210" width="94" height="20" rx="10" fill="var(--surface)" stroke="var(--line)"/>
+            <text x="545" y="224" text-anchor="middle" font-family="var(--font-mono)" font-size="8.5" fill="var(--muted)">wordpiece</text>
+            <rect x="396" y="234" width="94" height="20" rx="10" fill="var(--surface)" stroke="var(--line)"/>
+            <text x="443" y="248" text-anchor="middle" font-family="var(--font-mono)" font-size="8.5" fill="var(--muted)">sentencepiece</text>
+            <rect x="498" y="234" width="94" height="20" rx="10" fill="var(--surface)" stroke="var(--line)"/>
+            <text x="545" y="248" text-anchor="middle" font-family="var(--font-mono)" font-size="8.5" fill="var(--muted)">sbert</text>
+
+            <text x="494" y="269" text-anchor="middle" font-family="var(--font-body)" font-size="9" font-style="italic" fill="var(--muted)">same algorithm, scored per scenario</text>
+
+            <line x1="600" y1="228" x2="636" y2="228" stroke="var(--ink)" stroke-width="1.5"/>
+            <polygon points="640,228 630,223 630,233" fill="var(--ink)"/>
+
+            <rect x="640" y="186" width="260" height="84" rx="8" fill="var(--surface-2)" stroke="var(--line)"/>
+            <rect x="656" y="200" width="110" height="20" rx="10" fill="var(--surface)" stroke="var(--amber)"/>
+            <text x="711" y="214" text-anchor="middle" font-family="var(--font-mono)" font-size="9" font-weight="600" fill="var(--amber)">precision</text>
+            <rect x="776" y="200" width="110" height="20" rx="10" fill="var(--surface)" stroke="var(--amber)"/>
+            <text x="831" y="214" text-anchor="middle" font-family="var(--font-mono)" font-size="9" font-weight="600" fill="var(--amber)">recall</text>
+            <rect x="656" y="224" width="110" height="20" rx="10" fill="var(--surface)" stroke="var(--amber)"/>
+            <text x="711" y="238" text-anchor="middle" font-family="var(--font-mono)" font-size="9" font-weight="600" fill="var(--amber)">F<tspan font-size="7" dy="2">β</tspan></text>
+            <rect x="776" y="224" width="110" height="20" rx="10" fill="var(--surface)" stroke="var(--amber)"/>
+            <text x="831" y="238" text-anchor="middle" font-family="var(--font-mono)" font-size="9" font-weight="600" fill="var(--amber)">reduction ratio</text>
+            <text x="770" y="260" text-anchor="middle" font-family="var(--font-body)" font-size="9" font-style="italic" fill="var(--muted)">scored against match_uri truth, per scenario</text>
+          </svg>
+        </div>                
+        <figcaption>
+          Perturbation can start from a base name or an alias, testing synthetic noise
+          alone or compounding it with real noise already present. Unlike tier B, the
+          damage here is authored: each record draws one scenario from a profile, an
+          ordered chain of operators each with a firing probability and an attempt
+          ceiling, so the tier answers <em>which kind</em> of degradation breaks a
+          representation, not just that something did. Repeated per candidate algorithm
+          and scored per scenario, the comparison across all three tiers shows whether a
+          representation holds up as name quality degrades, and where specifically it breaks.
+        </figcaption>
+      </figure>
+    </div>
+
+
+    <!-- DIAGRAM 2: identifier plumbing supporting the above -->
+    <div class="step">
+      <div class="step-head">
+        <span class="step-eyebrow">Supporting detail</span>
+        <h2 class="step-title">Why every tier scores against the same real target</h2>
+      </div>
+      <figure>
+        <div class="diagram-wrap">
+          <svg id="match-uri-truth" viewBox="0 0 1300 390" width="1300" height="390" role="img" aria-label="A primary record, its name-variant, and a perturbation of that variant all carry a match_uri pointing at the identical real gb target. system_uri is reminted at each hop and source_uri points exactly one hop back, but match_uri is set once on the primary and copied through unchanged, so tier B and tier C both score against the same truth tier A does.">
+
+            <text x="330" y="26" text-anchor="middle" font-family="var(--font-mono)" font-size="12" letter-spacing="0.14em" fill="var(--muted)">ACQUISITION</text>
+            <line x1="40" y1="38" x2="620" y2="38" stroke="var(--line)" stroke-width="1.5"/>
+
+            <text x="810" y="26" text-anchor="middle" font-family="var(--font-mono)" font-size="12" letter-spacing="0.14em" fill="var(--muted)">PERTURBATION</text>
+            <line x1="680" y1="38" x2="940" y2="38" stroke="var(--line)" stroke-width="1.5"/>
+
+            <text x="1130" y="26" text-anchor="middle" font-family="var(--font-mono)" font-size="12" letter-spacing="0.14em" fill="var(--muted)">TARGET</text>
+            <line x1="1000" y1="38" x2="1260" y2="38" stroke="var(--line)" stroke-width="1.5"/>
+
+            <text x="650" y="34" text-anchor="middle" font-family="var(--font-mono)" font-size="16" fill="var(--muted)">›</text>
+            <text x="970" y="34" text-anchor="middle" font-family="var(--font-mono)" font-size="16" fill="var(--muted)">›</text>
+
+            <!-- PRIMARY -->
+            <g>
+              <rect x="40" y="55" width="260" height="300" rx="10" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/>
+              <text x="58" y="80" font-family="var(--font-mono)" font-size="11" letter-spacing="0.06em" fill="var(--muted)">PRIMARY RECORD</text>
+              <line x1="58" y1="92" x2="282" y2="92" stroke="var(--line)"/>
+
+              <text x="58" y="118" font-family="var(--font-mono)" font-size="10.5" fill="var(--muted)">system_uri</text>
+              <text x="58" y="138" font-family="var(--font-mono)" font-size="12.5" font-weight="600" fill="var(--ink)">gleif://549300JX8H2CQ7ZM1K42</text>
+
+              <text x="58" y="170" font-family="var(--font-body)" font-size="10.5" fill="var(--muted)">name</text>
+              <text x="58" y="190" font-family="var(--font-body)" font-size="13.5" fill="var(--ink)">Acme Holdings Ltd</text>
+
+              <text x="58" y="230" font-family="var(--font-mono)" font-size="10.5" fill="var(--muted)">source_uri</text>
+              <text x="58" y="250" font-family="var(--font-mono)" font-size="12.5" font-style="italic" fill="var(--muted)">— (origin)</text>
+
+              <text x="58" y="298" font-family="var(--font-mono)" font-size="10.5" fill="var(--muted)">match_uri</text>
+              <text x="58" y="318" font-family="var(--font-mono)" font-size="12.5" font-weight="600" fill="var(--amber)">gb://01234567</text>
+            </g>
+
+            <!-- VARIANT -->
+            <g>
+              <rect x="360" y="55" width="260" height="300" rx="10" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+              <text x="378" y="80" font-family="var(--font-mono)" font-size="11" letter-spacing="0.06em" fill="var(--muted)">NAME VARIANT (tier B)</text>
+              <line x1="378" y1="92" x2="602" y2="92" stroke="var(--line)"/>
+
+              <text x="378" y="118" font-family="var(--font-mono)" font-size="10.5" fill="var(--muted)">system_uri</text>
+              <text x="378" y="136" font-family="var(--font-mono)" font-size="12.5" font-weight="600" fill="var(--ink)">name://gleif/</text>
+              <text x="378" y="152" font-family="var(--font-mono)" font-size="12.5" font-weight="600" fill="var(--ink)">549300JX8H2CQ7ZM1K42/7f3a9c2e</text>
+
+              <text x="378" y="182" font-family="var(--font-body)" font-size="10.5" fill="var(--muted)">name (previous_name)</text>
+              <text x="378" y="202" font-family="var(--font-body)" font-size="13.5" fill="var(--ink)">Acme Holdings Limited</text>
+
+              <text x="378" y="230" font-family="var(--font-mono)" font-size="10.5" fill="var(--muted)">source_uri</text>
+              <text x="378" y="250" font-family="var(--font-mono)" font-size="12.5" font-weight="600" fill="var(--accent)">↩ gleif://549300JX8H…</text>
+
+              <text x="378" y="298" font-family="var(--font-mono)" font-size="10.5" fill="var(--muted)">match_uri</text>
+              <text x="378" y="318" font-family="var(--font-mono)" font-size="12.5" font-weight="600" fill="var(--amber)">gb://01234567</text>
+              <text x="378" y="333" font-family="var(--font-body)" font-size="10" font-style="italic" fill="var(--muted)">(inherited)</text>
+            </g>
+
+            <!-- PERTURBED -->
+            <g>
+              <rect x="680" y="55" width="260" height="300" rx="10" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+              <text x="698" y="80" font-family="var(--font-mono)" font-size="11" letter-spacing="0.06em" fill="var(--muted)">PERTURBED (tier C)</text>
+              <line x1="698" y1="92" x2="922" y2="92" stroke="var(--line)"/>
+
+              <text x="698" y="118" font-family="var(--font-mono)" font-size="10.5" fill="var(--muted)">system_uri</text>
+              <text x="698" y="136" font-family="var(--font-mono)" font-size="12.5" font-weight="600" fill="var(--ink)">perturbed://gleif/names/</text>
+              <text x="698" y="152" font-family="var(--font-mono)" font-size="12.5" font-weight="600" fill="var(--ink)">en-lite/v1/42/</text>
+              <text x="698" y="168" font-family="var(--font-mono)" font-size="12.5" font-weight="600" fill="var(--ink)">549300JX8H2CQ7ZM1K42/7f3a9c2e</text>
+
+              <text x="698" y="190" font-family="var(--font-body)" font-size="10.5" fill="var(--muted)">name (perturbed)</text>
+              <text x="698" y="208" font-family="var(--font-body)" font-size="13.5" fill="var(--ink)">Acme Holdinvs Ltd</text>
+              <text x="698" y="222" font-family="var(--font-body)" font-size="10" font-style="italic" fill="var(--muted)">(scenario suffix-then-typo, of the alias)</text>
+
+              <text x="698" y="244" font-family="var(--font-mono)" font-size="10.5" fill="var(--muted)">source_uri</text>
+              <text x="698" y="264" font-family="var(--font-mono)" font-size="12.5" font-weight="600" fill="var(--accent)">↩ name://gleif/549300…</text>
+
+              <text x="698" y="298" font-family="var(--font-mono)" font-size="10.5" fill="var(--muted)">match_uri</text>
+              <text x="698" y="318" font-family="var(--font-mono)" font-size="12.5" font-weight="600" fill="var(--amber)">gb://01234567</text>
+              <text x="698" y="333" font-family="var(--font-body)" font-size="10" font-style="italic" fill="var(--muted)">(unchanged)</text>
+            </g>
+
+            <!-- TARGET -->
+            <g>
+              <rect x="1000" y="135" width="260" height="140" rx="10" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+              <text x="1018" y="160" font-family="var(--font-mono)" font-size="11" letter-spacing="0.06em" fill="var(--muted)">GB RECORD (REAL)</text>
+              <line x1="1018" y1="172" x2="1242" y2="172" stroke="var(--line)"/>
+
+              <text x="1018" y="193" font-family="var(--font-mono)" font-size="10.5" fill="var(--muted)">system_uri</text>
+              <text x="1018" y="211" font-family="var(--font-mono)" font-size="12.5" font-weight="600" fill="var(--ink)">gb://01234567</text>
+
+              <text x="1018" y="235" font-family="var(--font-body)" font-size="10.5" fill="var(--muted)">name</text>
+              <text x="1018" y="253" font-family="var(--font-body)" font-size="13.5" fill="var(--ink)">Acme Holdings Limited</text>
+            </g>
+
+            <!-- lineage arrows -->
+            <path d="M 360,250 H 330 V 138 H 300" fill="none" stroke="var(--accent)" stroke-width="1.75"/>
+            <polygon points="300,138 313,132.5 313,143.5" fill="var(--accent)"/>
+            <text x="330" y="194" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" fill="var(--accent)" transform="rotate(-90 330 194)">source_uri</text>
+
+            <path d="M 680,264 H 650 V 138 H 620" fill="none" stroke="var(--accent)" stroke-width="1.75"/>
+            <polygon points="620,138 633,132.5 633,143.5" fill="var(--accent)"/>
+            <text x="650" y="201" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" fill="var(--accent)" transform="rotate(-90 650 201)">source_uri</text>
+
+            <!-- match_uri passthrough into the same target -->
+            <line x1="300" y1="318" x2="360" y2="318" stroke="var(--amber)" stroke-width="1.75" stroke-dasharray="5 4"/>
+            <line x1="620" y1="318" x2="680" y2="318" stroke="var(--amber)" stroke-width="1.75" stroke-dasharray="5 4"/>
+            <line x1="940" y1="318" x2="998" y2="212" stroke="var(--amber)" stroke-width="1.75" stroke-dasharray="5 4"/>
+            <polygon points="1000,211 988,209 991,220" fill="var(--amber)"/>
+            <text x="972" y="272" text-anchor="middle" font-family="var(--font-mono)" font-size="10" font-style="italic" fill="var(--amber)" transform="rotate(-61 972 272)">match_uri</text>
+
+          </svg>
+        </div>
+        <figcaption>
+          <code>system_uri</code> is reminted at every hop; <code>source_uri</code> points
+          back exactly one hop, to whatever row a stage's input actually was. But
+          <code>match_uri</code> is set once, on the primary, and copied through
+          unchanged at every hop after that — which is the entire reason tier B's known
+          alias and tier C's perturbed row can each be scored against the identical real
+          <code>gb</code> target tier A uses, without either one running its own
+          cross-system join.
+        </figcaption>
+      </figure>
+    </div>
+
+  </div>
+
+  <div class="asides">
+    <div class="aside">
+      <span class="aside-label">Why one hop, not a flattened path</span>
+      <p>
+        Each layer records a pointer to only its own immediate input, never a flattened path
+        to the ultimate primary — a perturbed row's <code>source_uri</code> names the variant
+        it came from; the variant's <code>source_uri</code> names the primary. Flattening at
+        write time would mean every new derived layer reaching back into an upstream
+        artifact's own canonical schema to resolve that root; keeping each hop local avoids
+        that entirely.
+      </p>
+    </div>
+  </div>
+
+</div>

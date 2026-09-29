@@ -1,0 +1,89 @@
+{
+  "code": "wikidata",
+  "display_name": "Wikidata",
+  "region": "global",
+  "status": "live",
+  "access_mode": "bulk_download",
+  "info_url": "https://www.wikidata.org/wiki/Wikidata:Database_download",
+  "notes": "Wikidata publishes weekly entity dumps through Wikimedia. The recommended starting point is the latest-all JSON dump, which is line-delimited, suitable for offline parsing, and now acquired as a gzipped artefact; RDF truthy and full statement dumps remain follow-up options if company extraction needs graph joins or richer statement context. Promoted from research_required on 2026-08-26: acquire/shard/canonical are proven in production (resumable equivalence-tested Rust extractor, chunked resume, name-variant sidecar), and cleanse/tokenize have since been run against Wikidata output too. Promoted from supported to live on 2026-09-02 alongside being flagged into '--systems all': a landed extractor and cleansed data are what that flag is for, and excluding it meant a regeneration silently skipped a real source.",
+  "all_systems_target": true,
+  "research": null,
+  "resources": [
+    {
+      "name": "wikidata_entities_latest_all",
+      "url": "https://dumps.wikimedia.org/wikidatawiki/entities/latest-all.json.gz",
+      "file_format": "jsonl",
+      "extract": false,
+      "file_name": "wikidata-all.json.gz",
+      "download_url_template": null,
+      "notes": "Weekly Wikidata entity dump recommended by the Wikidata database download documentation; the source file is a line-delimited JSON dump compressed as gzipped JSONL for direct projection and sharding.",
+      "publication_frequency": "weekly",
+      "snapshot_date_mode": "run_date",
+      "refresh_if_older_than_days": 90,
+      "adapter": "direct_download",
+      "projection_defaults": {
+        "engine": "wikisieve",
+        "binary_path": "tools/bin/wikisieve.exe",
+        "output_mode": "jsonl"
+      },
+      "output_defaults": {
+        "chunk_size": null
+      },
+      "request_headers": [],
+      "required_env_vars": [],
+      "auth_header_name": null,
+      "auth_header_env": null,
+      "auth_header_prefix": null,
+      "read_defaults": {
+        "by_extension": {
+          ".gz": {
+            "reader_mode": "line_iter"
+          },
+          ".bz2": {
+            "reader_mode": "chunked_indexed",
+            "chunk_size_mb": 16
+          }
+        },
+        "runtime": {
+          "indexed_bzip2_parallelization": "auto"
+        }
+      }
+    }
+  ],
+  "system_uri_identifier_candidates": [
+    "id",
+    "registry_url"
+  ],
+  "system_field_candidates": {
+    "name": ["label_en"],
+    "company_type": ["entity_type"],
+    "current_status": ["entity_type"],
+    "incorporation_date": ["inception"],
+    "dissolution_date": ["dissolved"],
+    "registry_url": ["registry_url", "id"]
+  },
+  "canonical_input_columns": [
+    "official_name_en",
+    "official_name",
+    "official_name_variants",
+    "short_name_en",
+    "short_name",
+    "short_name_variants",
+    "aliases_en",
+    "country",
+    "jurisdiction",
+    "id",
+    "lei",
+    "company_number_gb",
+    "company_number_fr",
+    "company_number_de"
+  ],
+  "company_type_column": null,
+  "name_variant_type_map": {
+    "LABEL_EN": "label",
+    "ALIAS_EN": "alias",
+    "OFFICIAL_NAME": "official",
+    "SHORT_NAME": "short"
+  },
+  "registry": "system"
+}

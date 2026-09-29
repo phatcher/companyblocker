@@ -1,0 +1,416 @@
+<title>Name to Cluster</title>
+<link rel="stylesheet" href="house-style.css">
+<div class="page">
+  <header class="intro">
+  <h1>From a company name to a cluster</h1>
+  <p class="dek">One source name, <code>Acme Systems P.L.C.</code>, followed through a blocking run: first the default run, the reference every other strategy is measured against, then the tokenizer and dense variants, one under the other for comparison.</p>
+  </header>
+  <div class="steps">
+  <div class="step">
+  <div class="step-head"><h2 class="step-title">The default run: TF-IDF on character n-grams</h2></div>
+  <p>The name as it arrived, cut into character n-grams, turned into a vector, compared against the target system's names, and grouped with its matches.</p>
+  <figure>
+  <div class="diagram-wrap">
+  <svg class="diagram" id="name-to-cluster-default-tfidf" viewBox="0 0 1200 360" role="img" aria-label="Default run: raw name, name scored, character n-grams, TF-IDF vector, exact-name lookup and exhaustive cosine compare, cluster">
+    <defs>
+      <marker id="ah0" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><polygon points="0,0 10,5 0,10" style="fill:var(--accent)"/></marker>
+    </defs>
+    <g>
+      <text x="20" y="34" class="lab">RAW NAME</text>
+      <text x="215" y="34" class="lab">NAME SCORED</text>
+      <text x="410" y="34" class="lab">N-GRAMS</text>
+      <text x="605" y="34" class="lab">VECTORIZE</text>
+      <text x="800" y="34" class="lab">COMPARE</text>
+      <text x="1015" y="34" class="lab">CLUSTER</text>
+    </g>
+    <g style="stroke:var(--line)">
+      <line x1="20" y1="44" x2="185" y2="44"/><line x1="215" y1="44" x2="380" y2="44"/><line x1="410" y1="44" x2="575" y2="44"/>
+      <line x1="605" y1="44" x2="770" y2="44"/><line x1="800" y1="44" x2="985" y2="44"/><line x1="1015" y1="44" x2="1180" y2="44"/>
+    </g>
+    <g><text x="194" y="38" style="fill:var(--muted);font-size:18px">›</text><text x="389" y="38" style="fill:var(--muted);font-size:18px">›</text><text x="584" y="38" style="fill:var(--muted);font-size:18px">›</text><text x="779" y="38" style="fill:var(--muted);font-size:18px">›</text><text x="994" y="38" style="fill:var(--muted);font-size:18px">›</text></g>
+
+    <rect x="20" y="70" width="165" height="64" rx="9" style="fill:var(--surface);stroke:var(--accent);stroke-width:2"/>
+    <text x="34" y="96" class="sm">source row</text>
+    <text x="34" y="119" class="mono">Acme Systems P.L.C.</text>
+    <text x="20" y="170" class="sm">As it arrives from the</text>
+    <text x="20" y="186" class="sm">source register.</text>
+
+    <rect x="215" y="70" width="165" height="132" rx="9" style="fill:var(--surface);stroke:var(--line)"/>
+    <text x="229" y="92" class="sm">identity · the default</text>
+    <text x="229" y="112" class="tok">acme systems p.l.c.</text>
+    <line x1="229" y1="126" x2="366" y2="126" style="stroke:var(--line)"/>
+    <text x="229" y="146" class="sm">or the cleanse transform</text>
+    <text x="229" y="166" class="tok">acme systems plc</text>
+    <text x="229" y="190" class="sm">one per run, both sides</text>
+    <text x="215" y="226" class="sm">Cleansing always runs, to</text>
+    <text x="215" y="242" class="sm">place each pair at a level;</text>
+    <text x="215" y="258" class="sm">it is scored only under a</text>
+    <text x="215" y="274" class="sm">non-identity transform:</text>
+    <text x="215" y="290" class="sm">cleanse, acronym, short_name.</text>
+
+    <rect x="410" y="70" width="165" height="132" rx="9" style="fill:var(--surface);stroke:var(--line)"/>
+    <text x="424" y="94" class="sm">char_wb · 2- and 3-grams</text>
+    <rect x="424" y="108" width="38" height="26" rx="5" class="chip"/><text x="431" y="126" class="tok">acm</text>
+    <rect x="467" y="108" width="38" height="26" rx="5" class="chip"/><text x="474" y="126" class="tok">cme</text>
+    <rect x="510" y="108" width="38" height="26" rx="5" class="chip"/><text x="517" y="126" class="tok">sys</text>
+    <rect x="424" y="142" width="38" height="26" rx="5" class="chip"/><text x="431" y="160" class="tok">yst</text>
+    <rect x="467" y="142" width="38" height="26" rx="5" class="chip"/><text x="474" y="160" class="tok">tem</text>
+    <rect x="510" y="142" width="38" height="26" rx="5" class="chip"/><text x="517" y="160" class="tok">p.l</text>
+    <text x="424" y="190" class="sm">grams are illustrative</text>
+    <text x="410" y="226" class="sm">No tokenizer: grams come</text>
+    <text x="410" y="242" class="sm">straight from the name, the</text>
+    <text x="410" y="258" class="sm">vocabulary from the targets.</text>
+
+    <rect x="605" y="70" width="165" height="132" rx="9" style="fill:var(--surface);stroke:var(--line)"/>
+    <text x="619" y="94" class="sm">sparse TF-IDF, L2 = 1</text>
+    <g style="stroke:var(--line);fill:var(--surface-2)">
+      <rect x="619" y="106" width="9" height="30"/><rect x="630" y="106" width="9" height="30"/><rect x="641" y="106" width="9" height="30"/><rect x="652" y="106" width="9" height="30"/><rect x="663" y="106" width="9" height="30"/><rect x="674" y="106" width="9" height="30"/><rect x="685" y="106" width="9" height="30"/><rect x="696" y="106" width="9" height="30"/><rect x="707" y="106" width="9" height="30"/><rect x="718" y="106" width="9" height="30"/><rect x="729" y="106" width="9" height="30"/><rect x="740" y="106" width="9" height="30"/>
+    </g>
+    <rect x="641" y="106" width="9" height="30" style="fill:var(--accent);opacity:.55"/>
+    <rect x="718" y="106" width="9" height="30" style="fill:var(--accent)"/>
+    <text x="752" y="126" class="sm">…</text>
+    <text x="628" y="152" class="mono" style="font-size:11px;fill:var(--muted)">p.l 0.52</text>
+    <text x="628" y="167" class="mono" style="font-size:11px;fill:var(--muted)">acm 0.31</text>
+    <text x="619" y="190" class="sm">width = the targets' grams</text>
+    <text x="605" y="226" class="sm">Rare grams weigh more</text>
+    <text x="605" y="242" class="sm">(idf); raw term counts;</text>
+    <text x="605" y="258" class="sm">unit length for cosine.</text>
+
+    <ellipse cx="845" cy="80" rx="38" ry="8" style="fill:var(--surface-2);stroke:var(--line)"/>
+    <line x1="807" y1="80" x2="807" y2="116" style="stroke:var(--line)"/><line x1="883" y1="80" x2="883" y2="116" style="stroke:var(--line)"/>
+    <path d="M807 116 A38 8 0 0 0 883 116" style="fill:var(--surface-2);stroke:var(--line)"/>
+    <text x="894" y="92" class="sm">target index</text>
+    <text x="894" y="108" class="sm">(one per country)</text>
+    <rect x="800" y="136" width="185" height="118" rx="9" style="fill:var(--surface);stroke:var(--line)"/>
+    <text x="812" y="156" class="sm">cosine top-20, full scan</text>
+    <text x="812" y="180" class="tok">acme systems ltd</text><text x="946" y="180" class="tok">0.91</text>
+    <text x="812" y="200" class="tok">acme system plc</text><text x="946" y="200" class="tok">0.88</text>
+    <line x1="808" y1="210" x2="978" y2="210" style="stroke:var(--amber);stroke-dasharray:4 3"/>
+    <text x="920" y="222" class="tok" style="font-size:10px;fill:var(--amber)">min 0.75</text>
+    <text x="812" y="242" class="tok" style="fill:var(--muted)">acme holdings</text><text x="946" y="242" class="tok" style="fill:var(--muted)">0.62</text>
+    <text x="800" y="276" class="sm">An identical name is matched</text>
+    <text x="800" y="292" class="sm">by lookup and skips the scan.</text>
+    <text x="800" y="308" class="sm">Prefix filtering (optional, off</text>
+    <text x="800" y="324" class="sm">by default) skips pairs that</text>
+    <text x="800" y="340" class="sm">cannot reach 0.75.</text>
+
+    <rect x="1015" y="70" width="165" height="184" rx="9" style="fill:var(--surface);stroke:var(--line)"/>
+    <text x="1029" y="94" class="sm">cluster_id <tspan class="mono" style="fill:var(--ink)">17</tspan></text>
+    <g style="stroke:var(--accent);stroke-width:1.5">
+      <line x1="1060" y1="150" x2="1130" y2="125"/><line x1="1060" y1="150" x2="1130" y2="185"/><line x1="1130" y1="185" x2="1075" y2="220"/>
+    </g>
+    <circle cx="1060" cy="150" r="11" style="fill:var(--accent-soft);stroke:var(--accent);stroke-width:2"/>
+    <circle cx="1130" cy="125" r="9" style="fill:var(--surface-2);stroke:var(--ink)"/>
+    <circle cx="1130" cy="185" r="9" style="fill:var(--surface-2);stroke:var(--ink)"/>
+    <circle cx="1075" cy="220" r="9" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+    <text x="1029" y="246" class="sm">● source  ○ target</text>
+    <text x="1015" y="276" class="sm">Kept pairs are edges; each</text>
+    <text x="1015" y="292" class="sm">connected component is one</text>
+    <text x="1015" y="308" class="sm">cluster (union-find).</text>
+
+    <g style="stroke:var(--accent);stroke-width:2;fill:none">
+      <path d="M185 102 H213" marker-end="url(#ah0)"/>
+      <path d="M380 136 H408" marker-end="url(#ah0)"/>
+      <path d="M575 136 H603" marker-end="url(#ah0)"/>
+      <path d="M770 180 H798" marker-end="url(#ah0)"/>
+      <path d="M985 195 H1013" marker-end="url(#ah0)"/>
+    </g>
+  </svg>
+
+  </div>
+  <figcaption>Grams, weights and scores are illustrative. Prefix filtering is exact: it drops nothing the full scan would keep.</figcaption>
+  </figure>
+  </div>
+
+  <div class="step">
+  <div class="step-head"><h2 class="step-title">Tokenizers: WordPiece and SentencePiece</h2></div>
+  <p>The same run with a trained tokenizer in place of character n-grams. The two tokenizers split the name differently; from the vector onwards the path is the same.</p>
+  <figure>
+  <div class="diagram-wrap">
+  <svg class="diagram" id="name-to-cluster-tokenizers" viewBox="0 0 1200 440" role="img" aria-label="Tokenizer pipeline: raw name, name scored, tokenize with WordPiece or SentencePiece, TF-IDF vector, cosine compare or LSH or kmeans, cluster">
+    <defs>
+      <marker id="ah1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><polygon points="0,0 10,5 0,10" style="fill:var(--accent)"/></marker>
+    </defs>
+
+    <g>
+      <text x="20" y="34" class="lab">RAW NAME</text>
+      <text x="215" y="34" class="lab">NAME SCORED</text>
+      <text x="410" y="34" class="lab">TOKENIZE</text>
+      <text x="605" y="34" class="lab">VECTORIZE</text>
+      <text x="800" y="34" class="lab">COMPARE</text>
+      <text x="1015" y="34" class="lab">CLUSTER</text>
+    </g>
+    <g style="stroke:var(--line)">
+      <line x1="20" y1="44" x2="185" y2="44"/><line x1="215" y1="44" x2="380" y2="44"/><line x1="410" y1="44" x2="575" y2="44"/>
+      <line x1="605" y1="44" x2="770" y2="44"/><line x1="800" y1="44" x2="985" y2="44"/><line x1="1015" y1="44" x2="1180" y2="44"/>
+    </g>
+    <g style="font-size:18px"><text x="194" y="38" style="fill:var(--muted);font-size:18px">›</text><text x="389" y="38" style="fill:var(--muted);font-size:18px">›</text><text x="584" y="38" style="fill:var(--muted);font-size:18px">›</text><text x="779" y="38" style="fill:var(--muted);font-size:18px">›</text><text x="994" y="38" style="fill:var(--muted);font-size:18px">›</text></g>
+
+    <!-- raw -->
+    <rect x="20" y="70" width="165" height="64" rx="9" style="fill:var(--surface);stroke:var(--accent);stroke-width:2"/>
+    <text x="34" y="96" class="sm">source row</text>
+    <text x="34" y="119" class="mono">Acme Systems P.L.C.</text>
+    <text x="20" y="170" class="sm">As it arrives from the</text>
+    <text x="20" y="186" class="sm">source register.</text>
+
+    <!-- name scored -->
+    <rect x="215" y="70" width="165" height="132" rx="9" style="fill:var(--surface);stroke:var(--line)"/>
+    <text x="229" y="92" class="sm">identity · the default</text>
+    <text x="229" y="112" class="tok">acme systems p.l.c.</text>
+    <line x1="229" y1="126" x2="366" y2="126" style="stroke:var(--line)"/>
+    <text x="229" y="146" class="sm">or the cleanse transform</text>
+    <text x="229" y="166" class="tok">acme systems plc</text>
+    <text x="229" y="190" class="sm">one per run, both sides</text>
+    <text x="215" y="226" class="sm">Cleansing always runs, to</text>
+    <text x="215" y="242" class="sm">place each pair at a level;</text>
+    <text x="215" y="258" class="sm">it is scored only under a</text>
+    <text x="215" y="274" class="sm">non-identity transform:</text>
+    <text x="215" y="290" class="sm">cleanse, acronym, short_name.</text>
+
+    <!-- tokenize: two tokenizers -->
+    <rect x="410" y="70" width="165" height="176" rx="9" style="fill:var(--surface);stroke:var(--line)"/>
+    <text x="424" y="92" class="h" style="font-size:13px">WordPiece</text>
+    <text x="424" y="107" class="sm">gb ~26k, or BERT vocab.txt</text>
+    <g>
+      <rect x="424" y="115" width="41" height="24" rx="5" class="chip"/><text x="430" y="132" class="tok">acme</text>
+      <rect x="470" y="115" width="56" height="24" rx="5" class="chip"/><text x="476" y="132" class="tok">system</text>
+      <rect x="531" y="115" width="34" height="24" rx="5" class="chip"/><text x="537" y="132" class="tok">##s</text>
+    </g>
+    <line x1="424" y1="152" x2="561" y2="152" style="stroke:var(--line)"/>
+    <text x="424" y="173" class="h" style="font-size:13px">SentencePiece</text>
+    <text x="424" y="188" class="sm">gb bpe 10k (unigram 20k)</text>
+    <g>
+      <rect x="424" y="196" width="48" height="24" rx="5" class="chip"/><text x="430" y="213" class="tok">▁acme</text>
+      <rect x="477" y="196" width="63" height="24" rx="5" class="chip"/><text x="483" y="213" class="tok">▁system</text>
+      <rect x="545" y="196" width="20" height="24" rx="5" class="chip"/><text x="551" y="213" class="tok">s</text>
+    </g>
+    <text x="424" y="237" class="sm">splits are illustrative</text>
+    <text x="410" y="270" class="sm">Pick one per run. Stop</text>
+    <text x="410" y="286" class="sm">tokens (e.g. plc) trimmed</text>
+    <text x="410" y="302" class="sm">before vectorizing.</text>
+
+    <!-- vectorize -->
+    <rect x="605" y="70" width="165" height="140" rx="9" style="fill:var(--surface);stroke:var(--line)"/>
+    <text x="619" y="94" class="sm">sparse TF-IDF, L2 = 1</text>
+    <g style="stroke:var(--line);fill:var(--surface-2)">
+      <rect x="619" y="106" width="9" height="30"/><rect x="630" y="106" width="9" height="30"/><rect x="641" y="106" width="9" height="30"/><rect x="652" y="106" width="9" height="30"/><rect x="663" y="106" width="9" height="30"/><rect x="674" y="106" width="9" height="30"/><rect x="685" y="106" width="9" height="30"/><rect x="696" y="106" width="9" height="30"/><rect x="707" y="106" width="9" height="30"/><rect x="718" y="106" width="9" height="30"/><rect x="729" y="106" width="9" height="30"/><rect x="740" y="106" width="9" height="30"/>
+    </g>
+    <rect x="641" y="106" width="9" height="30" style="fill:var(--accent);opacity:.45"/>
+    <rect x="685" y="106" width="9" height="30" style="fill:var(--accent);opacity:.7"/>
+    <rect x="718" y="106" width="9" height="30" style="fill:var(--accent)"/>
+    <text x="752" y="126" class="sm">…</text>
+    <text x="619" y="152" class="sm">one slot per target token;</text>
+    <text x="619" y="168" class="sm">only the name's are set</text>
+    <text x="619" y="184" class="sm">width = targets' distinct</text>
+    <text x="619" y="200" class="sm">tokens (≤ vocab size)</text>
+    <text x="605" y="226" class="sm">Rare tokens weigh more</text>
+    <text x="605" y="242" class="sm">(idf); log term frequency;</text>
+    <text x="605" y="258" class="sm">unit length for cosine.</text>
+
+    <!-- compare -->
+    <ellipse cx="845" cy="80" rx="38" ry="8" style="fill:var(--surface-2);stroke:var(--line)"/>
+    <line x1="807" y1="80" x2="807" y2="116" style="stroke:var(--line)"/><line x1="883" y1="80" x2="883" y2="116" style="stroke:var(--line)"/>
+    <path d="M807 116 A38 8 0 0 0 883 116" style="fill:var(--surface-2);stroke:var(--line)"/>
+    <text x="894" y="92" class="sm">target vectors</text>
+    <text x="894" y="108" class="sm">(one set per country)</text>
+    <rect x="800" y="136" width="185" height="118" rx="9" style="fill:var(--surface);stroke:var(--line)"/>
+    <text x="812" y="156" class="sm">cosine top-20, full scan</text>
+    <text x="812" y="180" class="tok">acme systems ltd</text><text x="946" y="180" class="tok">0.91</text>
+    <text x="812" y="200" class="tok">acme system plc</text><text x="946" y="200" class="tok">0.88</text>
+    <line x1="808" y1="210" x2="978" y2="210" style="stroke:var(--amber);stroke-dasharray:4 3"/>
+    <text x="920" y="222" class="tok" style="font-size:10px;fill:var(--amber)">min 0.75</text>
+    <text x="812" y="242" class="tok" style="fill:var(--muted)">acme holdings</text><text x="946" y="242" class="tok" style="fill:var(--muted)">0.62</text>
+    <rect x="800" y="264" width="185" height="76" rx="9" style="fill:var(--surface);stroke:var(--line)"/>
+    <text x="812" y="284" class="sm" style="fill:var(--ink)">or LSH buckets (MinHash)</text>
+    <text x="812" y="303" class="sm">shared tokens → Jaccard estimate</text>
+    <text x="812" y="325" class="sm" style="fill:var(--ink)">or kmeans partitions</text>
+    <text x="800" y="362" class="sm">The full scan is refused past</text>
+    <text x="800" y="378" class="sm">20,000 targets unless forced:</text>
+    <text x="800" y="394" class="sm">a small subword vocabulary</text>
+    <text x="800" y="410" class="sm">leaves nothing to skip.</text>
+
+    <!-- cluster -->
+    <rect x="1015" y="70" width="165" height="184" rx="9" style="fill:var(--surface);stroke:var(--line)"/>
+    <text x="1029" y="94" class="sm">cluster_id <tspan class="mono" style="fill:var(--ink)">17</tspan></text>
+    <g style="stroke:var(--accent);stroke-width:1.5">
+      <line x1="1060" y1="150" x2="1130" y2="125"/><line x1="1060" y1="150" x2="1130" y2="185"/><line x1="1130" y1="185" x2="1075" y2="220"/>
+    </g>
+    <circle cx="1060" cy="150" r="11" style="fill:var(--accent-soft);stroke:var(--accent);stroke-width:2"/>
+    <circle cx="1130" cy="125" r="9" style="fill:var(--surface-2);stroke:var(--ink)"/>
+    <circle cx="1130" cy="185" r="9" style="fill:var(--surface-2);stroke:var(--ink)"/>
+    <circle cx="1075" cy="220" r="9" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+    <text x="1029" y="246" class="sm">● source  ○ target</text>
+    <text x="1015" y="276" class="sm">Kept pairs are edges; each</text>
+    <text x="1015" y="292" class="sm">connected component is one</text>
+    <text x="1015" y="308" class="sm">cluster (union-find).</text>
+
+    <!-- connectors -->
+    <g style="stroke:var(--accent);stroke-width:2;fill:none">
+      <path d="M185 102 H213" marker-end="url(#ah1)"/>
+      <path d="M380 136 H408" marker-end="url(#ah1)"/>
+      <path d="M575 136 H603" marker-end="url(#ah1)"/>
+      <path d="M770 136 H798" marker-end="url(#ah1)"/>
+      <path d="M985 195 H1013" marker-end="url(#ah1)"/>
+    </g>
+
+  </svg>
+  </div>
+  <figcaption>Token splits and scores are illustrative. An identical name is matched by lookup and never reaches the scan; HNSW suits dense vectors, not vocabulary-wide sparse ones.</figcaption>
+  </figure>
+  </div>
+
+  <div class="step">
+  <div class="step-head"><h2 class="step-title">Dense: sentence encoder and HNSW</h2></div>
+  <p>The same source name through a dense run. A model turns the whole name scored into one fixed-width vector; the index is where dense search differs from sparse.</p>
+  <figure>
+  <div class="diagram-wrap">
+  <svg class="diagram" id="name-to-cluster-dense" viewBox="0 0 1200 500" role="img" aria-label="Dense pipeline: raw name, name scored, encode with sbert or the planned SIF, dense vector, exact block scan or HNSW, cluster">
+    <defs>
+      <marker id="ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><polygon points="0,0 10,5 0,10" style="fill:var(--accent)"/></marker>
+      <marker id="ahm2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><polygon points="0,0 10,5 0,10" style="fill:var(--muted)"/></marker>
+    </defs>
+
+    <g>
+      <text x="20" y="34" class="lab">RAW NAME</text>
+      <text x="215" y="34" class="lab">NAME SCORED</text>
+      <text x="410" y="34" class="lab">ENCODE</text>
+      <text x="605" y="34" class="lab">VECTOR</text>
+      <text x="800" y="34" class="lab">INDEX + COMPARE</text>
+      <text x="1015" y="34" class="lab">CLUSTER</text>
+    </g>
+    <g style="stroke:var(--line)">
+      <line x1="20" y1="44" x2="185" y2="44"/><line x1="215" y1="44" x2="380" y2="44"/><line x1="410" y1="44" x2="575" y2="44"/>
+      <line x1="605" y1="44" x2="770" y2="44"/><line x1="800" y1="44" x2="985" y2="44"/><line x1="1015" y1="44" x2="1180" y2="44"/>
+    </g>
+    <g><text x="194" y="38" style="fill:var(--muted);font-size:18px">›</text><text x="389" y="38" style="fill:var(--muted);font-size:18px">›</text><text x="584" y="38" style="fill:var(--muted);font-size:18px">›</text><text x="779" y="38" style="fill:var(--muted);font-size:18px">›</text><text x="994" y="38" style="fill:var(--muted);font-size:18px">›</text></g>
+
+    <!-- raw -->
+    <rect x="20" y="70" width="165" height="64" rx="9" style="fill:var(--surface);stroke:var(--accent);stroke-width:2"/>
+    <text x="34" y="96" class="sm">source row</text>
+    <text x="34" y="119" class="mono">Acme Systems P.L.C.</text>
+    <text x="20" y="170" class="sm">Any casing or punctuation.</text>
+
+    <!-- cleanse -->
+    <rect x="215" y="70" width="165" height="64" rx="9" style="fill:var(--surface);stroke:var(--line)"/>
+    <text x="229" y="96" class="sm">identity · the default</text>
+    <text x="229" y="119" class="tok">acme systems p.l.c.</text>
+    <text x="215" y="170" class="sm">The raw name by default; a</text>
+    <text x="215" y="186" class="sm">cleansed name under a non-</text>
+    <text x="215" y="202" class="sm">identity transform (cleanse,</text>
+    <text x="215" y="218" class="sm">acronym, short_name).</text>
+
+    <!-- encode: sbert -->
+    <rect x="410" y="70" width="165" height="132" rx="9" style="fill:var(--surface);stroke:var(--line)"/>
+    <text x="424" y="92" class="h">sbert</text>
+    <text x="424" y="107" class="sm">sentence-transformer</text>
+    <g class="sm">
+      <text x="424" y="128" class="tok" style="fill:var(--ink)">own subword tokens</text>
+      <text x="424" y="145" style="fill:var(--muted)">↓ transformer layers</text>
+      <text x="424" y="162" style="fill:var(--muted)">↓ pooled to one vector</text>
+    </g>
+    <text x="424" y="182" class="sm">384-d default; 384–1024-d</text>
+    <text x="424" y="197" class="sm">by checkpoint</text>
+
+    <!-- encode: SIF planned -->
+    <rect x="410" y="218" width="165" height="132" rx="9" class="planned"/>
+    <text x="424" y="236" class="ptag">OR · PLANNED</text>
+    <text x="424" y="256" class="h">SIF</text>
+    <text x="424" y="275" class="sm">word vectors (fastText or</text>
+    <text x="424" y="290" class="sm">corpus-trained), weighted</text>
+    <text x="424" y="309" class="tok" style="fill:var(--ink)">a / (a + p(w))</text>
+    <text x="424" y="328" class="sm">averaged; first principal</text>
+    <text x="424" y="343" class="sm">component removed</text>
+
+    <!-- vector -->
+    <rect x="605" y="70" width="165" height="132" rx="9" style="fill:var(--surface);stroke:var(--line)"/>
+    <text x="619" y="94" class="sm">dense, L2 = 1</text>
+    <g style="stroke:var(--line)">
+      <rect x="619" y="106" width="9" height="30" style="fill:var(--accent);opacity:.35"/><rect x="630" y="106" width="9" height="30" style="fill:var(--accent);opacity:.8"/><rect x="641" y="106" width="9" height="30" style="fill:var(--accent);opacity:.2"/><rect x="652" y="106" width="9" height="30" style="fill:var(--accent);opacity:.6"/><rect x="663" y="106" width="9" height="30" style="fill:var(--accent);opacity:.45"/><rect x="674" y="106" width="9" height="30" style="fill:var(--accent);opacity:.9"/><rect x="685" y="106" width="9" height="30" style="fill:var(--accent);opacity:.3"/><rect x="696" y="106" width="9" height="30" style="fill:var(--accent);opacity:.55"/><rect x="707" y="106" width="9" height="30" style="fill:var(--accent);opacity:.25"/><rect x="718" y="106" width="9" height="30" style="fill:var(--accent);opacity:.7"/><rect x="729" y="106" width="9" height="30" style="fill:var(--accent);opacity:.4"/><rect x="740" y="106" width="9" height="30" style="fill:var(--accent);opacity:.65"/>
+    </g>
+    <text x="752" y="126" class="sm">…</text>
+    <text x="619" y="160" class="sm">every slot set; meaning is</text>
+    <text x="619" y="176" class="sm">spread across all of them</text>
+    <text x="619" y="194" class="sm">stored float16</text>
+    <text x="605" y="226" class="sm">Fixed width, whatever the</text>
+    <text x="605" y="242" class="sm">vocabulary, whether sbert</text>
+    <text x="605" y="258" class="sm">or SIF produced it.</text>
+
+    <!-- compare: today -->
+    <ellipse cx="845" cy="80" rx="38" ry="8" style="fill:var(--surface-2);stroke:var(--line)"/>
+    <line x1="807" y1="80" x2="807" y2="116" style="stroke:var(--line)"/><line x1="883" y1="80" x2="883" y2="116" style="stroke:var(--line)"/>
+    <path d="M807 116 A38 8 0 0 0 883 116" style="fill:var(--surface-2);stroke:var(--line)"/>
+    <text x="894" y="92" class="sm">target vectors</text>
+    <text x="894" y="108" class="sm">(one set per country)</text>
+    <rect x="800" y="136" width="185" height="118" rx="9" style="fill:var(--surface);stroke:var(--line)"/>
+    <text x="812" y="156" class="sm"><tspan class="tok" style="fill:var(--ink)">dense_brute</tspan> · exact, in blocks</text>
+    <text x="812" y="180" class="tok">acme systems ltd</text><text x="946" y="180" class="tok">0.93</text>
+    <text x="812" y="200" class="tok">acme system plc</text><text x="946" y="200" class="tok">0.90</text>
+    <line x1="808" y1="210" x2="978" y2="210" style="stroke:var(--amber);stroke-dasharray:4 3"/>
+    <text x="920" y="222" class="tok" style="font-size:10px;fill:var(--amber)">min 0.75</text>
+    <text x="812" y="242" class="tok" style="fill:var(--muted)">acme holdings</text><text x="946" y="242" class="tok" style="fill:var(--muted)">0.71</text>
+
+    <!-- compare: HNSW -->
+    <rect x="800" y="270" width="185" height="214" rx="9" class="planned"/>
+    <text x="812" y="288" class="ptag">OR</text>
+    <text x="812" y="308" class="h">HNSW index</text>
+    <g style="stroke:var(--line)">
+      <line x1="840" y1="330" x2="972" y2="330"/>
+      <line x1="840" y1="370" x2="972" y2="370"/>
+      <line x1="840" y1="410" x2="972" y2="410"/>
+    </g>
+    <text x="812" y="334" class="tok" style="font-size:10px;fill:var(--muted)">L2</text>
+    <text x="812" y="374" class="tok" style="font-size:10px;fill:var(--muted)">L1</text>
+    <text x="812" y="414" class="tok" style="font-size:10px;fill:var(--muted)">L0</text>
+    <!-- nodes -->
+    <g style="fill:var(--surface);stroke:var(--muted)">
+      <circle cx="858" cy="330" r="4"/><circle cx="950" cy="330" r="4"/>
+      <circle cx="858" cy="370" r="4"/><circle cx="895" cy="370" r="4"/><circle cx="950" cy="370" r="4"/>
+      <circle cx="850" cy="410" r="4"/><circle cx="872" cy="410" r="4"/><circle cx="895" cy="410" r="4"/><circle cx="915" cy="410" r="4"/><circle cx="935" cy="410" r="4"/><circle cx="958" cy="410" r="4"/>
+    </g>
+    <!-- greedy descent -->
+    <g style="stroke:var(--accent);stroke-width:1.8;fill:none">
+      <path d="M858 330 H946" marker-end="url(#ah2)"/>
+      <path d="M950 334 V366" marker-end="url(#ah2)"/>
+      <path d="M950 370 H899" marker-end="url(#ah2)"/>
+      <path d="M895 374 V406" marker-end="url(#ah2)"/>
+      <path d="M895 410 H911" marker-end="url(#ah2)"/>
+    </g>
+    <circle cx="915" cy="410" r="5" style="fill:var(--accent);stroke:var(--accent)"/>
+    <text x="812" y="440" class="sm">greedy walk: coarse layer</text>
+    <text x="812" y="456" class="sm">to fine, near-neighbours</text>
+    <text x="812" y="472" class="sm">without scanning every row</text>
+
+    <!-- cluster -->
+    <rect x="1015" y="70" width="165" height="184" rx="9" style="fill:var(--surface);stroke:var(--line)"/>
+    <text x="1029" y="94" class="sm">cluster_id <tspan class="mono" style="fill:var(--ink)">17</tspan></text>
+    <g style="stroke:var(--accent);stroke-width:1.5">
+      <line x1="1060" y1="150" x2="1130" y2="125"/><line x1="1060" y1="150" x2="1130" y2="185"/><line x1="1130" y1="185" x2="1075" y2="220"/>
+    </g>
+    <circle cx="1060" cy="150" r="11" style="fill:var(--accent-soft);stroke:var(--accent);stroke-width:2"/>
+    <circle cx="1130" cy="125" r="9" style="fill:var(--surface-2);stroke:var(--ink)"/>
+    <circle cx="1130" cy="185" r="9" style="fill:var(--surface-2);stroke:var(--ink)"/>
+    <circle cx="1075" cy="220" r="9" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+    <text x="1029" y="246" class="sm">● source  ○ target</text>
+    <text x="1015" y="276" class="sm">Same as sparse: kept pairs</text>
+    <text x="1015" y="292" class="sm">are edges, connected</text>
+    <text x="1015" y="308" class="sm">components are clusters.</text>
+
+    <!-- connectors -->
+    <g style="stroke:var(--accent);stroke-width:2;fill:none">
+      <path d="M185 102 H213" marker-end="url(#ah2)"/>
+      <path d="M380 102 H408" marker-end="url(#ah2)"/>
+      <path d="M575 136 H603" marker-end="url(#ah2)"/>
+      <path d="M770 180 H798" marker-end="url(#ah2)"/>
+      <path d="M985 195 H1013" marker-end="url(#ah2)"/>
+    </g>
+    <path d="M575 284 H590 V150 H601" style="stroke:var(--accent);stroke-width:2;fill:none" marker-end="url(#ah2)"/>
+    <path d="M790 180 V377 H798" style="stroke:var(--accent);stroke-width:2;fill:none" marker-end="url(#ah2)"/>
+
+  </svg>
+  </div>
+  <figcaption>Scores are illustrative. The exact block scan touches every target row; HNSW trades a little recall for not doing so. SIF's p(w) is supplied per run (by default the word vectors' own counts, or a stated name list), fixed with the index, and weights both sides.</figcaption>
+  </figure>
+  </div>
+
+</div>
+</div>

@@ -1,0 +1,23 @@
+{
+  "provenance": {
+    "kind": "manual",
+    "note": "Legal-form suffix/anywhere seed tokens (structural markers such as GROUP/HOLDING/HOLDINGS plus 'THE'), maintained by direct, reviewed edit -- not an output of scripts/generate_noise_words.py's TF-IDF corpus derivation, and not stale. This content predates the generator: it was originally checked in under the 'noise_tokens.json' filename in commit 4b83fa3 (2026-06-28, 'Populate short_name by trimming company type and stop tokens from cleansed names') as a plain list, reshaped into this suffix/anywhere scoping in commit d1580ad the same day, and hand-extended twice more (commit 111953e added INTERNATIONAL/INVESTCO/INVESTMENTS/TECHNOLOGIES; commit a75637b added '&'). When commit 9424a9c ('Unify tokenize noise defaults with company_cleanse source', 2026-07-03) repurposed that filename (now 'noise_words.json') for the generator's TF-IDF-generated profiled output, this hand-made content was renamed unchanged to noise_tokens_global.json, since renamed manual_noise_words.json, to keep it as a separate, always-included source (see company_cleanse.config.get_manual_noise_words()/get_effective_noise_words()) rather than being discarded or merged into the generated file.",
+    "documented_utc": "2026-08-29T00:00:00Z"
+  },
+  "suffix": [
+    "&",
+    "FUND",
+    "GROUP",
+    "HOLDING",
+    "HOLDINGS",
+    "INTERNATIONAL",
+    "INVESTCO",
+    "INVESTMENTS",
+    "SERVICES",
+    "SYSTEMS",
+    "TECHNOLOGIES"
+  ],
+  "anywhere": [
+    "THE"
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "provenance": {
+    "base_list": "Derived at import time from entity_legal_forms_iso20275.json, not copied here. The 'country' kind comes from that file's `country` field (129 distinct values) and the 'region' kind from its `jurisdiction` field minus anything already a country (73 values, e.g. Alberta, British Columbia, Flemish Region, Scotland, Northern Ireland). Deriving rather than snapshotting means the two can never drift; tests/test_geographic_terms.py re-derives and asserts the packaged accessor agrees.",
+    "curated_layer": "This file holds only the layer ISO 20275 cannot supply: the colloquial forms company names actually use. ISO 3166 formal long forms ('United Kingdom of Great Britain and Northern Ireland', 'United States of America') are in the derived base list and are harmless because they never appear in a registered name; 'UK', 'Britain', 'England' and 'USA' do appear and are added here.",
+    "country_subdivision_field_unused": "entity_legal_forms_iso20275.json's `country_subdivision` field carries ISO 3166-2 codes (US-CA, GB-SCT, CA-AB). Those are ISO codes, excluded by the same rule as alpha-2/alpha-3, so the 'region' kind is derived from the human-readable `jurisdiction` field instead."
+  },
+  "exclusions": {
+    "iso_alpha_2": "Excluded wholesale. Two-letter country codes collide constantly with ordinary words and abbreviations already common in company names: IT, IN, IS, AT, BE, SO, OR, ON, ME, NO, AM, AS.",
+    "iso_alpha_3": "Excluded wholesale. Three letters is no safer: AND is Andorra, ARE the United Arab Emirates, CAN Canada, PER Peru, ALL is not a code but AUT/BEL/CUB/EST/FIN/LAO/MAN-shaped collisions are the same hazard.",
+    "US": "Excluded as a common word, even though USA is included. 'US' is a pronoun and a routine English word; 'USA' is not.",
+    "Holland": "Excluded. Collides with the surname, which is a live company name in its own right (Holland & Barrett). The Netherlands is already covered by the derived base list.",
+    "Turkey": "Excluded. Common noun. The endonym Turkiye is already in the derived base list, which covers the subsidiary-marker case without the collision.",
+    "endonyms_beyond_Deutschland": "Espana, Italia, Nederland, Polska, Suisse, Sverige and the rest are deliberately not in this first pass. Deutschland is here because it is one of the item's own worked examples and appears empirically in short_name_noise_word_candidates.json's German list; the others need the same empirical grounding before they earn an entry, and adding them later is a data change against this file rather than a code change. 'Polska' in particular is an adjective in ordinary Polish company names (Poczta Polska, Telewizja Polska) and would corrupt them."
+  },
+  "kinds": [
+    "country",
+    "region",
+    "city"
+  ],
+  "terms": [
+    {
+      "term": "UK",
+      "kind": "country",
+      "note": "Not an ISO 3166-1 alpha-2 code (GB is), so the code exclusion does not reach it. Unambiguous, and empirically the 6th most frequent token in the GB corpus noise-word list."
+    },
+    {
+      "term": "USA",
+      "kind": "country",
+      "note": "Coincides with the alpha-3 code but qualifies on its own as an unambiguous written short form, unlike the code list taken wholesale."
+    },
+    {
+      "term": "UAE",
+      "kind": "country",
+      "note": "ISO 20275 carries only 'United Arab Emirates', which is not how a name spells it."
+    },
+    {
+      "term": "Britain",
+      "kind": "country",
+      "note": "Unambiguous. The derived base list has only the formal long form."
+    },
+    {
+      "term": "Great Britain",
+      "kind": "country",
+      "note": "Same referent as Britain, spelled out."
+    },
+    {
+      "term": "Deutschland",
+      "kind": "country",
+      "note": "ISO 20275 carries only the English 'Germany'. Appears empirically in short_name_noise_word_candidates.json's offeneregister list."
+    },
+    {
+      "term": "Russia",
+      "kind": "country",
+      "note": "ISO 20275 carries only 'Russian Federation'."
+    },
+    {
+      "term": "Vietnam",
+      "kind": "country",
+      "note": "ISO 20275 spells it 'Viet Nam', which never matches the single-word form a name uses."
+    },
+    {
+      "term": "Czech Republic",
+      "kind": "country",
+      "note": "ISO 20275 carries only 'Czechia'."
+    },
+    {
+      "term": "South Korea",
+      "kind": "country",
+      "note": "ISO 20275 carries 'Korea (Republic of)'."
+    },
+    {
+      "term": "England",
+      "kind": "region",
+      "note": "Sub-national, so it sits in the same tier as Scotland and Northern Ireland, which the derived base list already supplies as ISO 20275 jurisdictions. 'New England' is covered by the preceding-qualifier guard in strip_geographic_terms()."
+    },
+    {
+      "term": "Wales",
+      "kind": "region",
+      "note": "The one borderline entry. Included to complete the UK set alongside England, Scotland and Northern Ireland. 'New South Wales' makes a trailing 'Wales' integral in real names (Bank of New South Wales); the preceding-qualifier guard in strip_geographic_terms() refuses the strip there because 'South' precedes it."
+    }
+  ]
+}

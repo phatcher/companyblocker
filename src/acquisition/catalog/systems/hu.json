@@ -1,0 +1,20 @@
+{
+  "code": "hu",
+  "display_name": "Hungary",
+  "region": "eu",
+  "status": "research_required",
+  "access_mode": "search_portal",
+  "info_url": "https://occsz.e-cegjegyzek.hu/info/page/ceginfo",
+  "notes": "No official bulk-download source is currently configured for this pipeline. Next step is to validate legal access terms and confirm an automatable bulk file or API endpoint before promotion to supported.",
+  "all_systems_target": false,
+  "research": {
+    "pass_date": "2026-06-15",
+    "basis": "BRIS registry table with low extractability",
+    "priority": "P2",
+    "approach": "Technical extraction from the linked portal was inconclusive in this pass",
+    "next_action": "Perform manual review for contract API or bulk data service options"
+  },
+  "resources": [],
+  "company_type_column": null,
+  "registry": "country"
+}

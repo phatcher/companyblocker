@@ -1,0 +1,21 @@
+[
+  {
+    "name_cleansed": "MEDICAL INDUSTRY SUPPORT GROUP LTD",
+    "mode": "space_split",
+    "expected_tokens": ["MEDICAL", "INDUSTRY", "SUPPORT"]
+  },
+  {
+    "name_cleansed": "A J BELL",
+    "mode": "space_split",
+    "expected_tokens": ["A", "J", "BELL"]
+  },
+  {
+    "name_cleansed": "ABC & CO",
+    "mode": "space_split",
+    "expected_tokens": ["ABC", "&"]
+  },
+  {
+    "name_cleansed": "AUTOCONTEX",
+    "mode": "wordpiece"
+  }
+]

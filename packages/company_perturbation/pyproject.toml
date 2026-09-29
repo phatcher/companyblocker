@@ -1,0 +1,45 @@
+[build-system]
+requires = ["hatchling>=1.25.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "company_perturbation"
+version = "0.1.0"
+description = "Deterministic name-mutation operators for robustness/perturbation testing"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+license = { text = "MIT" }
+authors = [
+  { name = "Paul Hatcher" }
+]
+dependencies = [
+  "company-cleanse",
+  "jellyfish>=1.0.0",
+]
+
+[dependency-groups]
+dev = [
+  "pytest",
+  "pytest-cov",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/company_perturbation"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "src/company_perturbation",
+  "tests",
+  "README.md",
+]
+
+[tool.hatch.build]
+include = [
+  "src/company_perturbation/py.typed",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-v --tb=short"

@@ -1,0 +1,24 @@
+@startuml
+!include _style.puml
+
+title Stage handoff: canonical -> cleanse -> tokenize
+
+participant "Canonical Stage" as Canonical
+participant "Cleansing Stage" as Cleanse
+participant "Tokenization Stage" as Tokenize
+database "Parquet layers\n(canonical/, cleansed/, tokenized/)" as Storage
+
+Canonical -> Storage: write deduplicated canonical view\n(primary family, jurisdiction_code partitions;\nsystem_uri + OpenCorporates columns incl. name\n+ metadata_generated_utc)
+
+Cleanse -> Storage: read canonical view
+Cleanse -> Cleanse: derive company_type +\nname_cleansed_basic + name_cleansed
+Cleanse -> Cleanse: derive short_name/quoted_name/acronym\nand provenance flags
+Cleanse -> Storage: write cleansed view, 1:1 per input file\n(preserved input columns + derived cleanse columns;\nnew layer swapped in atomically)
+
+note over Cleanse, Tokenize: a match stage runs between cleanse and tokenize,\nwriting matched/; tokenize does not read it
+
+Tokenize -> Storage: read cleansed view
+Tokenize -> Tokenize: tokenize name column\n(default name_cleansed)
+Tokenize -> Storage: write tokenized output\n(name_tokens/country/global columns)
+
+@enduml

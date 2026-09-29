@@ -1,0 +1,44 @@
+{
+  "code": "ie",
+  "display_name": "Ireland",
+  "region": "eu",
+  "status": "live",
+  "access_mode": "bulk_download",
+  "info_url": "https://opendata.cro.ie/dataset/companies",
+  "notes": "Ireland's Companies Registration Office publishes a daily bulk download of company records. The source is available as a CSV zip file on the public open-data portal, which fits the bulk-first phase.",
+  "all_systems_target": true,
+  "research": null,
+  "resources": [
+    {
+      "name": "company_records_csv_zip",
+      "url": "https://opendata.cro.ie/dataset/bf6f837d-0946-4c14-9a99-82cd6980c121/resource/3fef41bc-b8f4-4b10-8434-ce51c29b1bba/download/companies.csv.zip",
+      "file_format": "zip",
+      "file_name": "companies.csv.zip",
+      "extract": false,
+      "file_name_template": null,
+      "download_url_template": null,
+      "notes": "Daily company-records snapshot distributed as a zipped CSV.",
+      "publication_frequency": "daily",
+      "snapshot_date_mode": "run_date",
+      "refresh_if_older_than_days": 90,
+      "adapter": "direct_download",
+      "request_headers": [],
+      "required_env_vars": [],
+      "auth_header_name": null,
+      "auth_header_env": null,
+      "auth_header_prefix": null
+    }
+  ],
+  "system_uri_identifier_candidates": [
+    "company_num"
+  ],
+  "system_field_candidates": {
+    "name": ["company_name"],
+    "current_status": ["status"]
+  },
+  "canonical_source_column_aliases": {
+    "company_num": "company_number"
+  },
+  "company_type_column": "company_type_code",
+  "registry": "country"
+}

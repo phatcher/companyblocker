@@ -1,0 +1,86 @@
+@startuml
+!include _style.puml
+
+title Blocking: ground-truth resolution for one source row
+
+start
+:source_truth_for_column(--match-col);
+if (column == MATCH_URI_COLUMN\n("match_uri", the default)?) then (no)
+  partition "ColumnTruth.resolve" {
+    :source_match_uri = the named column\non the row, read as it is\n(no walk, no matched/ read);
+    if (no populated value carries\nthe target system's scheme?) then (yes)
+      :ValueError: frame refused;
+      stop
+    else (no)
+    endif
+  }
+  :source_match_uri = column value\n(null where the row has none);
+  stop
+else (yes)
+endif
+
+partition "MatchedLayerTruth.resolve (per source row)" {
+  :source_id = the row's system_uri;
+  if (_is_derived_row(source_id)?\nparse_uri(...).derived: name:~// or perturbed:~//) then (no: gb:~//123, or no scheme)
+    :read match_uri off the loaded\nmatched/ frame's own column\n(no walk, no extra read);
+    if (match_uri cached for source_id?) then (yes)
+      :source_match_uri = match_uri;
+    else (no)
+      :source_match_uri = None\n(no match);
+    endif
+    stop
+  else (yes)
+  endif
+}
+
+partition "resolve_cross_system_match(roots, uri)" {
+  partition "entity_of(uri): decomposition, no lookup" {
+    :row = parse_uri(uri);
+    if (InvalidReferenceError, or\nnot row.is_row (a dataset)?) then (yes)
+      :UnknownUriSchemeError\n(unresolved);
+      stop
+    else (no)
+    endif
+    while (row.source is not None?) is (yes: one hop back)
+      :row = row.source (DerivedUri.source)
+      perturbed:~//gb/names/en-lite/v1/42/123/<hash>
+        -> name:~//gb/123/<hash>
+      name:~//gb/123/<hash> -> gb:~//123
+      perturbed:~//ie/en-lite/v1/42/123 -> ie:~//123;
+    endwhile (no: entity, system scheme)
+  }
+  partition "_lookup_match_uri(system = entity.system, uri = entity.uri): the one lookup" {
+    :read data/<entity.system>/matched/\n(resolve_primary_files);
+    if (no primary files?) then (yes)
+      :MatchLayerNotFoundError\n(unresolved);
+      stop
+    elseif (no system_uri column?) then (yes)
+      :MatchResolutionError\n(unresolved);
+      stop
+    else (no)
+    endif
+    :filter system_uri == entity.uri;
+    if (no row for the entity?) then (yes)
+      :source_match_uri = None\n(no match);
+      stop
+    elseif (no match_uri column?) then (yes)
+      :MatchResolutionError\n(unresolved);
+      stop
+    elseif (match_uri is null?) then (yes)
+      :source_match_uri = None\n(no match);
+      stop
+    else (no)
+      :source_match_uri = match_uri\n(the entity's match is the row's match);
+      stop
+    endif
+  }
+}
+
+legend right
+  Outcomes: a match (source_match_uri set), no match (None),
+  unresolved (raised).
+  An entity row takes the cached column; only a derived row walks.
+  Depth follows the URI: entity 0 hops, name 1, perturbed entity 1,
+  perturbed name 2.
+endlegend
+@enduml

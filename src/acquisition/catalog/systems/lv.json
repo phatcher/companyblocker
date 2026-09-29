@@ -1,0 +1,20 @@
+{
+  "code": "lv",
+  "display_name": "Latvia",
+  "region": "eu",
+  "status": "research_required",
+  "access_mode": "search_portal",
+  "info_url": "https://www.ur.gov.lv/en/",
+  "notes": "No official bulk-download source is currently configured for this pipeline. Next step is to validate legal access terms and confirm an automatable bulk file or API endpoint before promotion to supported.",
+  "all_systems_target": false,
+  "research": {
+    "pass_date": "2026-06-15",
+    "basis": "BRIS registry table plus register portal review",
+    "priority": "P2",
+    "approach": "Public portal is confirmed but API or bulk endpoint is not explicit in extracted content",
+    "next_action": "Use official contact channel to request machine data access documentation"
+  },
+  "resources": [],
+  "company_type_column": null,
+  "registry": "country"
+}

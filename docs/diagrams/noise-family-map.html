@@ -1,0 +1,135 @@
+<title>Noise Family Map</title>
+<link rel="stylesheet" href="house-style.css">
+<div class="page">
+
+  <header class="intro">
+    <div class="eyebrow">company_perturbation · operator taxonomy</div>
+    <h1>Noise Family Map</h1>
+    <p class="dek">
+      Twelve name-noise families, grouped by whether they're real yet.
+      <code>Implemented</code> families ship with a real validated example.
+      <code>Awaiting evidence</code> families have a plausible mechanism but no
+      validated real-world pairing data yet. <code>Planned</code> needs no evidence,
+      only build time.
+    </p>
+  </header>
+
+  <div class="legend">
+    <div class="legend-item"><span class="swatch box"></span><span>solid border — implemented, real example</span></div>
+    <div class="legend-item"><span class="swatch box dashed"></span><span>dashed border — awaiting evidence, illustrative only</span></div>
+    <div class="legend-item"><span class="swatch box fill-surface-2 dashed"></span><span>dashed + shaded — planned, no evidence gap</span></div>
+  </div>
+
+  <figure>
+    <div class="diagram-wrap">
+      <svg viewBox="0 0 940 818" width="940" height="818" role="img" aria-label="Twelve company-name noise families grouped in three columns by status. Implemented: word_order, typo, diacritic_punct, legal_suffix, phonetic, transliteration's homoglyph substitution, and low_salience word drop, each with a real validated example. Awaiting evidence: transliteration's full script-variant rendering, business-word abbreviation, person-name nickname substitution, and generic-descriptor substitution, each blocked on real pairing data rather than mechanism. Planned: same-script OCR confusion, which needs no evidence, only build time.">
+
+        <text x="170" y="26" text-anchor="middle" font-family="var(--font-mono)" font-size="12" letter-spacing="0.1em" fill="var(--muted)">IMPLEMENTED (7)</text>
+        <text x="470" y="26" text-anchor="middle" font-family="var(--font-mono)" font-size="12" letter-spacing="0.1em" fill="var(--muted)">AWAITING EVIDENCE (4)</text>
+        <text x="770" y="26" text-anchor="middle" font-family="var(--font-mono)" font-size="12" letter-spacing="0.1em" fill="var(--muted)">PLANNED (1)</text>
+        <line x1="40" y1="42" x2="900" y2="42" stroke="var(--line)" stroke-width="1.5"/>
+
+        <!-- IMPLEMENTED COLUMN -->
+        <g>
+          <rect x="40" y="55" width="260" height="92" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+          <text x="58" y="77" font-family="var(--font-mono)" font-size="12.5" font-weight="600" fill="var(--ink)">word_order</text>
+          <text x="58" y="95" font-family="var(--font-body)" font-size="9.5" font-style="italic" fill="var(--muted)">permutes space-delimited words</text>
+          <text x="58" y="129" font-family="var(--font-mono)" font-size="11" fill="var(--ink)">Acme Holdings → Holdings Acme</text>
+        </g>
+
+        <g>
+          <rect x="40" y="163" width="260" height="92" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+          <text x="58" y="185" font-family="var(--font-mono)" font-size="12.5" font-weight="600" fill="var(--ink)">typo</text>
+          <text x="58" y="203" font-family="var(--font-body)" font-size="9.5" font-style="italic" fill="var(--muted)">keyboard-adjacent substitution,</text>
+          <text x="58" y="215" font-family="var(--font-body)" font-size="9.5" font-style="italic" fill="var(--muted)">transposition, insert/delete, dup</text>
+          <text x="58" y="237" font-family="var(--font-mono)" font-size="11" fill="var(--ink)">Holdings → Hodlings</text>
+        </g>
+
+        <g>
+          <rect x="40" y="271" width="260" height="92" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+          <text x="58" y="293" font-family="var(--font-mono)" font-size="12.5" font-weight="600" fill="var(--ink)">diacritic_punct</text>
+          <text x="58" y="311" font-family="var(--font-body)" font-size="9.5" font-style="italic" fill="var(--muted)">diacritic swap + separator swap</text>
+          <text x="58" y="345" font-family="var(--font-mono)" font-size="11" fill="var(--ink)">Societe → Société</text>
+        </g>
+
+        <g>
+          <rect x="40" y="379" width="260" height="92" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+          <text x="58" y="401" font-family="var(--font-mono)" font-size="12.5" font-weight="600" fill="var(--ink)">legal_suffix</text>
+          <text x="58" y="419" font-family="var(--font-body)" font-size="9.5" font-style="italic" fill="var(--muted)">drops or varies legal-entity-form</text>
+          <text x="58" y="431" font-family="var(--font-body)" font-size="9.5" font-style="italic" fill="var(--muted)">suffix (ISO 20275)</text>
+          <text x="58" y="453" font-family="var(--font-mono)" font-size="11" fill="var(--ink)">Ltd → Limited</text>
+        </g>
+
+        <g>
+          <rect x="40" y="487" width="260" height="92" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+          <text x="58" y="509" font-family="var(--font-mono)" font-size="12.5" font-weight="600" fill="var(--ink)">phonetic</text>
+          <text x="58" y="527" font-family="var(--font-body)" font-size="9.5" font-style="italic" fill="var(--muted)">phonetic respelling,</text>
+          <text x="58" y="539" font-family="var(--font-body)" font-size="9.5" font-style="italic" fill="var(--muted)">Soundex-verified</text>
+          <text x="58" y="561" font-family="var(--font-mono)" font-size="11" fill="var(--ink)">Smith → Smyth</text>
+        </g>
+
+        <g>
+          <rect x="40" y="595" width="260" height="92" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+          <text x="58" y="617" font-family="var(--font-mono)" font-size="12.5" font-weight="600" fill="var(--ink)">transliteration</text>
+          <text x="58" y="635" font-family="var(--font-body)" font-size="9.5" font-style="italic" fill="var(--muted)">ASCII letter → similar non-Latin glyph</text>
+          <text x="58" y="669" font-family="var(--font-mono)" font-size="11" fill="var(--ink)">Acme → Аcme</text>
+        </g>
+
+        <g>
+          <rect x="40" y="703" width="260" height="92" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+          <text x="58" y="725" font-family="var(--font-mono)" font-size="12.5" font-weight="600" fill="var(--ink)">low_salience</text>
+          <text x="58" y="743" font-family="var(--font-body)" font-size="9.5" font-style="italic" fill="var(--muted)">drops a low-salience word</text>
+          <text x="58" y="777" font-family="var(--font-mono)" font-size="11" fill="var(--ink)">Cisco Systems Inc → Cisco</text>
+        </g>
+
+        <!-- AWAITING EVIDENCE COLUMN -->
+        <g>
+          <rect x="340" y="55" width="260" height="92" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <text x="358" y="77" font-family="var(--font-mono)" font-size="12.5" font-weight="600" fill="var(--ink)">transliteration</text>
+          <text x="358" y="95" font-family="var(--font-body)" font-size="9.5" font-style="italic" fill="var(--muted)">full non-Latin script name rendering</text>
+          <text x="358" y="129" font-family="var(--font-body)" font-size="10.5" font-style="italic" fill="var(--muted)">gap: no non-Latin-script names yet</text>
+        </g>
+
+        <g>
+          <rect x="340" y="163" width="260" height="92" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <text x="358" y="185" font-family="var(--font-mono)" font-size="12.5" font-weight="600" fill="var(--ink)">abbreviation</text>
+          <text x="358" y="203" font-family="var(--font-body)" font-size="9.5" font-style="italic" fill="var(--muted)">business word abbreviated,</text>
+          <text x="358" y="215" font-family="var(--font-body)" font-size="9.5" font-style="italic" fill="var(--muted)">not the legal suffix</text>
+          <text x="358" y="237" font-family="var(--font-mono)" font-size="11" fill="var(--muted)">International → Intl</text>
+        </g>
+
+        <g>
+          <rect x="340" y="271" width="260" height="92" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <text x="358" y="293" font-family="var(--font-mono)" font-size="12.5" font-weight="600" fill="var(--ink)">nickname</text>
+          <text x="358" y="311" font-family="var(--font-body)" font-size="9.5" font-style="italic" fill="var(--muted)">person-name nickname substitution</text>
+          <text x="358" y="345" font-family="var(--font-mono)" font-size="11" fill="var(--muted)">Robert → Bob</text>
+        </g>
+
+        <g>
+          <rect x="340" y="379" width="260" height="92" rx="8" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <text x="358" y="401" font-family="var(--font-mono)" font-size="12.5" font-weight="600" fill="var(--ink)">generic_substitution</text>
+          <text x="358" y="419" font-family="var(--font-body)" font-size="9.5" font-style="italic" fill="var(--muted)">swaps one generic descriptor for another</text>
+          <text x="358" y="453" font-family="var(--font-mono)" font-size="11" fill="var(--muted)">Acme Holdings → Acme Systems</text>
+        </g>
+
+        <!-- PLANNED COLUMN -->
+        <g>
+          <rect x="640" y="55" width="260" height="92" rx="8" fill="var(--surface-2)" stroke="var(--line)" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <text x="658" y="77" font-family="var(--font-mono)" font-size="12.5" font-weight="600" fill="var(--ink)">ocr</text>
+          <text x="658" y="95" font-family="var(--font-body)" font-size="9.5" font-style="italic" fill="var(--muted)">same-script OCR character confusion</text>
+          <text x="658" y="129" font-family="var(--font-mono)" font-size="11" fill="var(--muted)">Holdings → Holdlngs</text>
+        </g>
+
+      </svg>
+    </div>
+    <figcaption>
+      Column position is the only thing that changes between families; the card shape
+      is identical, since every family is the same kind of thing (an eligible-position
+      substitution rule) regardless of how proven it is. <code>ocr</code> sits in
+      <code>Planned</code> rather than <code>Awaiting evidence</code> for a specific
+      reason: its correctness comes from glyph shape, not a real corpus, so nothing is
+      blocking it but the work of building it.
+    </figcaption>
+  </figure>
+
+</div>

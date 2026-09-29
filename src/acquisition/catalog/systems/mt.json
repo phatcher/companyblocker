@@ -1,0 +1,20 @@
+{
+  "code": "mt",
+  "display_name": "Malta",
+  "region": "eu",
+  "status": "research_required",
+  "access_mode": "search_portal",
+  "info_url": "https://mbr.mt/",
+  "notes": "No official bulk-download source is currently configured for this pipeline. Next step is to validate legal access terms and confirm an automatable bulk file or API endpoint before promotion to supported.",
+  "all_systems_target": false,
+  "research": {
+    "pass_date": "2026-06-15",
+    "basis": "BRIS registry table plus MBR portal review",
+    "priority": "P2",
+    "approach": "MBR explicitly mentions use of APIs and a digital first BAROS platform",
+    "next_action": "Request API product documentation and access terms for automated retrieval"
+  },
+  "resources": [],
+  "company_type_column": null,
+  "registry": "country"
+}

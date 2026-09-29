@@ -1,0 +1,20 @@
+{
+  "code": "it",
+  "display_name": "Italy",
+  "region": "eu",
+  "status": "research_required",
+  "access_mode": "search_portal",
+  "info_url": "https://italianbusinessregister.it",
+  "notes": "No official bulk-download source is currently configured for this pipeline. Next step is to validate legal access terms and confirm an automatable bulk file or API endpoint before promotion to supported.",
+  "all_systems_target": false,
+  "research": {
+    "pass_date": "2026-06-15",
+    "basis": "BRIS registry table plus portal review",
+    "priority": "P2",
+    "approach": "Official company reports and lists products are confirmed but machine API or bulk feed not explicit",
+    "next_action": "Contact InfoCamere channel for automated data access products and licensing"
+  },
+  "resources": [],
+  "company_type_column": null,
+  "registry": "country"
+}

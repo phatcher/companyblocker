@@ -1,0 +1,51 @@
+{
+  "profile_id": "en-robustness",
+  "description": "Baseline robustness battery for GB/IE company-register blocking.",
+  "default_seed": 42,
+  "exclusions": {
+    "exclude_families": ["transliteration"]
+  },
+  "scenarios": [
+    {
+      "scenario_id": "suffix-variant",
+      "description": "The same company recorded with another rendering of a legal form.",
+      "chain": [
+        {
+          "operator_id": "legal_suffix.variant_substitution",
+          "probability": 1.0,
+          "attempts": 1
+        }
+      ]
+    },
+    {
+      "scenario_id": "light-typo",
+      "description": "One or two mistyped keys.",
+      "chain": [
+        {
+          "operator_id": "typo.keyboard_substitution",
+          "probability": 0.4,
+          "attempts": 2
+        }
+      ]
+    },
+    {
+      "scenario_id": "suffix-then-typo",
+      "description": "A suffix rendered differently, then mistyped on top of that.",
+      "exclusions": {
+        "exclude_countries": ["fr"]
+      },
+      "chain": [
+        {
+          "operator_id": "legal_suffix.variant_substitution",
+          "probability": 1.0,
+          "attempts": 1
+        },
+        {
+          "operator_id": "typo.keyboard_substitution",
+          "probability": 0.3,
+          "attempts": 2
+        }
+      ]
+    }
+  ]
+}

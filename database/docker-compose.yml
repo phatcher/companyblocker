@@ -1,0 +1,16 @@
+services:
+  companyblocker-db:
+    image: pgvector/pgvector:pg18 # Uses Postgres 18 with pgvector pre-installed
+    container_name: companyblocker_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: company_user
+      POSTGRES_PASSWORD: company_password
+      POSTGRES_DB: company_blocker
+    ports:
+      - "5432:5432"
+    volumes:
+      - companyblocker_pgdata:/var/lib/postgresql
+
+volumes:
+  companyblocker_pgdata: # This creates a named volume managed entirely by Docker/WSL2

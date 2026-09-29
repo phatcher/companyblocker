@@ -1,0 +1,10 @@
+# Known offenders, one per line, for test_layer_path_literals.py. A new line here is a regression: fix the code
+# instead. Delete a line in the same commit that clears it; the test warns when one is stale.
+# The entries below are the floor, not a backlog: every one is descriptive prose, argparse help text or an error
+# message naming the pattern, never a path handed to the filesystem. There is nothing here to route through the
+# resolver, so an empty file is not the goal. See test_layer_path_literals.py's docstring.
+scripts/build_wikidata_jurisdiction_closure.py 1
+scripts/measure_gleif_jurisdiction_disparity.py 1
+scripts/measure_initialism_recall.py 1
+scripts/measure_prefix_suffix_divergence.py 1
+src/acquisition/tokenizer_ops.py 2

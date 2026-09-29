@@ -1,0 +1,34 @@
+{
+  "code": "fi",
+  "display_name": "Finland",
+  "region": "eu",
+  "status": "supported",
+  "access_mode": "api_open",
+  "info_url": "https://www.prh.fi/en/index.html",
+  "notes": "Finland is enabled through the PRH open-data API adapter. The adapter targets the avoindata.prh.fi company endpoint and writes JSONL snapshots for sharding.",
+  "all_systems_target": false,
+  "research": null,
+  "resources": [
+    {
+      "name": "prh_open_data_companies",
+      "url": "https://avoindata.prh.fi/ytj-api/v3/companies",
+      "file_format": "jsonl",
+      "file_name": null,
+      "extract": false,
+      "file_name_template": "fi-prh-companies-{snapshot_date}.jsonl",
+      "download_url_template": null,
+      "notes": "PRH open-data company API snapshot.",
+      "publication_frequency": "daily",
+      "snapshot_date_mode": "run_date",
+      "refresh_if_older_than_days": 1,
+      "adapter": "api_json_snapshot",
+      "request_headers": [],
+      "required_env_vars": [],
+      "auth_header_name": null,
+      "auth_header_env": null,
+      "auth_header_prefix": null
+    }
+  ],
+  "company_type_column": null,
+  "registry": "country"
+}

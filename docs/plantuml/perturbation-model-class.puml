@@ -1,0 +1,147 @@
+@startuml
+!include _style.puml
+
+title Perturbation: the profile model and what a run produces
+
+package "Authored: what you write in the profile JSON" {
+
+  class PerturbationProfile {
+    profile_id : str
+    description : str?
+    default_seed : int?
+  }
+
+  class Scenario {
+    scenario_id : str
+    weight : float = 1.0
+    description : str?
+  }
+
+  class ChainStep {
+    operator_id : str
+    probability : float = 1.0
+    attempts : int = 1
+  }
+
+  class ExclusionRules {
+    exclude_systems : tuple[str]
+    exclude_countries : tuple[str]
+    exclude_families : tuple[str]
+  }
+
+  PerturbationProfile "1" *-- "1..*" Scenario : scenarios\n(one is drawn per record,\nby weight)
+  Scenario "1" *-- "1..*" ChainStep : chain\n(ordered)
+  PerturbationProfile "1" *-- "1" ExclusionRules : exclusions
+  Scenario "1" o-- "0..1" ExclusionRules : exclusions\n(replaces the profile's\nentirely, never merges)
+}
+
+package "Registered: the operator contract" {
+
+  enum Family {
+    word_order
+    typo
+    diacritic_punct
+    legal_suffix
+    phonetic
+    transliteration
+    low_salience
+  }
+
+  class SitedOperator {
+    operator_id : str
+    family : Family
+    sites(name, country) : Site[*]
+    change(name, site, rng, country) : str
+  }
+
+  class SitedOperatorRegistry {
+    register(operator)
+    get(operator_id) : SitedOperator
+    list_operators() : str[*]
+  }
+
+  SitedOperatorRegistry "1" o-- "*" SitedOperator : sited_registry\n(importing operators\nregisters every family)
+  SitedOperator "*" --> "1" Family
+}
+
+package "Produced: one row per record" {
+
+  class SourceRecord {
+    local_id : str
+    name : str
+    system : str
+    country : str?
+  }
+
+  class PerturbedRecord {
+    local_id : str
+    name : str
+    original_name : str
+    scenario_id : str?
+    steps_that_landed_nothing : tuple[str]
+    changed : bool <<derived>>
+  }
+
+  class AppliedChange {
+    operator_id : str
+    family : Family
+  }
+
+  class Site {
+    start : int
+    end : int
+  }
+
+  PerturbedRecord "1" *-- "0..*" AppliedChange : changes\n(what actually landed)
+  AppliedChange "1" *-- "1" Site : site
+}
+
+SourceRecord "1" --> "1" PerturbedRecord : always exactly one,\nchanged or not
+PerturbationProfile ..> PerturbedRecord : perturb_records(records, profile, seed)
+ChainStep ..> SitedOperator : operator_id, resolved\nthrough the registry
+ExclusionRules ..> Family : exclude_families
+SitedOperator ..> Site : sites() finds them once;\nchange() acts at one
+AppliedChange ..> SitedOperator : names the operator\nthat landed it
+
+note as N3
+  **Operators own the change, the runner owns selection.**
+  `apply_operator(name, operator, rng, probability, attempts)`
+  calls `sites()` once, runs `min(attempts, sites)` trials that
+  each draw twice, whether it fires and which site, and calls
+  `change()` at every site that fired, right to left. A chosen
+  site takes every site overlapping it with it. No operator
+  knows how many changes were asked of it.
+end note
+
+N3 .. SitedOperator
+
+note as N1
+  **`scenario_id` is null** when no scenario applied to
+  the record, and `steps_that_landed_nothing` is then
+  empty. A chain that ran and landed nothing gives the
+  opposite pair: a scenario id, and the steps that found
+  nowhere to act.
+
+  **`attempts` is a ceiling, not a measurement.** What a
+  step achieved is the number of `AppliedChange` entries
+  it contributed, which is smaller whenever a name offers
+  fewer viable sites than the step asked for.
+end note
+
+N1 .. PerturbedRecord
+
+note as N2
+  **What survives to disk.** A materialized row keeps
+  `scenario_id`, `original_name` and `changed`, but not
+  `AppliedChange`: the operator, family and span are
+  dropped, so a row records which scenario ran and
+  whether the name moved, never what was done to the
+  string. The run's seed is carried in the manifest and
+  in every row's `system_uri` (e.g.
+  `perturbed://ie/en-lite/v1/42/123`), with `source_uri`
+  pointing back to the unperturbed row.
+end note
+
+N2 .. AppliedChange
+
+@enduml

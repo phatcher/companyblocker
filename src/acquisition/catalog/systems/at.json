@@ -1,0 +1,20 @@
+{
+  "code": "at",
+  "display_name": "Austria",
+  "region": "eu",
+  "status": "research_required",
+  "access_mode": "search_portal",
+  "info_url": "https://www.justiz.gv.at/service/datenbanken/firmenbuch/firmenbuchabfrage.2c9484852308c2a601240b693e1c0860.de.html",
+  "notes": "No official bulk-download source is currently configured for this pipeline. Next step is to validate legal access terms and confirm an automatable bulk file or API endpoint before promotion to supported.",
+  "all_systems_target": false,
+  "research": {
+    "pass_date": "2026-06-15",
+    "basis": "BRIS registry table plus Firmenbuch page review",
+    "priority": "P2",
+    "approach": "Firmenbuch online access appears account based and fee based via approved clearing providers",
+    "next_action": "Identify whether provider account supports automated extraction and capture technical interface details"
+  },
+  "resources": [],
+  "company_type_column": null,
+  "registry": "country"
+}

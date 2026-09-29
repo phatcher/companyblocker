@@ -1,0 +1,3 @@
+# Known offenders, one per line, for test_check_test_tier_markers.py. A new line here is a
+# regression: mark the test `@pytest.mark.integration` (or `performance`) instead of adding
+# one. Delete a line in the same commit that fixes it; the test warns when one is stale.

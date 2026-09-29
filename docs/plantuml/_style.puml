@@ -1,0 +1,131 @@
+/'
+  Shared PlantUML style for this repo's behavioural diagrams.
+  Palette and type come from _palette.puml, which tooling/sync_palette.py generates from
+  docs/diagrams/house-style.css; see docs/diagrams/README.md for which diagram family to
+  use when. Pull this in with !include _style.puml as the first line after @startuml,
+  and never set colours in an individual diagram.
+
+  Line comments (apostrophe) are deliberately avoided below: PlantUML mis-parses them
+  in an included file after a skinparam run, which fails every diagram that includes it.
+'/
+!include _palette.puml
+skinparam backgroundColor $bg
+skinparam shadowing false
+skinparam roundCorner 8
+skinparam defaultFontName "$font_body"
+skinparam defaultFontColor $ink
+skinparam defaultFontSize 13
+skinparam ArrowColor $accent
+skinparam ArrowFontColor $ink
+
+skinparam titleFontName "$font_display"
+skinparam titleFontSize 17
+skinparam titleFontColor $ink
+
+skinparam captionFontColor $muted
+skinparam footerFontColor $muted
+skinparam headerFontColor $muted
+
+skinparam legend {
+  BackgroundColor $surface_2
+  BorderColor $line
+  FontColor $ink
+  FontSize 12
+}
+
+skinparam noteBackgroundColor $surface_2
+skinparam noteBorderColor $line
+skinparam noteFontColor $muted
+skinparam noteFontSize 12
+
+skinparam sequence {
+  ArrowColor $accent
+  ArrowThickness 1
+  ArrowFontColor $ink
+  ArrowFontName "$font_body"
+  ArrowFontSize 12
+
+  ActorBackgroundColor $surface
+  ActorBorderColor $accent
+  ActorFontColor $ink
+  ActorFontName "$font_body"
+  ActorFontSize 13
+
+  ParticipantBackgroundColor $surface
+  ParticipantBorderColor $line
+  ParticipantFontColor $ink
+  ParticipantFontName "$font_mono"
+  ParticipantFontSize 12
+
+  LifeLineBackgroundColor $surface
+  LifeLineBorderColor $accent
+
+  BoxBackgroundColor $surface_2
+  BoxBorderColor $line
+  BoxFontColor $muted
+  BoxFontName "$font_display"
+
+  GroupBackgroundColor $surface_2
+  GroupBodyBackgroundColor $surface
+  GroupBorderColor $line
+  GroupFontColor $ink
+  GroupHeaderFontColor $muted
+  GroupHeaderFontSize 12
+  GroupHeaderBackgroundColor $surface_2
+
+  DividerBackgroundColor $surface_2
+  DividerBorderColor $line
+  DividerFontColor $ink
+
+  ReferenceBackgroundColor $surface_2
+  ReferenceBorderColor $line
+  ReferenceFontColor $ink
+
+  StereotypeFontColor $muted
+  DelayFontColor $muted
+  TitleFontColor $ink
+}
+
+skinparam databaseBackgroundColor $surface_2
+skinparam databaseBorderColor $line
+skinparam databaseFontColor $ink
+skinparam databaseFontName "$font_mono"
+skinparam databaseFontSize 12
+
+skinparam collectionsBackgroundColor $surface_2
+skinparam collectionsBorderColor $line
+skinparam collectionsFontColor $ink
+
+skinparam activity {
+  BackgroundColor $surface
+  BorderColor $line
+  FontColor $ink
+  FontName "$font_body"
+  FontSize 13
+
+  DiamondBackgroundColor $surface
+  DiamondBorderColor $amber
+  DiamondFontColor $ink
+  DiamondFontSize 12
+
+  ArrowColor $accent
+  ArrowFontColor $muted
+  ArrowFontSize 12
+
+  StartColor $accent
+  EndColor $ink
+  BarColor $accent
+}
+
+skinparam partition {
+  BackgroundColor $surface_2
+  BorderColor $line
+  FontColor $muted
+  FontName "$font_display"
+}
+
+skinparam swimlane {
+  BorderColor $line
+  TitleFontColor $ink
+  TitleFontName "$font_display"
+}

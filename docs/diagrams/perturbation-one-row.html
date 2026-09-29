@@ -1,0 +1,324 @@
+<title>One Record, One Row</title>
+<link rel="stylesheet" href="house-style.css">
+<div class="page">
+
+  <header class="intro">
+    <div class="eyebrow">company_perturbation · generating a corpus</div>
+    <h1>One Record, One Row</h1>
+    <p class="dek">
+      A profile does not fan out. Each source record opens its own generator from the run's
+      seed and its own id, <strong>draws one scenario</strong> from those that apply to it, runs
+      that scenario's chain, and <strong>always emits exactly one row</strong>, changed or not.
+      A corpus of 817,761 records is 817,761 rows, joinable one-to-one against its source.
+      Every value below is real output of <code>en-robustness</code> v1.
+    </p>
+  </header>
+
+  <div class="legend">
+    <div class="legend-item"><span class="swatch line accent"></span><span>solid blue: the draw, and what it hands on</span></div>
+    <div class="legend-item"><span class="swatch line amber dashed"></span><span>dashed amber: a value carried through unchanged, <b>original_name</b></span></div>
+  </div>
+
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-head">
+        <span class="step-eyebrow">The draw</span>
+        <h2 class="step-title">One record, one generator, one scenario, one row</h2>
+      </div>
+      <figure>
+        <div class="diagram-wrap">
+          <svg id="record-draw" viewBox="0 0 1180 490" width="1180" height="490" role="img"
+               aria-label="A source record, gb-2 Barclays Bank PLC, opens its own generator from the run seed 42 and its local id. One draw, 0.424 of a total weight of 3, lands on the light-typo scenario out of the three applicable ones; suffix-variant and suffix-then-typo are not drawn. The light-typo chain runs and one row is emitted: name Barvlays Bank OLC, original_name Barclays Bank PLC carried unchanged, scenario_id light-typo, changed true.">
+            <defs>
+              <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <polygon points="0,0 10,5 0,10" fill="var(--accent)"/>
+              </marker>
+            </defs>
+
+            <!-- column groups -->
+            <text x="170" y="26" text-anchor="middle" font-family="var(--font-mono)" font-size="12" letter-spacing="0.14em" fill="var(--muted)">SOURCE</text>
+            <line x1="40" y1="38" x2="300" y2="38" stroke="var(--line)" stroke-width="1.5"/>
+            <text x="560" y="26" text-anchor="middle" font-family="var(--font-mono)" font-size="12" letter-spacing="0.14em" fill="var(--muted)">DRAW</text>
+            <line x1="360" y1="38" x2="760" y2="38" stroke="var(--line)" stroke-width="1.5"/>
+            <text x="980" y="26" text-anchor="middle" font-family="var(--font-mono)" font-size="12" letter-spacing="0.14em" fill="var(--muted)">ONE ROW</text>
+            <line x1="820" y1="38" x2="1140" y2="38" stroke="var(--line)" stroke-width="1.5"/>
+            <text x="330" y="34" text-anchor="middle" font-family="var(--font-mono)" font-size="16" fill="var(--muted)">›</text>
+            <text x="790" y="34" text-anchor="middle" font-family="var(--font-mono)" font-size="16" fill="var(--muted)">›</text>
+
+            <!-- SOURCE RECORD: the anchor, accent 2px -->
+            <g>
+              <rect x="40" y="56" width="260" height="196" rx="10" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/>
+              <text x="58" y="81" font-family="var(--font-mono)" font-size="11" letter-spacing="0.06em" fill="var(--muted)">SOURCE RECORD</text>
+              <line x1="58" y1="93" x2="282" y2="93" stroke="var(--line)"/>
+              <text x="58" y="117" font-family="var(--font-mono)" font-size="10.5" fill="var(--muted)">local_id</text>
+              <text x="58" y="136" font-family="var(--font-mono)" font-size="12.5" font-weight="600" fill="var(--ink)">gb-2</text>
+              <text x="58" y="168" font-family="var(--font-body)" font-size="10.5" fill="var(--muted)">name</text>
+              <text x="58" y="188" font-family="var(--font-body)" font-size="13.5" fill="var(--ink)">Barclays Bank PLC</text>
+              <text x="58" y="218" font-family="var(--font-mono)" font-size="10.5" fill="var(--muted)">system · country</text>
+              <text x="58" y="237" font-family="var(--font-mono)" font-size="12.5" fill="var(--ink)">gb · gb</text>
+            </g>
+
+            <!-- run seed + local_id open this record's generator -->
+            <path d="M 170 252 V 296" fill="none" stroke="var(--accent)" stroke-width="1.75" marker-end="url(#ar)"/>
+            <text x="180" y="280" font-family="var(--font-mono)" font-size="10.5" fill="var(--accent)">seed 42 + local_id</text>
+
+            <!-- GENERATOR -->
+            <rect x="40" y="300" width="260" height="90" rx="10" fill="var(--surface-2)" stroke="var(--line)"/>
+            <text x="58" y="322" font-family="var(--font-mono)" font-size="10.5" letter-spacing="0.06em" fill="var(--muted)">THIS RECORD'S GENERATOR</text>
+            <text x="58" y="343" font-family="var(--font-mono)" font-size="11.5" fill="var(--ink)">Random(blake2b(42, "gb-2"))</text>
+            <text x="58" y="374" font-family="var(--font-mono)" font-size="10.5" fill="var(--accent)">one draw · 0.424 × 3.0 = 1.27</text>
+
+            <!-- the one draw: generator -> drawn scenario -->
+            <path d="M 300 345 H 330 V 283 H 356" fill="none" stroke="var(--accent)" stroke-width="1.75" marker-end="url(#ar)"/>
+
+            <!-- SCENARIOS: applicable to this record -->
+            <text x="360" y="132" font-family="var(--font-mono)" font-size="10.5" letter-spacing="0.06em" fill="var(--muted)">APPLICABLE SCENARIOS · total weight 3.0</text>
+
+            <g opacity="0.55">
+              <rect x="360" y="142" width="400" height="86" rx="10" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+              <text x="378" y="165" font-family="var(--font-body)" font-size="14" font-weight="600" fill="var(--ink)">suffix-variant</text>
+              <text x="742" y="165" text-anchor="end" font-family="var(--font-mono)" font-size="10.5" fill="var(--muted)">weight 1.0 · not drawn</text>
+              <text x="378" y="188" font-family="var(--font-mono)" font-size="11.5" fill="var(--ink)">legal_suffix.variant_substitution</text>
+              <text x="378" y="206" font-family="var(--font-mono)" font-size="10.5" fill="var(--muted)">probability 1.0 · attempts 1</text>
+            </g>
+
+            <g>
+              <rect x="360" y="240" width="400" height="86" rx="10" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+              <text x="378" y="263" font-family="var(--font-body)" font-size="14" font-weight="600" fill="var(--ink)">light-typo</text>
+              <text x="742" y="263" text-anchor="end" font-family="var(--font-mono)" font-size="10.5" fill="var(--accent)">weight 1.0 · drawn</text>
+              <text x="378" y="286" font-family="var(--font-mono)" font-size="11.5" fill="var(--ink)">typo.keyboard_substitution</text>
+              <text x="378" y="304" font-family="var(--font-mono)" font-size="10.5" fill="var(--muted)">probability 0.4 · attempts 2</text>
+            </g>
+
+            <g opacity="0.55">
+              <rect x="360" y="338" width="400" height="104" rx="10" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+              <text x="378" y="361" font-family="var(--font-body)" font-size="14" font-weight="600" fill="var(--ink)">suffix-then-typo</text>
+              <text x="742" y="361" text-anchor="end" font-family="var(--font-mono)" font-size="10.5" fill="var(--muted)">weight 1.0 · not drawn</text>
+              <text x="378" y="384" font-family="var(--font-mono)" font-size="11.5" fill="var(--ink)">legal_suffix.variant_substitution</text>
+              <text x="378" y="402" font-family="var(--font-mono)" font-size="11.5" fill="var(--ink)">typo.keyboard_substitution</text>
+              <text x="378" y="420" font-family="var(--font-mono)" font-size="10.5" fill="var(--muted)">p 1.0 · 1 attempt, then p 0.3 · 2 attempts · excludes country fr</text>
+            </g>
+
+            <!-- drawn scenario -> emitted row -->
+            <path d="M 760 283 H 816" fill="none" stroke="var(--accent)" stroke-width="1.75" marker-end="url(#ar)"/>
+            <text x="788" y="274" text-anchor="middle" font-family="var(--font-mono)" font-size="10" fill="var(--accent)">run chain</text>
+
+            <!-- EMITTED ROW -->
+            <g>
+              <rect x="820" y="150" width="320" height="232" rx="10" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+              <text x="838" y="175" font-family="var(--font-mono)" font-size="11" letter-spacing="0.06em" fill="var(--muted)">PERTURBED RECORD</text>
+              <line x1="838" y1="187" x2="1122" y2="187" stroke="var(--line)"/>
+              <text x="838" y="211" font-family="var(--font-mono)" font-size="10.5" fill="var(--muted)">local_id</text>
+              <text x="838" y="230" font-family="var(--font-mono)" font-size="12.5" font-weight="600" fill="var(--ink)">gb-2</text>
+              <text x="838" y="258" font-family="var(--font-body)" font-size="10.5" fill="var(--muted)">name</text>
+              <text x="838" y="278" font-family="var(--font-body)" font-size="13.5" font-weight="600" fill="var(--ink)">Barvlays Bank OLC</text>
+              <text x="838" y="304" font-family="var(--font-mono)" font-size="10.5" fill="var(--muted)">original_name</text>
+              <text x="838" y="323" font-family="var(--font-body)" font-size="13" fill="var(--amber)">Barclays Bank PLC</text>
+              <text x="838" y="349" font-family="var(--font-mono)" font-size="10.5" fill="var(--muted)">scenario_id · changed</text>
+              <text x="838" y="368" font-family="var(--font-mono)" font-size="12.5" fill="var(--ink)">light-typo · true</text>
+            </g>
+
+            <!-- original_name carried through unchanged: amber dashed, same value both ends -->
+            <path d="M 40 188 H 22 V 468 H 1000 V 384" fill="none" stroke="var(--amber)" stroke-width="1.75" stroke-dasharray="5 4"/>
+            <text x="585" y="462" text-anchor="middle" font-family="var(--font-mono)" font-size="10.5" fill="var(--amber)">original_name: the source name, unchanged</text>
+          </svg>
+        </div>
+        <figcaption>
+          Three scenarios apply to this record, so the draw is one value from its own generator
+          against a total weight of 3.0. The other two scenarios are not run: a record has one
+          history, not one per kind of corruption. A different seed re-derives the generator and
+          can land the same record on a different scenario, which is what the table below shows.
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="step">
+      <div class="step-head">
+        <span class="step-eyebrow">Inside the drawn chain</span>
+        <h2 class="step-title">Sites found once, two trials, two draws each, applied right to left</h2>
+      </div>
+      <figure>
+        <div class="diagram-wrap">
+          <svg id="chain-trials" viewBox="0 0 1180 330" width="1180" height="330" role="img"
+               aria-label="The name Barclays Bank PLC laid out as 17 character cells. typo.keyboard_substitution declares 15 sites, one per letter; the two spaces are not sites. Trials equal the smaller of attempts 2 and sites 15, so 2. Trial one draws 0.091, under probability 0.4 so it fires, and 0.246, which picks site 3, the c. Trial two draws 0.253, fires, and 0.813, which picks P at offset 14 from the 14 sites remaining. Applied right to left, P becomes O and then c becomes v, giving Barvlays Bank OLC.">
+            <!-- input row -->
+            <text x="40" y="34" font-family="var(--font-mono)" font-size="10.5" letter-spacing="0.06em" fill="var(--muted)">INPUT · 15 SITES FOUND ONCE (ONE PER LETTER; A SPACE IS NOT A SITE)</text>
+
+            <g font-family="var(--font-mono)" font-size="15" fill="var(--ink)" text-anchor="middle">
+              <rect x="40" y="46" width="40" height="40" rx="6" fill="var(--surface)" stroke="var(--line)"/><text x="60" y="72">B</text>
+              <rect x="84" y="46" width="40" height="40" rx="6" fill="var(--surface)" stroke="var(--line)"/><text x="104" y="72">a</text>
+              <rect x="128" y="46" width="40" height="40" rx="6" fill="var(--surface)" stroke="var(--line)"/><text x="148" y="72">r</text>
+              <rect x="172" y="46" width="40" height="40" rx="6" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/><text x="192" y="72" font-weight="600">c</text>
+              <rect x="216" y="46" width="40" height="40" rx="6" fill="var(--surface)" stroke="var(--line)"/><text x="236" y="72">l</text>
+              <rect x="260" y="46" width="40" height="40" rx="6" fill="var(--surface)" stroke="var(--line)"/><text x="280" y="72">a</text>
+              <rect x="304" y="46" width="40" height="40" rx="6" fill="var(--surface)" stroke="var(--line)"/><text x="324" y="72">y</text>
+              <rect x="348" y="46" width="40" height="40" rx="6" fill="var(--surface)" stroke="var(--line)"/><text x="368" y="72">s</text>
+              <rect x="392" y="46" width="40" height="40" rx="6" fill="var(--surface-2)" stroke="var(--line)" stroke-dasharray="3 3"/>
+              <rect x="436" y="46" width="40" height="40" rx="6" fill="var(--surface)" stroke="var(--line)"/><text x="456" y="72">B</text>
+              <rect x="480" y="46" width="40" height="40" rx="6" fill="var(--surface)" stroke="var(--line)"/><text x="500" y="72">a</text>
+              <rect x="524" y="46" width="40" height="40" rx="6" fill="var(--surface)" stroke="var(--line)"/><text x="544" y="72">n</text>
+              <rect x="568" y="46" width="40" height="40" rx="6" fill="var(--surface)" stroke="var(--line)"/><text x="588" y="72">k</text>
+              <rect x="612" y="46" width="40" height="40" rx="6" fill="var(--surface-2)" stroke="var(--line)" stroke-dasharray="3 3"/>
+              <rect x="656" y="46" width="40" height="40" rx="6" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/><text x="676" y="72" font-weight="600">P</text>
+              <rect x="700" y="46" width="40" height="40" rx="6" fill="var(--surface)" stroke="var(--line)"/><text x="720" y="72">L</text>
+              <rect x="744" y="46" width="40" height="40" rx="6" fill="var(--surface)" stroke="var(--line)"/><text x="764" y="72">C</text>
+            </g>
+            <g font-family="var(--font-mono)" font-size="9.5" fill="var(--muted)" text-anchor="middle">
+              <text x="60" y="100">0</text><text x="192" y="100" fill="var(--accent)" font-weight="600">3</text><text x="456" y="100">9</text><text x="676" y="100" fill="var(--accent)" font-weight="600">14</text><text x="764" y="100">16</text>
+            </g>
+
+            <!-- trial ledger -->
+            <rect x="820" y="46" width="320" height="54" rx="8" fill="var(--surface-2)" stroke="var(--line)"/>
+            <text x="838" y="67" font-family="var(--font-mono)" font-size="10.5" letter-spacing="0.06em" fill="var(--muted)">TRIALS = min(attempts, sites)</text>
+            <text x="838" y="88" font-family="var(--font-mono)" font-size="12.5" fill="var(--ink)">min(2, 15) = 2</text>
+
+            <g font-family="var(--font-mono)" font-size="12" fill="var(--ink)">
+              <text x="40" y="146" font-size="10.5" letter-spacing="0.06em" fill="var(--muted)">TRIAL 1</text>
+              <text x="140" y="146">fires? 0.091 &lt; 0.4 → yes</text>
+              <text x="440" y="146">which? 0.246 × 15 sites → site 3 (c)</text>
+              <text x="820" y="146" fill="var(--muted)">14 sites remain</text>
+
+              <text x="40" y="180" font-size="10.5" letter-spacing="0.06em" fill="var(--muted)">TRIAL 2</text>
+              <text x="140" y="180">fires? 0.253 &lt; 0.4 → yes</text>
+              <text x="440" y="180">which? 0.813 × 14 remaining → offset 14 (P)</text>
+              <text x="820" y="180" fill="var(--muted)">two draws spent either way</text>
+
+              <text x="40" y="214" font-size="10.5" letter-spacing="0.06em" fill="var(--muted)">APPLY</text>
+              <text x="140" y="214">right to left: P → O at 14, then c → v at 3, so the earlier offset is still valid</text>
+            </g>
+
+            <!-- output row -->
+            <text x="40" y="254" font-family="var(--font-mono)" font-size="10.5" letter-spacing="0.06em" fill="var(--muted)">OUTPUT · changed = true · AppliedChange × 2</text>
+            <g font-family="var(--font-mono)" font-size="15" fill="var(--ink)" text-anchor="middle">
+              <rect x="40" y="266" width="40" height="40" rx="6" fill="var(--surface)" stroke="var(--line)"/><text x="60" y="292">B</text>
+              <rect x="84" y="266" width="40" height="40" rx="6" fill="var(--surface)" stroke="var(--line)"/><text x="104" y="292">a</text>
+              <rect x="128" y="266" width="40" height="40" rx="6" fill="var(--surface)" stroke="var(--line)"/><text x="148" y="292">r</text>
+              <rect x="172" y="266" width="40" height="40" rx="6" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/><text x="192" y="292" font-weight="600">v</text>
+              <rect x="216" y="266" width="40" height="40" rx="6" fill="var(--surface)" stroke="var(--line)"/><text x="236" y="292">l</text>
+              <rect x="260" y="266" width="40" height="40" rx="6" fill="var(--surface)" stroke="var(--line)"/><text x="280" y="292">a</text>
+              <rect x="304" y="266" width="40" height="40" rx="6" fill="var(--surface)" stroke="var(--line)"/><text x="324" y="292">y</text>
+              <rect x="348" y="266" width="40" height="40" rx="6" fill="var(--surface)" stroke="var(--line)"/><text x="368" y="292">s</text>
+              <rect x="392" y="266" width="40" height="40" rx="6" fill="var(--surface-2)" stroke="var(--line)" stroke-dasharray="3 3"/>
+              <rect x="436" y="266" width="40" height="40" rx="6" fill="var(--surface)" stroke="var(--line)"/><text x="456" y="292">B</text>
+              <rect x="480" y="266" width="40" height="40" rx="6" fill="var(--surface)" stroke="var(--line)"/><text x="500" y="292">a</text>
+              <rect x="524" y="266" width="40" height="40" rx="6" fill="var(--surface)" stroke="var(--line)"/><text x="544" y="292">n</text>
+              <rect x="568" y="266" width="40" height="40" rx="6" fill="var(--surface)" stroke="var(--line)"/><text x="588" y="292">k</text>
+              <rect x="612" y="266" width="40" height="40" rx="6" fill="var(--surface-2)" stroke="var(--line)" stroke-dasharray="3 3"/>
+              <rect x="656" y="266" width="40" height="40" rx="6" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/><text x="676" y="292" font-weight="600">O</text>
+              <rect x="700" y="266" width="40" height="40" rx="6" fill="var(--surface)" stroke="var(--line)"/><text x="720" y="292">L</text>
+              <rect x="744" y="266" width="40" height="40" rx="6" fill="var(--surface)" stroke="var(--line)"/><text x="764" y="292">C</text>
+            </g>
+          </svg>
+        </div>
+        <figcaption>
+          The operator only declared where it could act and how to change one place; how many
+          places, whether each fires and which one are the runner's, identical for every family.
+          <code>attempts</code> is a ceiling capped by the name's own sites, not a count reached,
+          and a trial that does not fire still spends its two draws, so the generator is in the
+          same place afterwards however many changes landed. Had both trials missed, the row would
+          still be emitted, unchanged, with the step listed in <code>steps_that_landed_nothing</code>.
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="step">
+      <div class="step-head">
+        <span class="step-eyebrow">The same profile, two seeds</span>
+        <h2 class="step-title">Six records through <code>en-robustness</code> v1</h2>
+      </div>
+      <figure>
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr>
+              <th></th><th></th>
+              <th class="col-group" colspan="3">seed 42 (the profile's default_seed)</th>
+              <th class="col-group" colspan="3">seed 7</th>
+            </tr>
+            <tr>
+              <th>local_id</th><th>source name</th>
+              <th>scenario</th><th>output</th><th>landed nothing</th>
+              <th>scenario</th><th>output</th><th>landed nothing</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="mono">gb-1</td><td class="mono">Acme Holdings Limited</td>
+              <td><span class="tag">light-typo</span></td><td class="mono muted">Acme Holdings Limited</td><td class="mono">typo.keyboard_substitution</td>
+              <td><span class="tag">light-typo</span></td><td class="mono">Acme Holxings Lumited</td><td></td></tr>
+            <tr><td class="mono">gb-2</td><td class="mono">Barclays Bank PLC</td>
+              <td><span class="tag">light-typo</span></td><td class="mono">Barvlays Bank OLC</td><td></td>
+              <td><span class="tag">suffix-then-typo</span></td><td class="mono">Barclags Bani LTD</td><td></td></tr>
+            <tr><td class="mono">gb-3</td><td class="mono">Tesco Stores Limited</td>
+              <td><span class="tag">suffix-variant</span></td><td class="mono">Tesco Stores Cyf</td><td></td>
+              <td><span class="tag">suffix-then-typo</span></td><td class="mono">Tesco Stores Publiclimitedcompany</td><td class="mono">typo.keyboard_substitution</td></tr>
+            <tr><td class="mono">gb-4</td><td class="mono">Rolls-Royce Motor Cars Ltd</td>
+              <td><span class="tag">suffix-then-typo</span></td><td class="mono">Rolls-Royce Motor Cars Cwmnicyfyngedigcyhoeddus</td><td class="mono">typo.keyboard_substitution</td>
+              <td><span class="tag">suffix-then-typo</span></td><td class="mono">Rolls-Royce Motor Cars Limited</td><td class="mono">typo.keyboard_substitution</td></tr>
+            <tr><td class="mono">gb-5</td><td class="mono">Innocent Drinks Ltd</td>
+              <td><span class="tag">suffix-then-typo</span></td><td class="mono">Innocent Drinks Cyfyngedig</td><td class="mono">typo.keyboard_substitution</td>
+              <td><span class="tag">suffix-variant</span></td><td class="mono">Innocent Drinks Limited</td><td></td></tr>
+            <tr><td class="mono">ie-1</td><td class="mono">MAGUIRE GROUP LIMITED</td>
+              <td><span class="tag">suffix-then-typo</span></td><td class="mono">MAGUIRE GROUP PUBLICLIMIREDCOMPANY</td><td></td>
+              <td><span class="tag">suffix-variant</span></td><td class="mono">MAGUIRE GROUP PUBLICLIMITEDCOMPANY</td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <figcaption>
+        Six records in, six rows out under each seed. The seed is the caller's: 42 came from the
+        profile's <code>default_seed</code> through <code>validation.perturbation_profiles.resolve_seed</code>,
+        and 7 is an independent sample of the same corpus in which four of the six records drew a
+        different scenario. Output from <code>perturb_records</code> with each record's
+        <code>country</code> set to its system.
+      </figcaption>
+      </figure>
+    </div>
+
+  </div>
+
+  <div class="asides">
+    <div class="aside">
+      <span class="aside-label">A row is always emitted</span>
+      <p>
+        <code>gb-1</code> at seed 42 drew <code>light-typo</code>, both trials at 0.4 missed, and
+        the row was written with its name unchanged, <code>changed</code> false and the step in
+        <code>steps_that_landed_nothing</code>. That is a different row from one no scenario
+        applied to, which carries a null <code>scenario_id</code> and an empty list. Skipping
+        either would break the one-to-one join with the source.
+      </p>
+    </div>
+    <div class="aside">
+      <span class="aside-label">Chain order is the author's</span>
+      <p>
+        <code>suffix-then-typo</code> substitutes the suffix first, while it is still there to
+        recognise, and only then mistypes. Nothing enforces that order: the reverse simply finds
+        no suffix and lands nothing, and the only signal is the step's name in
+        <code>steps_that_landed_nothing</code>. At 0.3 over two attempts the typo step landed
+        nothing on four of the six <code>suffix-then-typo</code> draws above, which is what the
+        numbers predict, not a fault.
+      </p>
+    </div>
+    <div class="aside">
+      <span class="aside-label">Case is folded for lookups</span>
+      <p>
+        Every table in the package is lowercase and Ireland's register holds
+        <code>MAGUIRE GROUP LIMITED</code>. The lookup folds case and the replacement carries the
+        original's capitalisation back, so the suffix was recognised and came back upper. Before
+        that fold, the typo step fired on 378 rows of a real 817,761-row Irish run instead of
+        roughly 64% of them, and looked like a quiet operator rather than a broken one.
+      </p>
+    </div>
+    <div class="aside open">
+      <span class="aside-label">What the rules hold, the output holds</span>
+      <p>
+        <code>legal_suffix.variant_substitution</code> picks any spelling the country's rules
+        record for the matched suffix's own canonical form, so a GB <code>Limited</code> can come
+        back as the Welsh <code>Cyf</code> or <code>Cyfyngedig</code>, and some entries carry no
+        spaces, as in <code>Publiclimitedcompany</code>. The operator reproduces the rules data
+        as it stands; whether every such spelling belongs in a robustness corpus is a question
+        for the rules, not the runner.
+      </p>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,51 @@
+{
+  "code": "fr",
+  "display_name": "France",
+  "region": "eu",
+  "status": "live",
+  "access_mode": "bulk_download",
+  "info_url": "https://www.data.gouv.fr/en/datasets/base-sirene-des-entreprises-et-de-leurs-etablissements-siren-siret/",
+  "notes": "Official monthly bulk stock is available from INSEE via data.gouv.fr. The current implementation targets the monthly StockUniteLegale parquet file for basic legal-unit company information. The related StockUniteLegaleHistorique file can be used for temporal analyses such as legal-unit name changes, but it is intentionally not part of the current processing pipeline.",
+  "all_systems_target": true,
+  "research": null,
+  "resources": [
+    {
+      "name": "stock_unite_legale_parquet",
+      "url": "https://www.data.gouv.fr/api/1/datasets/r/350182c9-148a-46e0-8389-76c2ec1374a3",
+      "file_format": "parquet",
+      "file_name": "stockunitelegale.parquet",
+      "extract": false,
+      "file_name_template": null,
+      "download_url_template": null,
+      "notes": "Monthly legal-unit stock file in parquet format.",
+      "publication_frequency": "monthly",
+      "snapshot_date_mode": "month_start",
+      "refresh_if_older_than_days": 90,
+      "adapter": "direct_download",
+      "request_headers": [],
+      "required_env_vars": [],
+      "auth_header_name": null,
+      "auth_header_env": null,
+      "auth_header_prefix": null
+    }
+  ],
+  "system_uri_identifier_candidates": [
+    "siren"
+  ],
+  "system_field_candidates": {
+    "name": ["denominationUniteLegale", "nomUniteLegale"],
+    "company_number": ["siren"],
+    "company_type": ["categorieJuridiqueUniteLegale"],
+    "current_status": ["etatAdministratifUniteLegale"],
+    "incorporation_date": ["dateCreationUniteLegale"],
+    "dissolution_date": ["dateCessationUniteLegale"]
+  },
+  "company_type_column": "categorieJuridiqueUniteLegale",
+  "name_variant_type_map": {
+    "ACRONYM": "acronym",
+    "USUAL_NAME": "usual_name",
+    "USAGE_NAME": "usage_name",
+    "PSEUDONYM": "pseudonym"
+  },
+  "registry": "country"
+}

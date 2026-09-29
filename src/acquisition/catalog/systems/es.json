@@ -1,0 +1,20 @@
+{
+  "code": "es",
+  "display_name": "Spain",
+  "region": "eu",
+  "status": "research_required",
+  "access_mode": "search_portal",
+  "info_url": "https://www.registradores.org",
+  "notes": "Spain is listed in the EU e-Justice BRIS directory with a national register portal, but a public national bulk mercantile-register company dataset is not yet configured for this pipeline. Manual source selection is required before implementation.",
+  "all_systems_target": false,
+  "research": {
+    "pass_date": "2026-06-15",
+    "basis": "BRIS registry table and national portal",
+    "priority": "P1",
+    "approach": "No new machine access evidence captured in this pass from existing source set",
+    "next_action": "Continue targeted discovery for official mercantile API or bulk source"
+  },
+  "resources": [],
+  "company_type_column": null,
+  "registry": "country"
+}

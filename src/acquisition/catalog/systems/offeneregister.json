@@ -1,0 +1,58 @@
+{
+  "code": "offeneregister",
+  "display_name": "OffeneRegister",
+  "region": "eu",
+  "status": "live",
+  "access_mode": "bulk_download",
+  "info_url": "https://offeneregister.de",
+  "notes": "OffeneRegister publishes a bulk line-delimited JSON export and a SQLite snapshot for German company data. The pipeline shards and canonicalizes the JSONL snapshot for OpenCorporates-aligned downstream processing.",
+  "all_systems_target": true,
+  "personal_owner_markers": [
+    "INHABER",
+    "INHABERIN",
+    "INH"
+  ],
+  "resources": [
+    {
+      "name": "offeneregister_de_companies",
+      "url": "https://daten.offeneregister.de/de_companies_ocdata.jsonl.bz2",
+      "file_format": "jsonl",
+      "file_name": "de_companies_ocdata.jsonl.bz2",
+      "extract": false,
+      "file_name_template": null,
+      "download_url_template": null,
+      "notes": "Line-delimited JSON bulk export from OffeneRegister; compare fields against the OpenCorporates company schema and flag any non-1:1 differences.",
+      "publication_frequency": "unknown",
+      "snapshot_date_mode": "run_date",
+      "refresh_if_older_than_days": null,
+      "adapter": "direct_download",
+      "request_headers": [],
+      "required_env_vars": [],
+      "auth_header_name": null,
+      "auth_header_env": null,
+      "auth_header_prefix": null
+    }
+  ],
+  "system_uri_identifier_candidates": [
+    "company_number"
+  ],
+  "system_field_candidates": {
+    "company_type": ["register_art"],
+    "registered_address_in_full": ["registered_address"]
+  },
+  "canonical_derived_fields": {
+    "company_number": {
+      "type": "concat",
+      "parts": ["register_art", "register_number"],
+      "separator": " "
+    }
+  },
+  "canonical_input_columns": [
+    "register_number"
+  ],
+  "company_type_column": null,
+  "name_variant_type_map": {
+    "PREVIOUS_NAME": "previous"
+  },
+  "registry": "system"
+}

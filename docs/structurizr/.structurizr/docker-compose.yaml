@@ -1,0 +1,18 @@
+services:
+  architecture:
+    image: structurizr/lite:latest
+    container_name: structurizr-workspace
+    ports:
+      # Structurizr Lite UI is exposed on 8080 inside the container.
+      - "8090:8080"
+    volumes:
+      # Mount docs/ rather than docs/structurizr/, so the workspace can reach the prose
+      # documentation and decision records that live alongside it: workspace.dsl pulls in
+      # ../architecture and ../decisions, which have to be inside the mount to be readable.
+      - ../..:/usr/local/structurizr
+    environment:
+      # The workspace itself is a subdirectory of the mount now, so point Lite at it.
+      - STRUCTURIZR_WORKSPACE_PATH=structurizr
+    # For Linux set STRUCTURIZR_USER=1000:1000.
+    user: "${STRUCTURIZR_USER:-}"
+    restart: unless-stopped

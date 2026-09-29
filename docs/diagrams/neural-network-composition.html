@@ -1,0 +1,834 @@
+<title>Neural Network Composition</title>
+<link rel="stylesheet" href="house-style.css">
+<div class="page">
+<header class="intro"><h1>Neural network composition</h1><p class="dek">Every network below is built from the same part: a layer that takes a weighted sum of its inputs and applies a nonlinearity. What differs is how the layers are wired and which weights are reused. Each is drawn in the same three columns, so they compare down the page.</p></header>
+<div class="legend"><div class="legend-item"><span class="swatch box anchor"></span><span>the input</span></div><div class="legend-item"><span class="swatch line accent"></span><span>data between stages</span></div><div class="legend-item"><span class="swatch line"></span><span>a step inside a stage</span></div><div class="legend-item"><span class="swatch line amber dashed"></span><span>the same weights, reused</span></div></div>
+<div class="tablewrap"><table class="keyed"><thead><tr><th>Network</th><th>Input</th><th>Reuses weights across</th><th>Carries forward</th><th>Typical use</th></tr></thead><tbody>
+<tr><td>Feed-forward</td><td>fixed-length vector</td><td>nothing</td><td>nothing</td><td>tabular features, the head on top of any other network</td></tr>
+<tr><td>CNN</td><td>grid: image, or text as a 1-D grid</td><td>positions in the grid</td><td>nothing beyond the kernel's window</td><td>images, local patterns in text</td></tr>
+<tr><td>RNN</td><td>sequence of any length</td><td>time steps</td><td>a hidden state, short-range in practice</td><td>text, time series</td></tr>
+<tr><td>LSTM</td><td>sequence of any length</td><td>time steps</td><td>a hidden state plus a gated cell state</td><td>longer text, speech, time series</td></tr>
+<tr><td>Transformer</td><td>sequence of tokens, all at once</td><td>token positions</td><td>nothing: every token sees the whole input</td><td>translation, generation, the base of BERT</td></tr>
+<tr><td>BERT, Sentence-BERT</td><td>subword tokens: one or two segments (BERT), one sentence (Sentence-BERT)</td><td>token positions</td><td>nothing</td><td>pretrained text vectors, sentence similarity</td></tr>
+<tr><td>Siamese</td><td>a pair of inputs</td><td>the two inputs</td><td>whatever its subnetwork does</td><td>similarity, matching, deduplication</td></tr>
+</tbody></table></div>
+<section class="section"><div class="section-label">Stacked layers</div><div class="steps"><div class="step"><div class="step-head"><h2 class="step-title">Feed-forward (MLP)</h2></div><p>Dense layers in a stack. Every unit in one layer connects to every unit in the next, and data moves one way, input to output.</p><figure><div class="diagram-wrap"><svg class="diagram" id="nn-mlp" viewBox="0 0 1200 236" role="img" aria-label="Feed-forward network: a feature vector passes through dense layers, each a weighted sum and a nonlinearity, to class scores">
+<defs><marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><polygon points="0,0 10,5 0,10" style="fill:var(--accent)"/></marker><marker id="m1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><polygon points="0,0 10,5 0,10" style="fill:var(--muted)"/></marker></defs>
+<text x="20" y="22" class="lab">INPUT</text>
+<line x1="20" y1="32" x2="280" y2="32" style="stroke:var(--line);stroke-width:1"/>
+<text x="310" y="22" class="lab">LAYERS</text>
+<line x1="310" y1="32" x2="870" y2="32" style="stroke:var(--line);stroke-width:1"/>
+<text x="920" y="22" class="lab">OUTPUT</text>
+<line x1="920" y1="32" x2="1180" y2="32" style="stroke:var(--line);stroke-width:1"/>
+<rect x="20" y="46" width="260" height="144" rx="9" style="fill:var(--surface);stroke:var(--accent);stroke-width:2"/>
+<rect x="310" y="46" width="560" height="144" rx="9" style="fill:var(--surface);stroke:var(--line)"/>
+<rect x="920" y="46" width="260" height="144" rx="9" style="fill:var(--surface);stroke:var(--line)"/>
+<path d="M280 118 H308" style="stroke:var(--accent);stroke-width:2;fill:none" marker-end="url(#a1)"/>
+<text x="34" y="68" class="sm">feature vector x</text>
+<rect x="34" y="96" width="9" height="22" style="fill:var(--accent);fill-opacity:0.35;stroke:var(--line)"/>
+<rect x="44" y="96" width="9" height="22" style="fill:var(--accent);fill-opacity:0.80;stroke:var(--line)"/>
+<rect x="54" y="96" width="9" height="22" style="fill:var(--accent);fill-opacity:0.20;stroke:var(--line)"/>
+<rect x="64" y="96" width="9" height="22" style="fill:var(--accent);fill-opacity:0.60;stroke:var(--line)"/>
+<rect x="74" y="96" width="9" height="22" style="fill:var(--accent);fill-opacity:0.45;stroke:var(--line)"/>
+<rect x="84" y="96" width="9" height="22" style="fill:var(--accent);fill-opacity:0.90;stroke:var(--line)"/>
+<rect x="94" y="96" width="9" height="22" style="fill:var(--accent);fill-opacity:0.30;stroke:var(--line)"/>
+<rect x="104" y="96" width="9" height="22" style="fill:var(--accent);fill-opacity:0.55;stroke:var(--line)"/>
+<rect x="114" y="96" width="9" height="22" style="fill:var(--accent);fill-opacity:0.25;stroke:var(--line)"/>
+<rect x="124" y="96" width="9" height="22" style="fill:var(--accent);fill-opacity:0.70;stroke:var(--line)"/>
+<rect x="134" y="96" width="9" height="22" style="fill:var(--accent);fill-opacity:0.40;stroke:var(--line)"/>
+<rect x="144" y="96" width="9" height="22" style="fill:var(--accent);fill-opacity:0.65;stroke:var(--line)"/>
+<text x="34" y="150" class="sm">one number per feature,</text>
+<text x="34" y="166" class="sm">fixed length</text>
+<line x1="358" y1="85.0" x2="462" y2="74.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="358" y1="85.0" x2="462" y2="96.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="358" y1="85.0" x2="462" y2="118.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="358" y1="85.0" x2="462" y2="140.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="358" y1="85.0" x2="462" y2="162.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="358" y1="107.0" x2="462" y2="74.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="358" y1="107.0" x2="462" y2="96.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="358" y1="107.0" x2="462" y2="118.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="358" y1="107.0" x2="462" y2="140.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="358" y1="107.0" x2="462" y2="162.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="358" y1="129.0" x2="462" y2="74.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="358" y1="129.0" x2="462" y2="96.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="358" y1="129.0" x2="462" y2="118.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="358" y1="129.0" x2="462" y2="140.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="358" y1="129.0" x2="462" y2="162.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="358" y1="151.0" x2="462" y2="74.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="358" y1="151.0" x2="462" y2="96.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="358" y1="151.0" x2="462" y2="118.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="358" y1="151.0" x2="462" y2="140.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="358" y1="151.0" x2="462" y2="162.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="478" y1="74.0" x2="582" y2="74.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="478" y1="74.0" x2="582" y2="96.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="478" y1="74.0" x2="582" y2="118.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="478" y1="74.0" x2="582" y2="140.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="478" y1="74.0" x2="582" y2="162.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="478" y1="96.0" x2="582" y2="74.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="478" y1="96.0" x2="582" y2="96.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="478" y1="96.0" x2="582" y2="118.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="478" y1="96.0" x2="582" y2="140.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="478" y1="96.0" x2="582" y2="162.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="478" y1="118.0" x2="582" y2="74.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="478" y1="118.0" x2="582" y2="96.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="478" y1="118.0" x2="582" y2="118.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="478" y1="118.0" x2="582" y2="140.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="478" y1="118.0" x2="582" y2="162.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="478" y1="140.0" x2="582" y2="74.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="478" y1="140.0" x2="582" y2="96.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="478" y1="140.0" x2="582" y2="118.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="478" y1="140.0" x2="582" y2="140.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="478" y1="140.0" x2="582" y2="162.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="478" y1="162.0" x2="582" y2="74.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="478" y1="162.0" x2="582" y2="96.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="478" y1="162.0" x2="582" y2="118.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="478" y1="162.0" x2="582" y2="140.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="478" y1="162.0" x2="582" y2="162.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="598" y1="74.0" x2="702" y2="96.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="598" y1="74.0" x2="702" y2="118.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="598" y1="74.0" x2="702" y2="140.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="598" y1="96.0" x2="702" y2="96.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="598" y1="96.0" x2="702" y2="118.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="598" y1="96.0" x2="702" y2="140.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="598" y1="118.0" x2="702" y2="96.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="598" y1="118.0" x2="702" y2="118.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="598" y1="118.0" x2="702" y2="140.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="598" y1="140.0" x2="702" y2="96.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="598" y1="140.0" x2="702" y2="118.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="598" y1="140.0" x2="702" y2="140.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="598" y1="162.0" x2="702" y2="96.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="598" y1="162.0" x2="702" y2="118.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<line x1="598" y1="162.0" x2="702" y2="140.0" style="stroke:var(--muted);stroke-width:0.6"/>
+<circle cx="350" cy="85.0" r="8" style="fill:var(--surface-2);stroke:var(--line)"/>
+<circle cx="350" cy="107.0" r="8" style="fill:var(--surface-2);stroke:var(--line)"/>
+<circle cx="350" cy="129.0" r="8" style="fill:var(--surface-2);stroke:var(--line)"/>
+<circle cx="350" cy="151.0" r="8" style="fill:var(--surface-2);stroke:var(--line)"/>
+<circle cx="470" cy="74.0" r="8" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<circle cx="470" cy="96.0" r="8" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<circle cx="470" cy="118.0" r="8" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<circle cx="470" cy="140.0" r="8" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<circle cx="470" cy="162.0" r="8" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<circle cx="590" cy="74.0" r="8" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<circle cx="590" cy="96.0" r="8" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<circle cx="590" cy="118.0" r="8" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<circle cx="590" cy="140.0" r="8" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<circle cx="590" cy="162.0" r="8" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<circle cx="710" cy="96.0" r="8" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<circle cx="710" cy="118.0" r="8" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<circle cx="710" cy="140.0" r="8" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<text x="350" y="184" class="tok" style="text-anchor:middle;fill:var(--ink)">x</text>
+<text x="470" y="184" class="tok" style="text-anchor:middle;fill:var(--ink)">h₁</text>
+<text x="590" y="184" class="tok" style="text-anchor:middle;fill:var(--ink)">h₂</text>
+<text x="710" y="184" class="tok" style="text-anchor:middle;fill:var(--ink)">z</text>
+<text x="470" y="60" class="sm" style="text-anchor:middle;fill:var(--muted)">dense · ReLU</text>
+<text x="590" y="60" class="sm" style="text-anchor:middle;fill:var(--muted)">dense · ReLU</text>
+<text x="710" y="60" class="sm" style="text-anchor:middle;fill:var(--muted)">dense</text>
+<text x="752" y="72" class="sm">each layer</text>
+<rect x="752" y="80" width="108" height="30" rx="6" style="fill:var(--surface-2);stroke:var(--line)"/>
+<text x="806.0" y="99.0" text-anchor="middle" style="font-size:12px;fill:var(--ink)">h = σ(Wx + b)</text>
+<path d="M718 118 H895 V118 H918" style="stroke:var(--accent);stroke-width:2;fill:none" marker-end="url(#a1)"/>
+<text x="934" y="68" class="sm">class scores</text>
+<rect x="934" y="84" width="97" height="16" rx="3" style="fill:var(--accent);fill-opacity:0.74;stroke:var(--line)"/>
+<text x="1064" y="97" class="tok">class a 0.81</text>
+<rect x="934" y="108" width="17" height="16" rx="3" style="fill:var(--accent);fill-opacity:0.33;stroke:var(--line)"/>
+<text x="1064" y="121" class="tok">class b 0.14</text>
+<rect x="934" y="132" width="6" height="16" rx="3" style="fill:var(--accent);fill-opacity:0.28;stroke:var(--line)"/>
+<text x="1064" y="145" class="tok">class c 0.05</text>
+<text x="934" y="176" class="tok" style="fill:var(--muted)">softmax → prediction</text>
+<text x="310" y="222" class="lab" style="fill:var(--amber)">SHARES</text>
+<text x="372" y="222" class="sm" style="fill:var(--ink)">nothing: every connection has its own weight, so parameters grow with input width × layer width</text>
+</svg></div></figure><p>Inside one unit. Each input is multiplied by its own weight, the products are summed with a bias, and the sum goes through a nonlinearity. A layer is many of these units side by side.</p><figure><div class="diagram-wrap"><svg class="diagram" id="nn-fnn" viewBox="0 0 1200 236" role="img" aria-label="One feed-forward unit: four inputs are multiplied by their weights, summed with a bias, and passed through a ReLU to give one activation">
+<defs><marker id="afnn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><polygon points="0,0 10,5 0,10" style="fill:var(--accent)"/></marker><marker id="mfnn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><polygon points="0,0 10,5 0,10" style="fill:var(--muted)"/></marker></defs>
+<text x="20" y="22" class="lab">INPUT</text>
+<line x1="20" y1="32" x2="280" y2="32" style="stroke:var(--line);stroke-width:1"/>
+<text x="310" y="22" class="lab">ONE UNIT</text>
+<line x1="310" y1="32" x2="870" y2="32" style="stroke:var(--line);stroke-width:1"/>
+<text x="920" y="22" class="lab">OUTPUT</text>
+<line x1="920" y1="32" x2="1180" y2="32" style="stroke:var(--line);stroke-width:1"/>
+<rect x="20" y="46" width="260" height="144" rx="9" style="fill:var(--surface);stroke:var(--accent);stroke-width:2"/>
+<rect x="310" y="46" width="560" height="144" rx="9" style="fill:var(--surface);stroke:var(--line)"/>
+<rect x="920" y="46" width="260" height="144" rx="9" style="fill:var(--surface);stroke:var(--line)"/>
+<path d="M280 118 H308" style="stroke:var(--accent);stroke-width:2;fill:none" marker-end="url(#afnn)"/>
+<text x="34" y="68" class="sm">inputs x, from the layer below</text>
+<text x="34" y="97" class="tok" style="fill:var(--ink)">x₁ = 0.8</text>
+<rect x="120" y="86" width="80" height="14" rx="3" style="fill:var(--accent);fill-opacity:0.80;stroke:var(--line)"/>
+<text x="34" y="121" class="tok" style="fill:var(--ink)">x₂ = 0.2</text>
+<rect x="120" y="110" width="20" height="14" rx="3" style="fill:var(--accent);fill-opacity:0.20;stroke:var(--line)"/>
+<text x="34" y="145" class="tok" style="fill:var(--ink)">x₃ = 0.5</text>
+<rect x="120" y="134" width="50" height="14" rx="3" style="fill:var(--accent);fill-opacity:0.50;stroke:var(--line)"/>
+<text x="34" y="169" class="tok" style="fill:var(--ink)">x₄ = 0.9</text>
+<rect x="120" y="158" width="90" height="14" rx="3" style="fill:var(--accent);fill-opacity:0.90;stroke:var(--line)"/>
+<line x1="358" y1="66" x2="518" y2="116" style="stroke:var(--muted);stroke-width:1.2"/>
+<line x1="358" y1="98" x2="518" y2="116" style="stroke:var(--muted);stroke-width:1.2"/>
+<line x1="358" y1="134" x2="518" y2="116" style="stroke:var(--muted);stroke-width:1.2"/>
+<line x1="358" y1="166" x2="518" y2="116" style="stroke:var(--muted);stroke-width:1.2"/>
+<circle cx="350" cy="66" r="8" style="fill:var(--surface-2);stroke:var(--line)"/>
+<circle cx="350" cy="98" r="8" style="fill:var(--surface-2);stroke:var(--line)"/>
+<circle cx="350" cy="134" r="8" style="fill:var(--surface-2);stroke:var(--line)"/>
+<circle cx="350" cy="166" r="8" style="fill:var(--surface-2);stroke:var(--line)"/>
+<text x="336" y="70" class="tok" style="text-anchor:end;fill:var(--ink)">x₁</text>
+<text x="336" y="102" class="tok" style="text-anchor:end;fill:var(--ink)">x₂</text>
+<text x="336" y="138" class="tok" style="text-anchor:end;fill:var(--ink)">x₃</text>
+<text x="336" y="170" class="tok" style="text-anchor:end;fill:var(--ink)">x₄</text>
+<text x="414" y="78" class="tok" style="text-anchor:middle;fill:var(--amber);paint-order:stroke;stroke:var(--surface);stroke-width:5px;stroke-linejoin:round">w₁ 0.4</text>
+<text x="414" y="100" class="tok" style="text-anchor:middle;fill:var(--amber);paint-order:stroke;stroke:var(--surface);stroke-width:5px;stroke-linejoin:round">w₂ −0.7</text>
+<text x="414" y="124" class="tok" style="text-anchor:middle;fill:var(--amber);paint-order:stroke;stroke:var(--surface);stroke-width:5px;stroke-linejoin:round">w₃ 0.3</text>
+<text x="414" y="146" class="tok" style="text-anchor:middle;fill:var(--amber);paint-order:stroke;stroke:var(--surface);stroke-width:5px;stroke-linejoin:round">w₄ 0.5</text>
+<circle cx="540" cy="64" r="10" style="fill:var(--surface-2);stroke:var(--line)"/>
+<text x="540" y="68" class="tok" style="text-anchor:middle;fill:var(--ink)">b</text>
+<text x="556" y="68" class="sm">bias 0.1</text>
+<path d="M540 74 V92" style="stroke:var(--muted);stroke-width:1.2;fill:none" marker-end="url(#mfnn)"/>
+<circle cx="540" cy="116" r="22" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<text x="540" y="122" text-anchor="middle" style="font-size:18px;fill:var(--ink)">Σ</text>
+<text x="540" y="158" class="sm" style="text-anchor:middle">weighted sum</text>
+<text x="540" y="176" class="tok" style="text-anchor:middle;fill:var(--ink)">z = 0.88</text>
+<path d="M562 116 H608" style="stroke:var(--muted);stroke-width:1.2;fill:none" marker-end="url(#mfnn)"/>
+<rect x="612" y="84" width="116" height="64" rx="6" style="fill:var(--surface-2);stroke:var(--line)"/>
+<line x1="624" y1="132" x2="716" y2="132" style="stroke:var(--line);stroke-width:1"/>
+<polyline points="624,132 670,132 712,94" style="stroke:var(--accent);stroke-width:2;fill:none"/>
+<text x="670" y="158" class="sm" style="text-anchor:middle">activation · ReLU</text>
+<text x="670" y="176" class="tok" style="text-anchor:middle;fill:var(--ink)">a = max(0, z)</text>
+<text x="752" y="72" class="sm">the unit</text>
+<rect x="752" y="80" width="108" height="30" rx="6" style="fill:var(--surface-2);stroke:var(--line)"/>
+<text x="806.0" y="99.0" text-anchor="middle" style="font-size:12px;fill:var(--ink)">a = σ(w·x + b)</text>
+<path d="M728 116 H918" style="stroke:var(--accent);stroke-width:2;fill:none" marker-end="url(#afnn)"/>
+<text x="934" y="68" class="sm">activation a</text>
+<rect x="934" y="84" width="88" height="16" rx="3" style="fill:var(--accent);fill-opacity:0.88;stroke:var(--line)"/>
+<text x="1034" y="97" class="tok">a = 0.88</text>
+<text x="934" y="124" class="sm" style="fill:var(--ink)">one number per unit,</text>
+<text x="934" y="142" class="sm">sent to every unit</text>
+<text x="934" y="160" class="sm">in the next layer</text>
+<text x="310" y="222" class="lab" style="fill:var(--amber)">LEARNS</text>
+<text x="372" y="222" class="sm" style="fill:var(--ink)">the weights w₁…w₄ and the bias b, by backpropagation; a layer's units together are the W and b in h = σ(Wx + b)</text>
+</svg></div></figure></div></div></section>
+<section class="section"><div class="section-label">Reuse across space</div><div class="steps"><div class="step"><div class="step-head"><h2 class="step-title">Convolutional (CNN)</h2></div><p>A small kernel slides over the grid and writes one feature map per kernel. Pooling shrinks the maps, stacked convolutions see wider areas, and a dense head scores the result.</p><figure><div class="diagram-wrap"><svg class="diagram" id="nn-cnn" viewBox="0 0 1200 236" role="img" aria-label="Convolutional network: a small kernel slides over the image to make feature maps, pooling shrinks them, and dense layers score the classes">
+<defs><marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><polygon points="0,0 10,5 0,10" style="fill:var(--accent)"/></marker><marker id="m2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><polygon points="0,0 10,5 0,10" style="fill:var(--muted)"/></marker></defs>
+<text x="20" y="22" class="lab">INPUT</text>
+<line x1="20" y1="32" x2="280" y2="32" style="stroke:var(--line);stroke-width:1"/>
+<text x="310" y="22" class="lab">LAYERS</text>
+<line x1="310" y1="32" x2="870" y2="32" style="stroke:var(--line);stroke-width:1"/>
+<text x="920" y="22" class="lab">OUTPUT</text>
+<line x1="920" y1="32" x2="1180" y2="32" style="stroke:var(--line);stroke-width:1"/>
+<rect x="20" y="46" width="260" height="144" rx="9" style="fill:var(--surface);stroke:var(--accent);stroke-width:2"/>
+<rect x="310" y="46" width="560" height="144" rx="9" style="fill:var(--surface);stroke:var(--line)"/>
+<rect x="920" y="46" width="260" height="144" rx="9" style="fill:var(--surface);stroke:var(--line)"/>
+<path d="M280 118 H308" style="stroke:var(--accent);stroke-width:2;fill:none" marker-end="url(#a2)"/>
+<rect x="34" y="70" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="46" y="70" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="58" y="70" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="70" y="70" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="82" y="70" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="94" y="70" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="106" y="70" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="118" y="70" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="34" y="82" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="46" y="82" width="12" height="12" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<rect x="58" y="82" width="12" height="12" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<rect x="70" y="82" width="12" height="12" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<rect x="82" y="82" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="94" y="82" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="106" y="82" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="118" y="82" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="34" y="94" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="46" y="94" width="12" height="12" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<rect x="58" y="94" width="12" height="12" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<rect x="70" y="94" width="12" height="12" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<rect x="82" y="94" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="94" y="94" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="106" y="94" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="118" y="94" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="34" y="106" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="46" y="106" width="12" height="12" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<rect x="58" y="106" width="12" height="12" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<rect x="70" y="106" width="12" height="12" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<rect x="82" y="106" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="94" y="106" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="106" y="106" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="118" y="106" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="34" y="118" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="46" y="118" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="58" y="118" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="70" y="118" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="82" y="118" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="94" y="118" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="106" y="118" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="118" y="118" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="34" y="130" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="46" y="130" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="58" y="130" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="70" y="130" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="82" y="130" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="94" y="130" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="106" y="130" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="118" y="130" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="34" y="142" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="46" y="142" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="58" y="142" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="70" y="142" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="82" y="142" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="94" y="142" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="106" y="142" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="118" y="142" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="34" y="154" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="46" y="154" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="58" y="154" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="70" y="154" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="82" y="154" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="94" y="154" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="106" y="154" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="118" y="154" width="12" height="12" style="fill:var(--surface-2);stroke:var(--line)"/>
+<text x="146" y="84" class="sm" style="fill:var(--ink)">image, H × W × C</text>
+<text x="146" y="102" class="sm">a grid of pixels</text>
+<text x="146" y="140" class="sm" style="fill:var(--ink)">3 × 3 window</text>
+<text x="146" y="158" class="sm">slides over it</text>
+<rect x="330" y="100" width="12" height="12" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<rect x="342" y="100" width="12" height="12" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<rect x="354" y="100" width="12" height="12" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<rect x="330" y="112" width="12" height="12" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<rect x="342" y="112" width="12" height="12" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<rect x="354" y="112" width="12" height="12" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<rect x="330" y="124" width="12" height="12" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<rect x="342" y="124" width="12" height="12" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<rect x="354" y="124" width="12" height="12" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<text x="330" y="90" class="sm">kernel W</text>
+<rect x="400" y="78" width="64" height="64" rx="2" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="406" y="84" width="64" height="64" rx="2" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="412" y="90" width="64" height="64" rx="2" style="fill:var(--surface-2);stroke:var(--line)"/>
+<text x="400" y="68" class="sm">conv · ReLU</text>
+<rect x="420" y="98" width="8" height="8" style="fill:var(--accent);stroke:var(--accent)"/>
+<rect x="452" y="130" width="8" height="8" style="fill:var(--accent);stroke:var(--accent)"/>
+<path d="M366 106 L420 102" style="stroke:var(--amber);stroke-width:1.5;stroke-dasharray:5 4;fill:none"/>
+<path d="M366 130 L452 134" style="stroke:var(--amber);stroke-width:1.5;stroke-dasharray:5 4;fill:none"/>
+<text x="330" y="180" class="sm" style="fill:var(--amber)">same kernel at every position</text>
+<path d="M482 122 H508" style="stroke:var(--muted);stroke-width:1.5;fill:none" marker-end="url(#m2)"/>
+<rect x="512" y="98" width="36" height="36" rx="2" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="518" y="104" width="36" height="36" rx="2" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="524" y="110" width="36" height="36" rx="2" style="fill:var(--surface-2);stroke:var(--line)"/>
+<text x="512" y="88" class="sm">max-pool</text>
+<path d="M566 128 H592" style="stroke:var(--muted);stroke-width:1.5;fill:none" marker-end="url(#m2)"/>
+<rect x="596" y="104" width="24" height="24" rx="2" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="601" y="109" width="24" height="24" rx="2" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="606" y="114" width="24" height="24" rx="2" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="611" y="119" width="24" height="24" rx="2" style="fill:var(--surface-2);stroke:var(--line)"/>
+<rect x="616" y="124" width="24" height="24" rx="2" style="fill:var(--surface-2);stroke:var(--line)"/>
+<text x="596" y="94" class="sm">conv, pool × N</text>
+<path d="M644 128 H688" style="stroke:var(--muted);stroke-width:1.5;fill:none" marker-end="url(#m2)"/>
+<rect x="694" y="78" width="12" height="8" style="fill:var(--accent);fill-opacity:0.35;stroke:var(--line)"/>
+<rect x="694" y="87" width="12" height="8" style="fill:var(--accent);fill-opacity:0.80;stroke:var(--line)"/>
+<rect x="694" y="96" width="12" height="8" style="fill:var(--accent);fill-opacity:0.20;stroke:var(--line)"/>
+<rect x="694" y="105" width="12" height="8" style="fill:var(--accent);fill-opacity:0.60;stroke:var(--line)"/>
+<rect x="694" y="114" width="12" height="8" style="fill:var(--accent);fill-opacity:0.45;stroke:var(--line)"/>
+<rect x="694" y="123" width="12" height="8" style="fill:var(--accent);fill-opacity:0.90;stroke:var(--line)"/>
+<rect x="694" y="132" width="12" height="8" style="fill:var(--accent);fill-opacity:0.30;stroke:var(--line)"/>
+<rect x="694" y="141" width="12" height="8" style="fill:var(--accent);fill-opacity:0.55;stroke:var(--line)"/>
+<rect x="694" y="150" width="12" height="8" style="fill:var(--accent);fill-opacity:0.25;stroke:var(--line)"/>
+<rect x="694" y="159" width="12" height="8" style="fill:var(--accent);fill-opacity:0.70;stroke:var(--line)"/>
+<text x="690" y="68" class="sm">flatten</text>
+<path d="M710 122 H738" style="stroke:var(--muted);stroke-width:1.5;fill:none" marker-end="url(#m2)"/>
+<rect x="742" y="104" width="108" height="36" rx="6" style="fill:var(--surface-2);stroke:var(--line)"/>
+<text x="796.0" y="126.0" text-anchor="middle" style="font-size:12px;fill:var(--ink)">dense layers</text>
+<path d="M850 122 H895 V118 H918" style="stroke:var(--accent);stroke-width:2;fill:none" marker-end="url(#a2)"/>
+<text x="934" y="68" class="sm">class scores</text>
+<rect x="934" y="84" width="97" height="16" rx="3" style="fill:var(--accent);fill-opacity:0.74;stroke:var(--line)"/>
+<text x="1064" y="97" class="tok">class a 0.81</text>
+<rect x="934" y="108" width="17" height="16" rx="3" style="fill:var(--accent);fill-opacity:0.33;stroke:var(--line)"/>
+<text x="1064" y="121" class="tok">class b 0.14</text>
+<rect x="934" y="132" width="6" height="16" rx="3" style="fill:var(--accent);fill-opacity:0.28;stroke:var(--line)"/>
+<text x="1064" y="145" class="tok">class c 0.05</text>
+<text x="934" y="176" class="tok" style="fill:var(--muted)">softmax → prediction</text>
+<text x="310" y="222" class="lab" style="fill:var(--amber)">SHARES</text>
+<text x="372" y="222" class="sm" style="fill:var(--ink)">one small kernel across every position, so a pattern is found wherever it appears in the grid</text>
+</svg></div></figure></div></div></section>
+<section class="section"><div class="section-label">Reuse across time</div><div class="steps"><div class="step"><div class="step-head"><h2 class="step-title">Recurrent (RNN)</h2></div><p>One cell reads the sequence a step at a time, taking the step's input and its own previous state. The three boxes are one cell drawn once per step; a per-step output can also be read from each hₜ.</p><figure><div class="diagram-wrap"><svg class="diagram" id="nn-rnn" viewBox="0 0 1200 236" role="img" aria-label="Recurrent network: one cell is applied at each step, taking the step's input and the previous hidden state, and the last hidden state summarises the sequence">
+<defs><marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><polygon points="0,0 10,5 0,10" style="fill:var(--accent)"/></marker><marker id="m3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><polygon points="0,0 10,5 0,10" style="fill:var(--muted)"/></marker></defs>
+<text x="20" y="22" class="lab">INPUT</text>
+<line x1="20" y1="32" x2="280" y2="32" style="stroke:var(--line);stroke-width:1"/>
+<text x="310" y="22" class="lab">LAYERS, UNROLLED OVER TIME</text>
+<line x1="310" y1="32" x2="870" y2="32" style="stroke:var(--line);stroke-width:1"/>
+<text x="920" y="22" class="lab">OUTPUT</text>
+<line x1="920" y1="32" x2="1180" y2="32" style="stroke:var(--line);stroke-width:1"/>
+<rect x="20" y="46" width="260" height="144" rx="9" style="fill:var(--surface);stroke:var(--accent);stroke-width:2"/>
+<rect x="310" y="46" width="560" height="144" rx="9" style="fill:var(--surface);stroke:var(--line)"/>
+<rect x="920" y="46" width="260" height="144" rx="9" style="fill:var(--surface);stroke:var(--line)"/>
+<path d="M280 118 H308" style="stroke:var(--accent);stroke-width:2;fill:none" marker-end="url(#a3)"/>
+<text x="34" y="68" class="sm">a sequence of any length</text>
+<rect x="34" y="96" width="41" height="24" rx="5" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<text x="40" y="113" class="tok">acme</text>
+<rect x="81.2" y="96" width="63" height="24" rx="5" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<text x="87.2" y="113" class="tok">systems</text>
+<rect x="150.3" y="96" width="34" height="24" rx="5" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<text x="156.3" y="113" class="tok">plc</text>
+<text x="34" y="150" class="sm">one vector per step,</text>
+<text x="34" y="166" class="sm">read in order</text>
+<rect x="370" y="86" width="80" height="40" rx="6" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<text x="410.0" y="110.0" text-anchor="middle" style="font-size:12px;fill:var(--ink)">cell</text>
+<rect x="510" y="86" width="80" height="40" rx="6" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<text x="550.0" y="110.0" text-anchor="middle" style="font-size:12px;fill:var(--ink)">cell</text>
+<rect x="650" y="86" width="80" height="40" rx="6" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<text x="690.0" y="110.0" text-anchor="middle" style="font-size:12px;fill:var(--ink)">cell</text>
+<path d="M410 86 V66 H690 V86" style="stroke:var(--amber);stroke-width:1.5;stroke-dasharray:5 4;fill:none"/>
+<path d="M550 86 V66" style="stroke:var(--amber);stroke-width:1.5;stroke-dasharray:5 4;fill:none"/>
+<text x="560" y="60" class="sm" style="fill:var(--amber)">same W, U at every step</text>
+<text x="330" y="111" class="tok">h₀</text>
+<path d="M350 106 H368" style="stroke:var(--muted);stroke-width:1.5;fill:none" marker-end="url(#m3)"/>
+<path d="M450 106 H508" style="stroke:var(--muted);stroke-width:1.5;fill:none" marker-end="url(#m3)"/>
+<text x="470" y="100" class="tok">h₁</text>
+<path d="M590 106 H648" style="stroke:var(--muted);stroke-width:1.5;fill:none" marker-end="url(#m3)"/>
+<text x="610" y="100" class="tok">h₂</text>
+<rect x="390" y="146" width="41" height="24" rx="5" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<text x="396" y="163" class="tok">acme</text>
+<path d="M410 146 V128" style="stroke:var(--muted);stroke-width:1.2;fill:none" marker-end="url(#m3)"/>
+<rect x="519" y="146" width="62" height="24" rx="5" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<text x="525" y="163" class="tok">systems</text>
+<path d="M550 146 V128" style="stroke:var(--muted);stroke-width:1.2;fill:none" marker-end="url(#m3)"/>
+<rect x="673" y="146" width="34" height="24" rx="5" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<text x="679" y="163" class="tok">plc</text>
+<path d="M690 146 V128" style="stroke:var(--muted);stroke-width:1.2;fill:none" marker-end="url(#m3)"/>
+<text x="738" y="100" class="tok">h₃</text>
+<path d="M730 106 H895 V118 H918" style="stroke:var(--accent);stroke-width:2;fill:none" marker-end="url(#a3)"/>
+<text x="330" y="184" class="tok" style="fill:var(--muted)">hₜ = tanh(W·xₜ + U·hₜ₋₁ + b)</text>
+<rect x="934" y="64" width="11" height="26" style="fill:var(--accent);fill-opacity:0.35;stroke:var(--line)"/>
+<rect x="946" y="64" width="11" height="26" style="fill:var(--accent);fill-opacity:0.80;stroke:var(--line)"/>
+<rect x="958" y="64" width="11" height="26" style="fill:var(--accent);fill-opacity:0.20;stroke:var(--line)"/>
+<rect x="970" y="64" width="11" height="26" style="fill:var(--accent);fill-opacity:0.60;stroke:var(--line)"/>
+<rect x="982" y="64" width="11" height="26" style="fill:var(--accent);fill-opacity:0.45;stroke:var(--line)"/>
+<rect x="994" y="64" width="11" height="26" style="fill:var(--accent);fill-opacity:0.90;stroke:var(--line)"/>
+<rect x="1006" y="64" width="11" height="26" style="fill:var(--accent);fill-opacity:0.30;stroke:var(--line)"/>
+<rect x="1018" y="64" width="11" height="26" style="fill:var(--accent);fill-opacity:0.55;stroke:var(--line)"/>
+<rect x="1030" y="64" width="11" height="26" style="fill:var(--accent);fill-opacity:0.25;stroke:var(--line)"/>
+<rect x="1042" y="64" width="11" height="26" style="fill:var(--accent);fill-opacity:0.70;stroke:var(--line)"/>
+<rect x="1054" y="64" width="11" height="26" style="fill:var(--accent);fill-opacity:0.40;stroke:var(--line)"/>
+<rect x="1066" y="64" width="11" height="26" style="fill:var(--accent);fill-opacity:0.65;stroke:var(--line)"/>
+<rect x="1078" y="64" width="11" height="26" style="fill:var(--accent);fill-opacity:0.50;stroke:var(--line)"/>
+<rect x="1090" y="64" width="11" height="26" style="fill:var(--accent);fill-opacity:0.85;stroke:var(--line)"/>
+<rect x="1102" y="64" width="11" height="26" style="fill:var(--accent);fill-opacity:0.30;stroke:var(--line)"/>
+<rect x="1114" y="64" width="11" height="26" style="fill:var(--accent);fill-opacity:0.60;stroke:var(--line)"/>
+<text x="934" y="124" class="sm" style="fill:var(--ink)">last hidden state h₃,</text>
+<text x="934" y="142" class="sm">a summary of the sequence</text>
+<text x="934" y="176" class="tok" style="fill:var(--muted)">→ classifier, or compare</text>
+<text x="310" y="222" class="lab" style="fill:var(--amber)">SHARES</text>
+<text x="372" y="222" class="sm" style="fill:var(--ink)">one cell applied at every step, so a sequence of any length runs through the same weights</text>
+</svg></div></figure></div><div class="step"><div class="step-head"><h2 class="step-title">LSTM</h2></div><p>An RNN whose cell carries a second state, cₜ, changed only by a forget-gate multiply and an input-gate add. That path lets information and gradients survive over many more steps than a plain RNN.</p><figure><div class="diagram-wrap"><svg class="diagram" id="nn-lstm" viewBox="0 0 1200 252" role="img" aria-label="LSTM cell: forget, input, candidate and output gates read the previous output and the step's input; the cell state is scaled by the forget gate and added to, and the output is read from it">
+<defs><marker id="a4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><polygon points="0,0 10,5 0,10" style="fill:var(--accent)"/></marker><marker id="m4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><polygon points="0,0 10,5 0,10" style="fill:var(--muted)"/></marker></defs>
+<text x="20" y="22" class="lab">INPUT, AT STEP t</text>
+<line x1="20" y1="32" x2="280" y2="32" style="stroke:var(--line);stroke-width:1"/>
+<text x="310" y="22" class="lab">ONE CELL</text>
+<line x1="310" y1="32" x2="870" y2="32" style="stroke:var(--line);stroke-width:1"/>
+<text x="920" y="22" class="lab">OUTPUT, AT STEP t</text>
+<line x1="920" y1="32" x2="1180" y2="32" style="stroke:var(--line);stroke-width:1"/>
+<rect x="20" y="46" width="260" height="160" rx="9" style="fill:var(--surface);stroke:var(--accent);stroke-width:2"/>
+<rect x="310" y="46" width="560" height="160" rx="9" style="fill:var(--surface);stroke:var(--line)"/>
+<rect x="920" y="46" width="260" height="160" rx="9" style="fill:var(--surface);stroke:var(--line)"/>
+<path d="M280 126 H308" style="stroke:var(--accent);stroke-width:2;fill:none" marker-end="url(#a4)"/>
+<text x="34" y="68" class="sm">the step's input xₜ</text>
+<rect x="34" y="78" width="63" height="24" rx="5" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<text x="40" y="95" class="tok">systems</text>
+<text x="34" y="128" class="sm">carried from step t − 1:</text>
+<text x="34" y="150" class="tok">hₜ₋₁</text>
+<text x="80" y="150" class="sm">its previous output</text>
+<text x="34" y="172" class="tok">cₜ₋₁</text>
+<text x="80" y="172" class="sm">its memory, the cell state</text>
+<text x="322" y="70" class="tok">cₜ₋₁</text>
+<path d="M358 76 H437" style="stroke:var(--accent);stroke-width:2.5;fill:none"/>
+<path d="M453 76 H557" style="stroke:var(--accent);stroke-width:2.5;fill:none"/>
+<path d="M573 76 H916" style="stroke:var(--accent);stroke-width:2.5;fill:none" marker-end="url(#a4)"/>
+<text x="800" y="68" class="tok">cₜ</text>
+<circle cx="445" cy="76" r="9" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<text x="445" y="81" class="mono" style="text-anchor:middle;fill:var(--ink)">×</text>
+<circle cx="565" cy="76" r="9" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<text x="565" y="81" class="mono" style="text-anchor:middle;fill:var(--ink)">+</text>
+<rect x="413" y="138" width="64" height="24" rx="6" style="fill:var(--surface-2);stroke:var(--line)"/>
+<text x="445.0" y="154.0" text-anchor="middle" style="font-size:12px;fill:var(--ink)">forget</text>
+<rect x="493" y="138" width="64" height="24" rx="6" style="fill:var(--surface-2);stroke:var(--line)"/>
+<text x="525.0" y="154.0" text-anchor="middle" style="font-size:12px;fill:var(--ink)">input</text>
+<rect x="573" y="138" width="64" height="24" rx="6" style="fill:var(--surface-2);stroke:var(--line)"/>
+<text x="605.0" y="154.0" text-anchor="middle" style="font-size:12px;fill:var(--ink)">candidate</text>
+<rect x="653" y="138" width="64" height="24" rx="6" style="fill:var(--surface-2);stroke:var(--line)"/>
+<text x="685.0" y="154.0" text-anchor="middle" style="font-size:12px;fill:var(--ink)">output</text>
+<text x="445" y="176" class="tok" style="text-anchor:middle;fill:var(--muted)">σ</text>
+<text x="525" y="176" class="tok" style="text-anchor:middle;fill:var(--muted)">σ</text>
+<text x="605" y="176" class="tok" style="text-anchor:middle;fill:var(--muted)">tanh</text>
+<text x="685" y="176" class="tok" style="text-anchor:middle;fill:var(--muted)">σ</text>
+<path d="M445 138 V87" style="stroke:var(--muted);stroke-width:1.2;fill:none" marker-end="url(#m4)"/>
+<path d="M525 138 V116 H554" style="stroke:var(--muted);stroke-width:1.2;fill:none" marker-end="url(#m4)"/>
+<path d="M605 138 V116 H576" style="stroke:var(--muted);stroke-width:1.2;fill:none" marker-end="url(#m4)"/>
+<circle cx="565" cy="116" r="9" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<text x="565" y="121" class="mono" style="text-anchor:middle;fill:var(--ink)">×</text>
+<path d="M565 107 V87" style="stroke:var(--muted);stroke-width:1.2;fill:none" marker-end="url(#m4)"/>
+<path d="M740 76 V94" style="stroke:var(--muted);stroke-width:1.2;fill:none" marker-end="url(#m4)"/>
+<rect x="716" y="96" width="48" height="20" rx="6" style="fill:var(--surface-2);stroke:var(--line)"/>
+<text x="740.0" y="110.0" text-anchor="middle" style="font-size:12px;fill:var(--ink)">tanh</text>
+<path d="M740 116 V139" style="stroke:var(--muted);stroke-width:1.2;fill:none" marker-end="url(#m4)"/>
+<path d="M717 150 H729" style="stroke:var(--muted);stroke-width:1.2;fill:none" marker-end="url(#m4)"/>
+<circle cx="740" cy="150" r="9" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<text x="740" y="155" class="mono" style="text-anchor:middle;fill:var(--ink)">×</text>
+<path d="M749 150 H850" style="stroke:var(--accent);stroke-width:2;fill:none"/>
+<text x="800" y="144" class="tok">hₜ</text>
+<text x="322" y="196" class="tok">[hₜ₋₁, xₜ]</text>
+<path d="M400 192 H685" style="stroke:var(--muted);stroke-width:1.2;fill:none"/>
+<path d="M445 192 V180" style="stroke:var(--muted);stroke-width:1.2;fill:none"/>
+<path d="M525 192 V180" style="stroke:var(--muted);stroke-width:1.2;fill:none"/>
+<path d="M605 192 V180" style="stroke:var(--muted);stroke-width:1.2;fill:none"/>
+<path d="M685 192 V180" style="stroke:var(--muted);stroke-width:1.2;fill:none"/>
+<path d="M850 150 H895 V131 H918" style="stroke:var(--accent);stroke-width:2;fill:none" marker-end="url(#a4)"/>
+<rect x="934" y="65" width="11" height="22" style="fill:var(--accent);fill-opacity:0.21;stroke:var(--line)"/>
+<rect x="946" y="65" width="11" height="22" style="fill:var(--accent);fill-opacity:0.48;stroke:var(--line)"/>
+<rect x="958" y="65" width="11" height="22" style="fill:var(--accent);fill-opacity:0.12;stroke:var(--line)"/>
+<rect x="970" y="65" width="11" height="22" style="fill:var(--accent);fill-opacity:0.36;stroke:var(--line)"/>
+<rect x="982" y="65" width="11" height="22" style="fill:var(--accent);fill-opacity:0.27;stroke:var(--line)"/>
+<rect x="994" y="65" width="11" height="22" style="fill:var(--accent);fill-opacity:0.54;stroke:var(--line)"/>
+<rect x="1006" y="65" width="11" height="22" style="fill:var(--accent);fill-opacity:0.18;stroke:var(--line)"/>
+<rect x="1018" y="65" width="11" height="22" style="fill:var(--accent);fill-opacity:0.33;stroke:var(--line)"/>
+<rect x="1030" y="65" width="11" height="22" style="fill:var(--accent);fill-opacity:0.15;stroke:var(--line)"/>
+<rect x="1042" y="65" width="11" height="22" style="fill:var(--accent);fill-opacity:0.42;stroke:var(--line)"/>
+<rect x="1054" y="65" width="11" height="22" style="fill:var(--accent);fill-opacity:0.24;stroke:var(--line)"/>
+<rect x="1066" y="65" width="11" height="22" style="fill:var(--accent);fill-opacity:0.39;stroke:var(--line)"/>
+<rect x="1078" y="65" width="11" height="22" style="fill:var(--accent);fill-opacity:0.30;stroke:var(--line)"/>
+<rect x="1090" y="65" width="11" height="22" style="fill:var(--accent);fill-opacity:0.51;stroke:var(--line)"/>
+<rect x="1102" y="65" width="11" height="22" style="fill:var(--accent);fill-opacity:0.18;stroke:var(--line)"/>
+<rect x="1114" y="65" width="11" height="22" style="fill:var(--accent);fill-opacity:0.36;stroke:var(--line)"/>
+<text x="934" y="104" class="sm" style="fill:var(--ink)">cₜ, the updated memory</text>
+<rect x="934" y="120" width="11" height="22" style="fill:var(--accent);fill-opacity:0.35;stroke:var(--line)"/>
+<rect x="946" y="120" width="11" height="22" style="fill:var(--accent);fill-opacity:0.80;stroke:var(--line)"/>
+<rect x="958" y="120" width="11" height="22" style="fill:var(--accent);fill-opacity:0.20;stroke:var(--line)"/>
+<rect x="970" y="120" width="11" height="22" style="fill:var(--accent);fill-opacity:0.60;stroke:var(--line)"/>
+<rect x="982" y="120" width="11" height="22" style="fill:var(--accent);fill-opacity:0.45;stroke:var(--line)"/>
+<rect x="994" y="120" width="11" height="22" style="fill:var(--accent);fill-opacity:0.90;stroke:var(--line)"/>
+<rect x="1006" y="120" width="11" height="22" style="fill:var(--accent);fill-opacity:0.30;stroke:var(--line)"/>
+<rect x="1018" y="120" width="11" height="22" style="fill:var(--accent);fill-opacity:0.55;stroke:var(--line)"/>
+<rect x="1030" y="120" width="11" height="22" style="fill:var(--accent);fill-opacity:0.25;stroke:var(--line)"/>
+<rect x="1042" y="120" width="11" height="22" style="fill:var(--accent);fill-opacity:0.70;stroke:var(--line)"/>
+<rect x="1054" y="120" width="11" height="22" style="fill:var(--accent);fill-opacity:0.40;stroke:var(--line)"/>
+<rect x="1066" y="120" width="11" height="22" style="fill:var(--accent);fill-opacity:0.65;stroke:var(--line)"/>
+<rect x="1078" y="120" width="11" height="22" style="fill:var(--accent);fill-opacity:0.50;stroke:var(--line)"/>
+<rect x="1090" y="120" width="11" height="22" style="fill:var(--accent);fill-opacity:0.85;stroke:var(--line)"/>
+<rect x="1102" y="120" width="11" height="22" style="fill:var(--accent);fill-opacity:0.30;stroke:var(--line)"/>
+<rect x="1114" y="120" width="11" height="22" style="fill:var(--accent);fill-opacity:0.60;stroke:var(--line)"/>
+<text x="934" y="160" class="sm" style="fill:var(--ink)">hₜ, the step's output</text>
+<text x="934" y="190" class="tok" style="fill:var(--muted)">→ both to step t + 1</text>
+<text x="310" y="238" class="lab" style="fill:var(--amber)">SHARES</text>
+<text x="372" y="238" class="sm" style="fill:var(--ink)">the same cell and all four gates at every step, as in the RNN; only the cell's inside differs</text>
+</svg></div></figure></div></div></section>
+<section class="section"><div class="section-label">Reuse across tokens, all at once</div><div class="steps"><div class="step"><div class="step-head"><h2 class="step-title">Transformer</h2></div><p>Every token attends to every other in one step, rather than one after another as in an RNN, so the order comes only from the position vectors. The encoder reads the input; the decoder writes the output a token at a time, attending to the encoder and to what it has written so far.</p><figure><div class="diagram-wrap"><svg class="diagram" id="nn-transformer" viewBox="0 0 1200 252" role="img" aria-label="Transformer: token and position vectors pass through encoder blocks of self-attention and feed-forward; decoder blocks attend to the encoder output and to the tokens written so far, and emit the next token">
+<defs><marker id="a6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><polygon points="0,0 10,5 0,10" style="fill:var(--accent)"/></marker><marker id="m6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><polygon points="0,0 10,5 0,10" style="fill:var(--muted)"/></marker></defs>
+<text x="20" y="22" class="lab">INPUT</text>
+<line x1="20" y1="32" x2="280" y2="32" style="stroke:var(--line);stroke-width:1"/>
+<text x="310" y="22" class="lab">ENCODER AND DECODER</text>
+<line x1="310" y1="32" x2="870" y2="32" style="stroke:var(--line);stroke-width:1"/>
+<text x="920" y="22" class="lab">OUTPUT</text>
+<line x1="920" y1="32" x2="1180" y2="32" style="stroke:var(--line);stroke-width:1"/>
+<rect x="20" y="46" width="260" height="160" rx="9" style="fill:var(--surface);stroke:var(--accent);stroke-width:2"/>
+<rect x="310" y="46" width="560" height="160" rx="9" style="fill:var(--surface);stroke:var(--line)"/>
+<rect x="920" y="46" width="260" height="160" rx="9" style="fill:var(--surface);stroke:var(--line)"/>
+<text x="34" y="68" class="sm">BPE subword tokens</text>
+<rect x="34" y="80" width="41" height="24" rx="5" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<text x="40" y="97" class="tok">acme</text>
+<rect x="81.2" y="80" width="56" height="24" rx="5" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<text x="87.2" y="97" class="tok">system</text>
+<rect x="143.0" y="80" width="19" height="24" rx="5" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<text x="149.0" y="97" class="tok">s</text>
+<text x="34" y="136" class="sm" style="fill:var(--ink)">each token's vector,</text>
+<text x="34" y="154" class="sm">plus a vector for its position</text>
+<text x="34" y="172" class="sm">all tokens enter at once</text>
+<path d="M280 118 H338" style="stroke:var(--accent);stroke-width:2;fill:none" marker-end="url(#a6)"/>
+<rect x="340" y="60" width="200" height="126" rx="8" style="fill:var(--surface);stroke:var(--line)"/>
+<rect x="356" y="72" width="168" height="30" rx="6" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<text x="440.0" y="91.0" text-anchor="middle" style="font-size:12px;fill:var(--ink)">self-attention</text>
+<path d="M440 102 V126" style="stroke:var(--muted);stroke-width:1.2;fill:none" marker-end="url(#m6)"/>
+<rect x="356" y="128" width="168" height="30" rx="6" style="fill:var(--surface-2);stroke:var(--line)"/>
+<text x="440.0" y="147.0" text-anchor="middle" style="font-size:12px;fill:var(--ink)">feed-forward</text>
+<text x="440" y="178" class="sm" style="text-anchor:middle;fill:var(--muted)">encoder block × N</text>
+<rect x="580" y="60" width="220" height="126" rx="8" style="fill:var(--surface);stroke:var(--line)"/>
+<rect x="596" y="68" width="188" height="26" rx="6" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<text x="690.0" y="85.0" text-anchor="middle" style="font-size:12px;fill:var(--ink)">masked self-attention</text>
+<path d="M690 94 V102" style="stroke:var(--muted);stroke-width:1.2;fill:none" marker-end="url(#m6)"/>
+<rect x="596" y="104" width="188" height="26" rx="6" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<text x="690.0" y="121.0" text-anchor="middle" style="font-size:12px;fill:var(--ink)">cross-attention</text>
+<path d="M690 130 V138" style="stroke:var(--muted);stroke-width:1.2;fill:none" marker-end="url(#m6)"/>
+<rect x="596" y="140" width="188" height="26" rx="6" style="fill:var(--surface-2);stroke:var(--line)"/>
+<text x="690.0" y="157.0" text-anchor="middle" style="font-size:12px;fill:var(--ink)">feed-forward</text>
+<text x="690" y="180" class="sm" style="text-anchor:middle;fill:var(--muted)">decoder block × N</text>
+<path d="M540 143 H562 V117 H594" style="stroke:var(--muted);stroke-width:1.2;fill:none" marker-end="url(#m6)"/>
+<text x="544" y="196" class="sm">encoder output feeds every decoder block</text>
+<path d="M836 153 V52 H690 V66" style="stroke:var(--muted);stroke-width:1.2;fill:none" marker-end="url(#m6)"/>
+<text x="852" y="150" class="tok" style="fill:var(--muted)" transform="rotate(-90 852 150)">tokens so far</text>
+<path d="M784 153 H895 V118 H918" style="stroke:var(--accent);stroke-width:2;fill:none" marker-end="url(#a6)"/>
+<text x="934" y="68" class="sm">next-token probabilities</text>
+<rect x="934" y="84" width="97" height="16" rx="3" style="fill:var(--accent);fill-opacity:0.74;stroke:var(--line)"/>
+<text x="1064" y="97" class="tok">plc 0.81</text>
+<rect x="934" y="108" width="17" height="16" rx="3" style="fill:var(--accent);fill-opacity:0.33;stroke:var(--line)"/>
+<text x="1064" y="121" class="tok">ltd 0.14</text>
+<rect x="934" y="132" width="6" height="16" rx="3" style="fill:var(--accent);fill-opacity:0.28;stroke:var(--line)"/>
+<text x="1064" y="145" class="tok">inc 0.05</text>
+<text x="934" y="176" class="tok" style="fill:var(--muted)">→ appended, fed back in</text>
+<text x="310" y="238" class="lab" style="fill:var(--amber)">SHARES</text>
+<text x="372" y="238" class="sm" style="fill:var(--ink)">one attention block across every token position; each token attends to every other at once, not in order</text>
+</svg></div></figure></div><div class="step"><div class="step-head"><h2 class="step-title">BERT and Sentence-BERT</h2></div><p>BERT is the Transformer's encoder half alone, pretrained on large text by filling in masked words. BERT-base stacks 12 encoder blocks; all-MiniLM-L6-v2, the Sentence-BERT model this repo runs by default, stacks 6. BERT also takes a pair of segments, <code>[CLS] A [SEP] B [SEP]</code>, which is how a cross-encoder scores two names together. Sentence-BERT averages BERT's per-token vectors into one vector per sentence, and is fine-tuned so similar sentences land close together.</p><figure><div class="diagram-wrap"><svg class="diagram" id="nn-bert" viewBox="0 0 1200 252" role="img" aria-label="BERT and Sentence-BERT: subword tokens pass through a stack of encoder blocks only, giving one vector per token; Sentence-BERT mean-pools those into one vector per name">
+<defs><marker id="a7" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><polygon points="0,0 10,5 0,10" style="fill:var(--accent)"/></marker><marker id="m7" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><polygon points="0,0 10,5 0,10" style="fill:var(--muted)"/></marker></defs>
+<text x="20" y="22" class="lab">INPUT</text>
+<line x1="20" y1="32" x2="280" y2="32" style="stroke:var(--line);stroke-width:1"/>
+<text x="310" y="22" class="lab">ENCODER ONLY, THEN POOLING</text>
+<line x1="310" y1="32" x2="870" y2="32" style="stroke:var(--line);stroke-width:1"/>
+<text x="920" y="22" class="lab">OUTPUT</text>
+<line x1="920" y1="32" x2="1180" y2="32" style="stroke:var(--line);stroke-width:1"/>
+<rect x="20" y="46" width="260" height="160" rx="9" style="fill:var(--surface);stroke:var(--accent);stroke-width:2"/>
+<rect x="310" y="46" width="560" height="160" rx="9" style="fill:var(--surface);stroke:var(--line)"/>
+<rect x="920" y="46" width="260" height="160" rx="9" style="fill:var(--surface);stroke:var(--line)"/>
+<path d="M280 118 H308" style="stroke:var(--accent);stroke-width:2;fill:none" marker-end="url(#a7)"/>
+<text x="34" y="68" class="sm">WordPiece subword tokens</text>
+<rect x="34" y="80" width="44" height="24" rx="5" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<text x="38" y="97" class="tok">[CLS]</text>
+<rect x="82" y="80" width="37" height="24" rx="5" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<text x="86" y="97" class="tok">acme</text>
+<rect x="123" y="80" width="51" height="24" rx="5" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<text x="127" y="97" class="tok">system</text>
+<rect x="178" y="80" width="30" height="24" rx="5" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<text x="182" y="97" class="tok">##s</text>
+<rect x="212" y="80" width="44" height="24" rx="5" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<text x="216" y="97" class="tok">[SEP]</text>
+<text x="34" y="136" class="sm" style="fill:var(--ink)">one name at a time,</text>
+<text x="34" y="154" class="sm">tokens plus positions,</text>
+<text x="34" y="172" class="sm">as in the Transformer</text>
+<rect x="340" y="60" width="160" height="126" rx="8" style="fill:var(--surface);stroke:var(--line)"/>
+<rect x="352" y="72" width="136" height="30" rx="6" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<text x="420.0" y="91.0" text-anchor="middle" style="font-size:12px;fill:var(--ink)">self-attention</text>
+<path d="M420 102 V126" style="stroke:var(--muted);stroke-width:1.2;fill:none" marker-end="url(#m7)"/>
+<rect x="352" y="128" width="136" height="30" rx="6" style="fill:var(--surface-2);stroke:var(--line)"/>
+<text x="420.0" y="147.0" text-anchor="middle" style="font-size:12px;fill:var(--ink)">feed-forward</text>
+<text x="420" y="178" class="sm" style="text-anchor:middle;fill:var(--muted)">encoder block × 6–12</text>
+<path d="M500 78 H526" style="stroke:var(--muted);stroke-width:1.2;fill:none" marker-end="url(#m7)"/>
+<rect x="530" y="70" width="7" height="16" style="fill:var(--accent);fill-opacity:0.35;stroke:var(--line)"/>
+<rect x="538" y="70" width="7" height="16" style="fill:var(--accent);fill-opacity:0.80;stroke:var(--line)"/>
+<rect x="546" y="70" width="7" height="16" style="fill:var(--accent);fill-opacity:0.20;stroke:var(--line)"/>
+<rect x="554" y="70" width="7" height="16" style="fill:var(--accent);fill-opacity:0.60;stroke:var(--line)"/>
+<rect x="562" y="70" width="7" height="16" style="fill:var(--accent);fill-opacity:0.45;stroke:var(--line)"/>
+<rect x="570" y="70" width="7" height="16" style="fill:var(--accent);fill-opacity:0.90;stroke:var(--line)"/>
+<rect x="578" y="70" width="7" height="16" style="fill:var(--accent);fill-opacity:0.30;stroke:var(--line)"/>
+<rect x="586" y="70" width="7" height="16" style="fill:var(--accent);fill-opacity:0.55;stroke:var(--line)"/>
+<path d="M500 102 H526" style="stroke:var(--muted);stroke-width:1.2;fill:none" marker-end="url(#m7)"/>
+<rect x="530" y="94" width="7" height="16" style="fill:var(--accent);fill-opacity:0.35;stroke:var(--line)"/>
+<rect x="538" y="94" width="7" height="16" style="fill:var(--accent);fill-opacity:0.80;stroke:var(--line)"/>
+<rect x="546" y="94" width="7" height="16" style="fill:var(--accent);fill-opacity:0.20;stroke:var(--line)"/>
+<rect x="554" y="94" width="7" height="16" style="fill:var(--accent);fill-opacity:0.60;stroke:var(--line)"/>
+<rect x="562" y="94" width="7" height="16" style="fill:var(--accent);fill-opacity:0.45;stroke:var(--line)"/>
+<rect x="570" y="94" width="7" height="16" style="fill:var(--accent);fill-opacity:0.90;stroke:var(--line)"/>
+<rect x="578" y="94" width="7" height="16" style="fill:var(--accent);fill-opacity:0.30;stroke:var(--line)"/>
+<rect x="586" y="94" width="7" height="16" style="fill:var(--accent);fill-opacity:0.55;stroke:var(--line)"/>
+<path d="M500 126 H526" style="stroke:var(--muted);stroke-width:1.2;fill:none" marker-end="url(#m7)"/>
+<rect x="530" y="118" width="7" height="16" style="fill:var(--accent);fill-opacity:0.35;stroke:var(--line)"/>
+<rect x="538" y="118" width="7" height="16" style="fill:var(--accent);fill-opacity:0.80;stroke:var(--line)"/>
+<rect x="546" y="118" width="7" height="16" style="fill:var(--accent);fill-opacity:0.20;stroke:var(--line)"/>
+<rect x="554" y="118" width="7" height="16" style="fill:var(--accent);fill-opacity:0.60;stroke:var(--line)"/>
+<rect x="562" y="118" width="7" height="16" style="fill:var(--accent);fill-opacity:0.45;stroke:var(--line)"/>
+<rect x="570" y="118" width="7" height="16" style="fill:var(--accent);fill-opacity:0.90;stroke:var(--line)"/>
+<rect x="578" y="118" width="7" height="16" style="fill:var(--accent);fill-opacity:0.30;stroke:var(--line)"/>
+<rect x="586" y="118" width="7" height="16" style="fill:var(--accent);fill-opacity:0.55;stroke:var(--line)"/>
+<path d="M500 150 H526" style="stroke:var(--muted);stroke-width:1.2;fill:none" marker-end="url(#m7)"/>
+<rect x="530" y="142" width="7" height="16" style="fill:var(--accent);fill-opacity:0.35;stroke:var(--line)"/>
+<rect x="538" y="142" width="7" height="16" style="fill:var(--accent);fill-opacity:0.80;stroke:var(--line)"/>
+<rect x="546" y="142" width="7" height="16" style="fill:var(--accent);fill-opacity:0.20;stroke:var(--line)"/>
+<rect x="554" y="142" width="7" height="16" style="fill:var(--accent);fill-opacity:0.60;stroke:var(--line)"/>
+<rect x="562" y="142" width="7" height="16" style="fill:var(--accent);fill-opacity:0.45;stroke:var(--line)"/>
+<rect x="570" y="142" width="7" height="16" style="fill:var(--accent);fill-opacity:0.90;stroke:var(--line)"/>
+<rect x="578" y="142" width="7" height="16" style="fill:var(--accent);fill-opacity:0.30;stroke:var(--line)"/>
+<rect x="586" y="142" width="7" height="16" style="fill:var(--accent);fill-opacity:0.55;stroke:var(--line)"/>
+<text x="530" y="176" class="sm">one vector per token</text>
+<line x1="594" y1="78" x2="660" y2="118" style="stroke:var(--muted);stroke-width:1"/>
+<line x1="594" y1="102" x2="660" y2="118" style="stroke:var(--muted);stroke-width:1"/>
+<line x1="594" y1="126" x2="660" y2="118" style="stroke:var(--muted);stroke-width:1"/>
+<line x1="594" y1="150" x2="660" y2="118" style="stroke:var(--muted);stroke-width:1"/>
+<rect x="660" y="100" width="100" height="36" rx="6" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<text x="710.0" y="122.0" text-anchor="middle" style="font-size:12px;fill:var(--ink)">mean pool</text>
+<text x="420" y="200" class="lab" style="text-anchor:middle;fill:var(--accent)">BERT</text>
+<text x="710" y="200" class="lab" style="text-anchor:middle;fill:var(--accent)">+ POOLING = SENTENCE-BERT</text>
+<path d="M760 118 H918" style="stroke:var(--accent);stroke-width:2;fill:none" marker-end="url(#a7)"/>
+<rect x="934" y="64" width="11" height="26" style="fill:var(--accent);fill-opacity:0.35;stroke:var(--line)"/>
+<rect x="946" y="64" width="11" height="26" style="fill:var(--accent);fill-opacity:0.80;stroke:var(--line)"/>
+<rect x="958" y="64" width="11" height="26" style="fill:var(--accent);fill-opacity:0.20;stroke:var(--line)"/>
+<rect x="970" y="64" width="11" height="26" style="fill:var(--accent);fill-opacity:0.60;stroke:var(--line)"/>
+<rect x="982" y="64" width="11" height="26" style="fill:var(--accent);fill-opacity:0.45;stroke:var(--line)"/>
+<rect x="994" y="64" width="11" height="26" style="fill:var(--accent);fill-opacity:0.90;stroke:var(--line)"/>
+<rect x="1006" y="64" width="11" height="26" style="fill:var(--accent);fill-opacity:0.30;stroke:var(--line)"/>
+<rect x="1018" y="64" width="11" height="26" style="fill:var(--accent);fill-opacity:0.55;stroke:var(--line)"/>
+<rect x="1030" y="64" width="11" height="26" style="fill:var(--accent);fill-opacity:0.25;stroke:var(--line)"/>
+<rect x="1042" y="64" width="11" height="26" style="fill:var(--accent);fill-opacity:0.70;stroke:var(--line)"/>
+<rect x="1054" y="64" width="11" height="26" style="fill:var(--accent);fill-opacity:0.40;stroke:var(--line)"/>
+<rect x="1066" y="64" width="11" height="26" style="fill:var(--accent);fill-opacity:0.65;stroke:var(--line)"/>
+<rect x="1078" y="64" width="11" height="26" style="fill:var(--accent);fill-opacity:0.50;stroke:var(--line)"/>
+<rect x="1090" y="64" width="11" height="26" style="fill:var(--accent);fill-opacity:0.85;stroke:var(--line)"/>
+<rect x="1102" y="64" width="11" height="26" style="fill:var(--accent);fill-opacity:0.30;stroke:var(--line)"/>
+<rect x="1114" y="64" width="11" height="26" style="fill:var(--accent);fill-opacity:0.60;stroke:var(--line)"/>
+<text x="934" y="124" class="sm" style="fill:var(--ink)">one vector per name,</text>
+<text x="934" y="142" class="sm">fixed width</text>
+<text x="934" y="176" class="tok" style="fill:var(--muted)">→ cosine top-k</text>
+<text x="310" y="238" class="lab" style="fill:var(--amber)">SHARES</text>
+<text x="372" y="238" class="sm" style="fill:var(--ink)">one pretrained encoder for every name; Sentence-BERT is fine-tuned as the twin subnetwork of a Siamese pair</text>
+</svg></div></figure></div></div></section>
+<section class="section"><div class="section-label">Reuse across inputs</div><div class="steps"><div class="step"><div class="step-head"><h2 class="step-title">Siamese</h2></div><p>Not a layer type but a wiring: two subnetworks of the same architecture, sharing their weights, each take one side of a pair. The subnetwork can be any of the networks above. Twins of the same architecture that do not share weights are usually called pseudo-Siamese.</p><figure><div class="diagram-wrap"><svg class="diagram" id="nn-siamese" viewBox="0 0 1200 252" role="img" aria-label="Siamese network: two subnetworks of the same architecture and shared weights embed the two records of a pair, and a distance between the two embeddings is the similarity score">
+<defs><marker id="a5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><polygon points="0,0 10,5 0,10" style="fill:var(--accent)"/></marker><marker id="m5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><polygon points="0,0 10,5 0,10" style="fill:var(--muted)"/></marker></defs>
+<text x="20" y="22" class="lab">INPUT, A PAIR</text>
+<line x1="20" y1="32" x2="280" y2="32" style="stroke:var(--line);stroke-width:1"/>
+<text x="310" y="22" class="lab">TWIN SUBNETWORKS</text>
+<line x1="310" y1="32" x2="870" y2="32" style="stroke:var(--line);stroke-width:1"/>
+<text x="920" y="22" class="lab">OUTPUT</text>
+<line x1="920" y1="32" x2="1180" y2="32" style="stroke:var(--line);stroke-width:1"/>
+<rect x="20" y="46" width="260" height="160" rx="9" style="fill:var(--surface);stroke:var(--accent);stroke-width:2"/>
+<rect x="310" y="46" width="560" height="160" rx="9" style="fill:var(--surface);stroke:var(--line)"/>
+<rect x="920" y="46" width="260" height="160" rx="9" style="fill:var(--surface);stroke:var(--line)"/>
+<text x="34" y="70" class="sm">record a</text>
+<text x="34" y="92" class="mono">Acme Systems Plc</text>
+<text x="34" y="148" class="sm">record b</text>
+<text x="34" y="170" class="mono">ACME SYSTEMS P.L.C.</text>
+<path d="M280 87 H338" style="stroke:var(--accent);stroke-width:2;fill:none" marker-end="url(#a5)"/>
+<path d="M280 165 H338" style="stroke:var(--accent);stroke-width:2;fill:none" marker-end="url(#a5)"/>
+<polygon points="340,60 470,74 470,100 340,114" style="fill:var(--surface-2);stroke:var(--line)"/>
+<text x="400" y="91" class="sm" style="text-anchor:middle;fill:var(--ink)">network f</text>
+<polygon points="340,138 470,152 470,178 340,192" style="fill:var(--surface-2);stroke:var(--line)"/>
+<text x="400" y="169" class="sm" style="text-anchor:middle;fill:var(--ink)">network f</text>
+<path d="M405 118 V134" style="stroke:var(--amber);stroke-width:1.5;stroke-dasharray:5 4;fill:none"/>
+<text x="414" y="130" class="sm" style="fill:var(--amber)">same weights</text>
+<path d="M470 87 H496" style="stroke:var(--muted);stroke-width:1.5;fill:none" marker-end="url(#m5)"/>
+<path d="M470 165 H496" style="stroke:var(--muted);stroke-width:1.5;fill:none" marker-end="url(#m5)"/>
+<rect x="500" y="76" width="9" height="22" style="fill:var(--accent);fill-opacity:0.35;stroke:var(--line)"/>
+<rect x="510" y="76" width="9" height="22" style="fill:var(--accent);fill-opacity:0.80;stroke:var(--line)"/>
+<rect x="520" y="76" width="9" height="22" style="fill:var(--accent);fill-opacity:0.20;stroke:var(--line)"/>
+<rect x="530" y="76" width="9" height="22" style="fill:var(--accent);fill-opacity:0.60;stroke:var(--line)"/>
+<rect x="540" y="76" width="9" height="22" style="fill:var(--accent);fill-opacity:0.45;stroke:var(--line)"/>
+<rect x="550" y="76" width="9" height="22" style="fill:var(--accent);fill-opacity:0.90;stroke:var(--line)"/>
+<rect x="560" y="76" width="9" height="22" style="fill:var(--accent);fill-opacity:0.30;stroke:var(--line)"/>
+<rect x="570" y="76" width="9" height="22" style="fill:var(--accent);fill-opacity:0.55;stroke:var(--line)"/>
+<rect x="580" y="76" width="9" height="22" style="fill:var(--accent);fill-opacity:0.25;stroke:var(--line)"/>
+<rect x="500" y="154" width="9" height="22" style="fill:var(--accent);fill-opacity:0.35;stroke:var(--line)"/>
+<rect x="510" y="154" width="9" height="22" style="fill:var(--accent);fill-opacity:0.80;stroke:var(--line)"/>
+<rect x="520" y="154" width="9" height="22" style="fill:var(--accent);fill-opacity:0.20;stroke:var(--line)"/>
+<rect x="530" y="154" width="9" height="22" style="fill:var(--accent);fill-opacity:0.60;stroke:var(--line)"/>
+<rect x="540" y="154" width="9" height="22" style="fill:var(--accent);fill-opacity:0.45;stroke:var(--line)"/>
+<rect x="550" y="154" width="9" height="22" style="fill:var(--accent);fill-opacity:0.90;stroke:var(--line)"/>
+<rect x="560" y="154" width="9" height="22" style="fill:var(--accent);fill-opacity:0.30;stroke:var(--line)"/>
+<rect x="570" y="154" width="9" height="22" style="fill:var(--accent);fill-opacity:0.55;stroke:var(--line)"/>
+<rect x="580" y="154" width="9" height="22" style="fill:var(--accent);fill-opacity:0.25;stroke:var(--line)"/>
+<text x="500" y="70" class="tok">u</text>
+<text x="500" y="148" class="tok">v</text>
+<path d="M590 87 H640 V98" style="stroke:var(--muted);stroke-width:1.2;fill:none" marker-end="url(#m5)"/>
+<path d="M590 165 H640 V152" style="stroke:var(--muted);stroke-width:1.2;fill:none" marker-end="url(#m5)"/>
+<circle cx="640" cy="125" r="26" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<text x="640" y="129" class="sm" style="text-anchor:middle;fill:var(--ink)">d(u, v)</text>
+<text x="680" y="112" class="sm">cosine, or ‖u − v‖</text>
+<text x="500" y="196" class="tok" style="fill:var(--amber)">loss: one of three, drawn below</text>
+<path d="M666 125 H895 V118 H918" style="stroke:var(--accent);stroke-width:2;fill:none" marker-end="url(#a5)"/>
+<text x="934" y="70" class="sm">similarity score</text>
+<text x="934" y="104" class="mono" style="font-size:22px">0.93</text>
+<text x="934" y="130" class="sm" style="fill:var(--ink)">match if over a threshold</text>
+<text x="934" y="176" class="tok" style="fill:var(--muted)">→ or index u, v for top-k</text>
+<text x="310" y="238" class="lab" style="fill:var(--amber)">SHARES</text>
+<text x="372" y="238" class="sm" style="fill:var(--ink)">one set of weights in both twins, so both records land in one space and d(u, v) = d(v, u)</text>
+</svg></div></figure></div><div class="step"><div class="step-head"><h2 class="step-title">Siamese losses</h2></div><p>The twins are the same under every loss; what changes is what goes in and what the loss asks of the distance. For blocking the difference that counts is the bottom row: whether u itself was trained to be searched by cosine.</p><figure><div class="diagram-wrap"><svg class="diagram" id="nn-siamese-losses" viewBox="0 0 1200 292" role="img" aria-label="Three losses for the same Siamese twins: contrastive on labelled pairs with a margin, triplet on anchor, positive and negative, and a classifier head with cross-entropy; the first two train u for cosine search, the classifier does not">
+<defs><marker id="a8" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><polygon points="0,0 10,5 0,10" style="fill:var(--accent)"/></marker><marker id="m8" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><polygon points="0,0 10,5 0,10" style="fill:var(--muted)"/></marker></defs>
+<text x="20" y="22" class="lab">SHARED TWINS</text>
+<line x1="20" y1="32" x2="190" y2="32" style="stroke:var(--line);stroke-width:1"/>
+<rect x="20" y="46" width="170" height="234" rx="9" style="fill:var(--surface);stroke:var(--accent);stroke-width:2"/>
+<text x="220" y="22" class="lab">CONTRASTIVE</text>
+<line x1="220" y1="32" x2="520" y2="32" style="stroke:var(--line);stroke-width:1"/>
+<rect x="220" y="46" width="300" height="234" rx="9" style="fill:var(--surface);stroke:var(--line)"/>
+<line x1="234" y1="216" x2="506" y2="216" style="stroke:var(--line);stroke-width:1"/>
+<text x="234" y="236" class="lab">AT USE TIME</text>
+<text x="550" y="22" class="lab">TRIPLET</text>
+<line x1="550" y1="32" x2="850" y2="32" style="stroke:var(--line);stroke-width:1"/>
+<rect x="550" y="46" width="300" height="234" rx="9" style="fill:var(--surface);stroke:var(--line)"/>
+<line x1="564" y1="216" x2="836" y2="216" style="stroke:var(--line);stroke-width:1"/>
+<text x="564" y="236" class="lab">AT USE TIME</text>
+<text x="880" y="22" class="lab">CLASSIFIER</text>
+<line x1="880" y1="32" x2="1180" y2="32" style="stroke:var(--line);stroke-width:1"/>
+<rect x="880" y="46" width="300" height="234" rx="9" style="fill:var(--surface);stroke:var(--line)"/>
+<line x1="894" y1="216" x2="1166" y2="216" style="stroke:var(--line);stroke-width:1"/>
+<text x="894" y="236" class="lab">AT USE TIME</text>
+<text x="205" y="150" class="mono" style="text-anchor:middle;fill:var(--muted);font-size:22px">›</text>
+<text x="535" y="150" class="sm" style="text-anchor:middle;fill:var(--muted)">or</text>
+<text x="865" y="150" class="sm" style="text-anchor:middle;fill:var(--muted)">or</text>
+<text x="34" y="68" class="sm">every input goes through</text>
+<text x="34" y="84" class="sm" style="fill:var(--ink)">the same network f</text>
+<polygon points="40,100 150,112 150,140 40,152" style="fill:var(--surface-2);stroke:var(--line)"/>
+<text x="92" y="131" class="sm" style="text-anchor:middle;fill:var(--ink)">network f</text>
+<path d="M95 156 V172" style="stroke:var(--muted);stroke-width:1.2;fill:none" marker-end="url(#m8)"/>
+<rect x="40" y="176" width="9" height="16" style="fill:var(--accent);fill-opacity:0.35;stroke:var(--line)"/>
+<rect x="50" y="176" width="9" height="16" style="fill:var(--accent);fill-opacity:0.80;stroke:var(--line)"/>
+<rect x="60" y="176" width="9" height="16" style="fill:var(--accent);fill-opacity:0.20;stroke:var(--line)"/>
+<rect x="70" y="176" width="9" height="16" style="fill:var(--accent);fill-opacity:0.60;stroke:var(--line)"/>
+<rect x="80" y="176" width="9" height="16" style="fill:var(--accent);fill-opacity:0.45;stroke:var(--line)"/>
+<rect x="90" y="176" width="9" height="16" style="fill:var(--accent);fill-opacity:0.90;stroke:var(--line)"/>
+<rect x="100" y="176" width="9" height="16" style="fill:var(--accent);fill-opacity:0.30;stroke:var(--line)"/>
+<rect x="110" y="176" width="9" height="16" style="fill:var(--accent);fill-opacity:0.55;stroke:var(--line)"/>
+<rect x="120" y="176" width="9" height="16" style="fill:var(--accent);fill-opacity:0.25;stroke:var(--line)"/>
+<rect x="130" y="176" width="9" height="16" style="fill:var(--accent);fill-opacity:0.70;stroke:var(--line)"/>
+<rect x="140" y="176" width="9" height="16" style="fill:var(--accent);fill-opacity:0.40;stroke:var(--line)"/>
+<rect x="150" y="176" width="9" height="16" style="fill:var(--accent);fill-opacity:0.65;stroke:var(--line)"/>
+<text x="40" y="212" class="tok">u, v</text>
+<text x="40" y="230" class="sm">and n, for triplet</text>
+<text x="234" y="68" class="sm" style="fill:var(--ink)">a pair and a label y</text>
+<text x="234" y="84" class="sm">y = 1 match, y = 0 non-match</text>
+<circle cx="260" cy="130" r="6" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<circle cx="340" cy="130" r="6" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<text x="254" y="118" class="tok">u</text>
+<text x="334" y="118" class="tok">v</text>
+<path d="M268 130 H292" style="stroke:var(--muted);stroke-width:1.4;fill:none" marker-end="url(#m8)"/>
+<path d="M332 130 H308" style="stroke:var(--muted);stroke-width:1.4;fill:none" marker-end="url(#m8)"/>
+<text x="300" y="184" class="sm" style="text-anchor:middle;fill:var(--muted)">y = 1: pull together</text>
+<circle cx="420" cy="130" r="36" style="fill:none;stroke:var(--muted);stroke-dasharray:3 3"/>
+<circle cx="420" cy="130" r="6" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<circle cx="440" cy="130" r="6" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<text x="414" y="150" class="tok">u</text>
+<text x="436" y="150" class="tok">v</text>
+<path d="M447 130 H476" style="stroke:var(--muted);stroke-width:1.4;fill:none" marker-end="url(#m8)"/>
+<text x="420" y="88" class="sm" style="text-anchor:middle;fill:var(--muted)">margin m</text>
+<text x="440" y="184" class="sm" style="text-anchor:middle;fill:var(--muted)">y = 0: push out past m</text>
+<text x="234" y="204" class="tok" style="fill:var(--amber)">y·d² + (1−y)·max(0, m − d)²</text>
+<text x="234" y="254" class="sm" style="fill:var(--ink)">index u, search by cosine top-k</text>
+<text x="564" y="68" class="sm" style="fill:var(--ink)">anchor a, positive p, negative n</text>
+<text x="564" y="84" class="sm">three copies of f, not two</text>
+<line x1="626" y1="132" x2="740" y2="152" style="stroke:var(--muted);stroke-width:0.8"/>
+<circle cx="620" cy="130" r="7" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<circle cx="670" cy="106" r="6" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<circle cx="746" cy="154" r="6" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+<text x="604" y="150" class="tok">a</text>
+<text x="678" y="102" class="tok">p</text>
+<text x="756" y="148" class="tok">n</text>
+<path d="M664 110 L634 124" style="stroke:var(--muted);stroke-width:1.4;fill:none" marker-end="url(#m8)"/>
+<path d="M753 157 L792 172" style="stroke:var(--muted);stroke-width:1.4;fill:none" marker-end="url(#m8)"/>
+<text x="700" y="184" class="sm" style="text-anchor:middle;fill:var(--muted)">a nearer p than n, by m</text>
+<text x="564" y="204" class="tok" style="fill:var(--amber)">max(0, d(a,p) − d(a,n) + m)</text>
+<text x="564" y="254" class="sm" style="fill:var(--ink)">index u, search by cosine top-k</text>
+<text x="894" y="68" class="sm" style="fill:var(--ink)">a pair and a label y</text>
+<text x="894" y="84" class="sm">plus a head trained on top of f</text>
+<text x="894" y="116" class="tok">u</text>
+<rect x="940" y="104" width="8" height="14" style="fill:var(--accent);fill-opacity:0.35;stroke:var(--line)"/>
+<rect x="949" y="104" width="8" height="14" style="fill:var(--accent);fill-opacity:0.80;stroke:var(--line)"/>
+<rect x="958" y="104" width="8" height="14" style="fill:var(--accent);fill-opacity:0.20;stroke:var(--line)"/>
+<rect x="967" y="104" width="8" height="14" style="fill:var(--accent);fill-opacity:0.60;stroke:var(--line)"/>
+<rect x="976" y="104" width="8" height="14" style="fill:var(--accent);fill-opacity:0.45;stroke:var(--line)"/>
+<rect x="985" y="104" width="8" height="14" style="fill:var(--accent);fill-opacity:0.90;stroke:var(--line)"/>
+<line x1="994" y1="111" x2="1004" y2="132" style="stroke:var(--muted);stroke-width:1"/>
+<text x="894" y="138" class="tok">v</text>
+<rect x="940" y="126" width="8" height="14" style="fill:var(--accent);fill-opacity:0.35;stroke:var(--line)"/>
+<rect x="949" y="126" width="8" height="14" style="fill:var(--accent);fill-opacity:0.80;stroke:var(--line)"/>
+<rect x="958" y="126" width="8" height="14" style="fill:var(--accent);fill-opacity:0.20;stroke:var(--line)"/>
+<rect x="967" y="126" width="8" height="14" style="fill:var(--accent);fill-opacity:0.60;stroke:var(--line)"/>
+<rect x="976" y="126" width="8" height="14" style="fill:var(--accent);fill-opacity:0.45;stroke:var(--line)"/>
+<rect x="985" y="126" width="8" height="14" style="fill:var(--accent);fill-opacity:0.90;stroke:var(--line)"/>
+<line x1="994" y1="133" x2="1004" y2="132" style="stroke:var(--muted);stroke-width:1"/>
+<text x="894" y="160" class="tok">|u−v|</text>
+<rect x="940" y="148" width="8" height="14" style="fill:var(--accent);fill-opacity:0.35;stroke:var(--line)"/>
+<rect x="949" y="148" width="8" height="14" style="fill:var(--accent);fill-opacity:0.80;stroke:var(--line)"/>
+<rect x="958" y="148" width="8" height="14" style="fill:var(--accent);fill-opacity:0.20;stroke:var(--line)"/>
+<rect x="967" y="148" width="8" height="14" style="fill:var(--accent);fill-opacity:0.60;stroke:var(--line)"/>
+<rect x="976" y="148" width="8" height="14" style="fill:var(--accent);fill-opacity:0.45;stroke:var(--line)"/>
+<rect x="985" y="148" width="8" height="14" style="fill:var(--accent);fill-opacity:0.90;stroke:var(--line)"/>
+<line x1="994" y1="155" x2="1004" y2="132" style="stroke:var(--muted);stroke-width:1"/>
+<rect x="1004" y="116" width="94" height="32" rx="6" style="fill:var(--surface-2);stroke:var(--line)"/>
+<text x="1051.0" y="136.0" text-anchor="middle" style="font-size:12px;fill:var(--ink)">dense · softmax</text>
+<path d="M1098 132 H1112" style="stroke:var(--muted);stroke-width:1.2;fill:none" marker-end="url(#m8)"/>
+<text x="1116" y="137" class="tok">p(y)</text>
+<text x="894" y="204" class="tok" style="fill:var(--amber)">cross-entropy on y</text>
+<text x="894" y="254" class="sm" style="fill:var(--ink)">the head scores only pairs it is given;</text>
+<text x="894" y="270" class="sm">u was not trained for cosine search</text>
+</svg></div></figure></div></div></section>
+</div>

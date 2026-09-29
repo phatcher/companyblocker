@@ -1,0 +1,233 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "acquisition"
+version = "0.1.0"
+description = "Company acquisition and cleansing pipeline"
+
+# Restricts the project strictly to Python 3.12 versions
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "company-cleanse",
+    "company-perturbation",
+    "company-classify",
+    "company-tokenize",
+    "company-vectorize",
+    "defusedxml>=0.7.1",
+    "indexed-bzip2>=1.6.0",
+    "mlflow>=3.15.0",
+    "orjson>=3.11.3",
+    "polars>=1.41.2",
+    "powerlaw>=2.0.0",
+    "psutil>=7.2.2",
+    "sentencepiece>=0.2.1",
+    "tokenizers>=0.23.1",
+    "matplotlib-venn>=1.1.2",
+    "upsetplot>=0.9.0",
+    "company-resolvers",
+    "ipywidgets>=8.1.9",
+]
+
+[tool.setuptools]
+packages = ["acquisition", "training"]
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+[tool.uv]
+default-groups = ["dev", "sbert"]
+
+# Transitive dependencies carrying known vulnerabilities (pip-audit), forced past their
+# parent's own pin rather than waiting for mlflow/graphifyy to catch up themselves. Each
+# version below was already >=30 days old (checked against PyPI's own publish timestamp)
+# when pinned here, per this repo's adopt-after-30-days convention for security releases --
+# see pip-audit output for the specific advisories.
+#
+# Exact pins (==), not floors (>=): a >= constraint lets the resolver silently pick
+# whatever is newest at sync time, not the specific version whose age was actually checked
+# -- confirmed the hard way, when cryptography>=49.0.0 resolved to 50.0.1 (9 days old, not
+# the 83-day-old 49.0.0 this comment originally verified). Bump these deliberately, checking
+# the new version's own age, rather than letting them float.
+#
+# cryptography 48->49 is a major version bump; verified against the full test suite here,
+# not assumed compatible from the version number alone.
+#
+# gitpython and sqlparse (both transitive, via mlflow) also carry pip-audit advisories
+# with fix versions available (gitpython 3.1.59, sqlparse 0.6.0), but as of landing
+# (2026-09-04) those releases are 25/22 days old -- short of this repo's 30-day bar.
+# Pin them here once each clears it; re-check the age at that time rather than trusting
+# this note. cryptography 50.0.0 (35 days as of the same check) already clears the bar.
+#
+# tornado is transitive via the Jupyter kernel stack (jupyter-client/ipykernel), not
+# mlflow, and unlike gitpython/sqlparse its parents don't floor-pin it below the fix
+# version: 6.5.8 is what a sync resolves to regardless of whether it's listed here.
+# Pinned explicitly anyway, rather than left to float, per this file's own exact-pin
+# rationale above -- an implicit float is the harder-to-audit version of the same
+# outcome, not a safer one, and there's no older version to fall back to that isn't
+# also picked by the resolver on its own.
+override-dependencies = [
+    "cryptography==50.0.0",
+    "pyasn1==0.6.4",
+    "pillow==12.3.0",
+    "aiohttp==3.14.3",
+    "tornado==6.5.8",
+]
+
+# torch comes from PyTorch's CUDA 12.6 index, not PyPI: PyPI's Windows wheel is CPU-only,
+# and PyTorch's CUDA 12.8 and later builds dropped Pascal (compute capability 6.1), which
+# the local GTX 1080 Ti is. The CUDA 12.6 builds still carry Pascal kernels, and PyTorch
+# 2.14 is the last release publishing them (PyTorch packaging notice, 2026-09-04), so the
+# pin in the `sbert` group cannot move past 2.14 without losing the GPU. Exact pin per the
+# rationale above; `explicit` keeps every other package resolving from PyPI.
+[[tool.uv.index]]
+name = "pytorch-cu126"
+url = "https://download.pytorch.org/whl/cu126"
+explicit = true
+
+[tool.uv.workspace]
+members = [
+    "packages/company_cleanse",
+    "packages/company_perturbation",
+    "packages/company_classify",
+    "packages/company_tokenize",
+    "packages/company_vectorize",
+    "packages/company_resolvers",
+]
+
+[tool.uv.sources]
+company-cleanse = { workspace = true }
+company-perturbation = { workspace = true }
+company-classify = { workspace = true }
+company-tokenize = { workspace = true }
+company-vectorize = { workspace = true }
+company-resolvers = { workspace = true }
+torch = { index = "pytorch-cu126" }
+upsetplot = { path = "../UpSetPlot", editable = true }
+
+[tool.radon]
+cc_min = "B"
+exclude = ["tests/*", "docs/*"]
+show_closures = true
+
+[tool.mypy]
+explicit_package_bases = true
+ignore_missing_imports = true
+# `src` belongs here for the same reason each workspace package's own `src`
+# does: code under it imports siblings by their installed name (`from
+# validation.contracts import ...`, not `src.validation.contracts`). Without
+# it those imports resolved to nothing, and `ignore_missing_imports` then
+# silently degraded every cross-area name in `src/` to `Any` -- so whole
+# modules type-checked vacuously.
+mypy_path = [
+    "src",
+    "tooling",
+    "packages/company_cleanse/src",
+    "packages/company_perturbation/src",
+    "packages/company_classify/src",
+    "packages/company_tokenize/src",
+    "packages/company_vectorize/src",
+    "packages/company_resolvers/src",
+]
+
+[dependency-groups]
+dev = [
+    "bandit>=1.7.0",
+    "build>=1.5.0",
+    "duckdb>=1.5.4",
+    "ipykernel>=6.29.0",
+    "jsonschema>=4.26.0",
+    "nbformat>=5.10.4",
+    "mypy>=1.11.0",
+    "numpy>=2.3.0",
+    "pip-audit>=2.7.0",
+    "pre-commit>=4.0.0",
+    "pandas>=2.3.2",
+    "plotly>=5.24.1",
+    "pyscn>=1.26.2",
+    "pytest>=9.1.1",
+    "pytest-cov>=7.1.0",
+    "pytest-mock>=3.15.1",
+    "radon>=6.0.1",
+    "ruff>=0.15.21",
+    "tach>=0.35.0",
+    "graphifyy[sql]>=0.9.31",
+    "wordfreq>=3.1.1",
+    "nbconvert>=7.17.1",
+    "rapidgzip>=0.16.0",
+    "pytest-xdist>=3.8.0",
+]
+# A group rather than an optional extra, and named in `default-groups` above: uv installs
+# an extra only when asked for it, so while these sat in one, every plain `uv sync`,
+# `uv run` and `uv add` uninstalled GPU torch. A machine without the GPU opts out with
+# `uv sync --no-group sbert`.
+sbert = [
+    "sentence-transformers>=6.0.0",
+    "torch==2.13.0",
+]
+
+[tool.ruff.lint]
+# Ruff is the single authority on import order. `I` is already in this ruff's
+# default rule set, so this pins the intent rather than switching it on: a
+# future release changing that default would otherwise silently stop sorting.
+#
+# A separate isort hook used to run alongside this and the two never converged.
+# They agreed on formatting (isort was on `profile = "black"`) but disagreed on
+# classification: ruff resolves a workspace package as first-party inside its
+# own directory (`detect_same_package`), while isort saw every `company_*` as
+# third-party because they are pip-installed into `.venv`. Ruff inserted the
+# section break, isort deleted it, on every run. `known_first_party` cannot fix
+# that -- ruff's answer is per-file (inside `company_tokenize`, `company_cleanse`
+# is third-party), and a single global list makes the two disagree on every
+# cross-package import instead, which took it from 3 files to over 100.
+#
+# `D` (pydocstyle) is scoped to the packages' library code by the per-file-ignores
+# below -- see there for why. It needs `convention` set: selecting `D` bare is
+# self-contradictory, since D212 and D213 are mutually incompatible and ruff silently
+# drops one of them.
+extend-select = ["I", "D"]
+# __all__ order is often deliberate here (usage/logical grouping, not alphabetical --
+# e.g. company_cleanse/__init__.py, company_tokenize/__init__.py, both pinned exactly
+# by a test), so don't auto-alphabetize it on `--fix`.
+#
+# D100-D107 are the missing-docstring rules: 249 undocumented names across the packages'
+# public surface. That is authoring work rather than formatting, deferred rather than
+# declined, and switching one on is a decision about scheduling the writing.
+#
+# D401 (imperative mood) is declined, not deferred. Several docstrings here state a fact
+# about behaviour rather than commanding an action ("A scenario's own `exclusions`, if
+# declared, entirely replace the profile's default"), and rewriting those imperatively
+# makes them worse.
+ignore = [
+    "RUF022",
+    "D100",
+    "D101",
+    "D102",
+    "D103",
+    "D104",
+    "D105",
+    "D106",
+    "D107",
+    "D401",
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "pep257"
+
+[tool.ruff.lint.per-file-ignores]
+"*.ipynb" = ["E402", "D"]
+# Docstring rules apply to `packages/*/src` alone. Everything under `packages/` is meant
+# to be consumable outside this monorepo, which is the same asymmetry
+# `tooling/check_package_docs.py` already enforces for README coverage; `src/`,
+# `scripts/` and `tooling/` are monorepo-internal, and a test's name carries its own
+# description. `tooling/` is here for the same reason as `scripts/`, which is where its
+# scripts sat before the move into `tooling/`: nothing imports it as a library and it ships nowhere.
+"src/**" = ["D"]
+"scripts/**" = ["D"]
+"tooling/**" = ["D"]
+"packages/*/tests/**" = ["D"]
+
+[tool.coverage.report]
+fail_under = 90
+show_missing = true

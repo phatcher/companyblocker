@@ -1,0 +1,54 @@
+{
+  "markers": [
+    {
+      "property": "P31",
+      "match": {
+        "type": "qid_set",
+        "qids": ["Q783794", "Q6881511", "Q43229", "Q167037", "Q891723", "Q161726"]
+      }
+    },
+    {
+      "property": "P1454",
+      "match": {
+        "type": "qid_closure_file",
+        "path": "p279.json"
+      }
+    }
+  ],
+  "match_logic": "any",
+  "projected_fields": [
+    { "property": "P856", "field": "website" },
+    { "property": "P1278", "field": "lei" },
+    { "property": "P946", "field": "isin" },
+    { "property": "P2622", "field": "company_number_gb" },
+    { "property": "P1616", "field": "company_number_fr" },
+    { "property": "P12012", "field": "company_number_de" },
+    { "property": "P17", "field": "country", "shape": "entity_id_list" },
+    { "property": "P1001", "field": "jurisdiction", "shape": "entity_id_list" },
+    { "property": "P159", "field": "headquarters_location", "shape": "entity_id_list" },
+    { "property": "P452", "field": "industry", "shape": "entity_id_list" },
+    { "property": "P1454", "field": "legal_form", "shape": "entity_id_list" },
+    {
+      "property": "P1454",
+      "field": "matched_company_type_qids",
+      "shape": "entity_id_list",
+      "match_only": true
+    },
+    { "property": "P571", "field": "inception", "shape": "time" },
+    { "property": "P576", "field": "dissolved", "shape": "time" },
+    {
+      "property": "P1448",
+      "field": "official_name",
+      "shape": "multi_lang_text",
+      "field_en": "official_name_en",
+      "field_variants": "official_name_variants"
+    },
+    {
+      "property": "P1813",
+      "field": "short_name",
+      "shape": "multi_lang_text",
+      "field_en": "short_name_en",
+      "field_variants": "short_name_variants"
+    }
+  ]
+}

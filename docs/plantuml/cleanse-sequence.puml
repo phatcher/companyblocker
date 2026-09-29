@@ -1,0 +1,44 @@
+@startuml
+!include _style.puml
+
+title Cleanse Stage: Column Derivation Sequence
+
+actor "Canonical Input Row" as Input
+participant "cleanse_lazyframe" as API
+participant "_process_cleanse_lazyframe" as Pipeline
+participant "extract helpers" as Extract
+participant "type matcher" as Matcher
+database "Cleansed Output Row" as Output
+
+Input -> API: row + config (company_col, company_type_regex/_mapping,\nsource_company_type_col/_mapping, noise_words_profile/_set_kind,\npersonal_owner_markers, jurisdiction_col)
+API -> Pipeline: execute cleanse pipeline
+
+Pipeline -> Pipeline: strip outer whitespace from name
+Pipeline -> Extract: split personal_owner\n(configured owner markers)
+Extract --> Pipeline: personal_owner (or none)
+Pipeline -> Extract: extract special + lead tokens
+Extract --> Pipeline: short_name? quoted_name?\nspecial_full_name? special_company_type?
+
+Pipeline -> Pipeline: build name body, then\nnormalize name fields
+Pipeline -> Pipeline: build name_cleansed_basic
+
+Pipeline -> Matcher: resolve company_type from suffix
+Matcher --> Pipeline: matched type (or none)
+Pipeline -> Pipeline: special company type first, else suffix match;\nmerge with source mapping (drop the match when the\nmapped value is already canonical);\nset company_type_source/company_type_missing
+
+Pipeline -> Pipeline: build name_cleansed
+Pipeline -> Pipeline: trim company-type suffix from quoted_name
+Pipeline -> Extract: derive acronym from short_name + cleansed name
+Extract --> Pipeline: acronym (or none)
+Pipeline -> Pipeline: restore a bare legal-form short_name\n(not an acronym) into name_cleansed
+Pipeline -> Pipeline: restore leading quoted_name into name_cleansed\n(unless it equals the acronym)
+
+alt short_name is missing
+  Pipeline -> Extract: derive short_name from name_cleansed\n(strip company-type components + noise words,\nsuffix set unioned with the row's jurisdiction\ncorpus noise words)
+  Extract --> Pipeline: fallback short_name
+end
+
+Pipeline -> Pipeline: recombine quoted_name into short_name
+
+Pipeline -> Output: emit preserved input columns + derived columns\nshort_name, quoted_name, acronym, name_cleansed_basic,\nname_cleansed, personal_owner, company_type,\ncompany_type_source, company_type_missing
+@enduml

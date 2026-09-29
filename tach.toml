@@ -1,0 +1,232 @@
+interfaces = []
+exclude = [
+    "**/*__pycache__",
+    "**/*egg-info",
+    "**/docs",
+    "**/tests",
+    "**/venv",
+    "**/.venv",
+    "**/.worktrees",
+    "**/artifacts",
+    "**/data",
+    "**/graphify-out",
+    "**/tmp",
+]
+# Module paths below are Python import names, resolved against these roots. `src`
+# makes `import acquisition` resolve to src/acquisition, so the src-to-src edges are
+# enforced. The package roots make each package's own files scannable, but an import that
+# crosses a *distribution* boundary (a src module importing `company_cleanse`, or a package
+# importing `acquisition`) is classed as external and is not checked. Crossing a source root
+# is not itself the problem: `src` and `tooling` share the root `pyproject.toml`, so edges
+# between them are checked, measured by declaring a `tooling` module and watching its import
+# of `workspace` fail. The package edges below are therefore stated from what each package
+# actually imports, matching its `pyproject.toml` requirements, rather than from intent
+# `tach check` cannot verify.
+#
+# The cause is the workspace's shape, not the platform: tach resolves each package via
+# its nearest `pyproject.toml`, so two workspace members can never share a package and
+# no module-graph rule can span them, whatever `source_roots` declares. Upstream
+# `tach-org/tach#942`, open and unscheduled, proposes a `workspace_modules` flag to
+# make cross-root first-party imports eligible for the internal graph; until it lands,
+# no configuration here reaches these edges. Measured on 2026-09-08: a planted
+# `company_resolvers` import of `company_cleanse` and of `workspace` passes
+# `tach check` and `tach check --dependencies`; `cannot_depend_on_external` is not
+# honoured by `check`, and `external.exclude` only silences `check-external`.
+#
+# Every package's `tests/` directory is declared as a source root too, not
+# just its `src/`: the `pytest --tach`/`--tach-base` plugin (see README.md's Quality
+# Gates section for the invocation) can only place a test file in its dependency graph,
+# and therefore only select it for a change to what it imports, when the file sits
+# under a declared root. A tests directory or a script tier left outside every root is
+# invisible to that selection and gets silently skipped, so a later move that creates
+# one must add the root in the same change (`**/tests` above still excludes any not yet
+# declared this way from `tach check`). Selection is coarser once a tests directory is
+# a root: it works at whole-module granularity like the cross-root case already does,
+# not a per-symbol trace, so any change inside a package selects every test in that
+# package that imports anything from it, not only the one that imports the changed
+# symbol. `scripts/` stays outside every root: its own files import each other and are
+# imported by tests as `from scripts.<module> import ...`, dotted from the repo root,
+# which only a `.` source root resolves, and adding `.` alongside the roots above made
+# every one of them ambiguous (nested under `.` as well as declared on its own) and
+# broke selection everywhere, measured when the package test roots were added: every
+# case, not just scripts, deselected everything. `scripts/` selection reach needs a fix
+# that does not add `.` to this list, so it is left unreached rather than regress the
+# roots below.
+source_roots = [
+    "src",
+    "tooling",
+    "packages/company_cleanse/src",
+    "packages/company_cleanse/tests",
+    "packages/company_perturbation/src",
+    "packages/company_perturbation/tests",
+    "packages/company_classify/src",
+    "packages/company_classify/tests",
+    "packages/company_tokenize/src",
+    "packages/company_tokenize/tests",
+    "packages/company_vectorize/src",
+    "packages/company_vectorize/tests",
+    "packages/company_resolvers/src",
+    "packages/company_resolvers/tests",
+]
+forbid_circular_dependencies = true
+
+# `tooling/` is a source root, so its files resolve as top-level modules and there is no
+# `tooling` module to declare: one entry per file is the only shape available. A module
+# importing nothing first-party still gets an entry, because an undeclared file is invisible
+# to `tach check` rather than clean, and a new file left out is covered by nothing.
+
+[[modules]]
+path = "_tooling_common"
+depends_on = []
+
+[[modules]]
+path = "baseline"
+depends_on = [
+    "_tooling_common",
+]
+
+[[modules]]
+path = "check_direct_tests"
+depends_on = [
+    "_tooling_common",
+]
+
+[[modules]]
+path = "check_package_docs"
+depends_on = [
+    "_tooling_common",
+]
+
+[[modules]]
+path = "check_test_tier_markers"
+depends_on = [
+    "_tooling_common",
+    "test_tier_classifier",
+]
+
+[[modules]]
+path = "design_artifact_status"
+depends_on = [
+    "_tooling_common",
+]
+
+[[modules]]
+path = "export_diagrams"
+depends_on = [
+    "_tooling_common",
+]
+
+[[modules]]
+path = "start_structurizr"
+depends_on = [
+    "_tooling_common",
+]
+
+[[modules]]
+path = "test_tier_classifier"
+depends_on = []
+
+[[modules]]
+path = "update_design_artifacts"
+depends_on = [
+    "_tooling_common",
+]
+
+# `workspace` owns every data-layer path rule, so every src module may depend on it
+# rather than deriving its own path logic. Packages may not: they stay pure of this
+# repo's layout. Not tach's `utility = true`, which would open it to the packages too.
+[[modules]]
+path = "workspace"
+depends_on = []
+
+[[modules]]
+path = "acquisition"
+depends_on = [
+    "workspace",
+    "company_cleanse",
+    "company_tokenize",
+    "company_vectorize",
+]
+
+# Analysis reads what validation's runs produce -- `ARTIFACT_SCHEMAS["run_metrics"]`
+# and the truth-bucket names -- and takes those columns from the module
+# that computes them rather than restating them, which is the same relationship and the
+# same drift-avoidance `blocking` states at `blocking/contracts.py`'s
+# `pair_truth_eval_detail` entry. A shared contracts module would not remove this
+# coupling, only stop it being declared: each contract here has one implementation, and
+# `validation` does not depend on `analysis`, so there is no second implementor and no
+# cycle for an indirection to earn its place against.
+[[modules]]
+path = "analysis"
+depends_on = [
+    "acquisition",
+    "validation",
+    "workspace",
+    "company_tokenize",
+]
+
+[[modules]]
+path = "training"
+depends_on = [
+    "acquisition",
+    "analysis",
+    "workspace",
+    "company_tokenize",
+]
+
+[[modules]]
+path = "validation"
+depends_on = [
+    "acquisition",
+    "workspace",
+    "company_cleanse",
+    "company_perturbation",
+    "company_tokenize",
+    "company_vectorize",
+]
+
+[[modules]]
+path = "blocking"
+depends_on = [
+    "workspace",
+    "company_vectorize",
+    "company_tokenize",
+    "company_cleanse",
+    "validation",
+]
+
+[[modules]]
+path = "company_cleanse"
+depends_on = []
+
+[[modules]]
+path = "company_perturbation"
+depends_on = [
+    "company_cleanse",
+]
+
+[[modules]]
+path = "company_classify"
+depends_on = [
+    "company_perturbation",
+]
+
+# Tokenize reads cleansed names to train tokenizers and derive token statistics, the
+# basis optimize searches over. Vectorize takes `company_cleanse`'s packaged noise
+# tokens, or a token set supplied per run, so a trained tokenizer reaches blocking as
+# data rather than as an import: these two are independent of each other.
+[[modules]]
+path = "company_tokenize"
+depends_on = [
+    "company_cleanse",
+]
+
+[[modules]]
+path = "company_vectorize"
+depends_on = [
+    "company_cleanse",
+]
+
+[[modules]]
+path = "company_resolvers"
+depends_on = []

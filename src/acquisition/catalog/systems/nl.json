@@ -1,0 +1,40 @@
+{
+  "code": "nl",
+  "display_name": "Netherlands",
+  "region": "eu",
+  "status": "research_required",
+  "access_mode": "bulk_download",
+  "info_url": "https://www.kvk.nl/en/ordering-products/kvk-business-register-open-data-set/",
+  "notes": "Netherlands remains research-required for this pipeline. KVK's open HVDS bulk dataset currently omits organisation name and KVK number fields, which makes it unsuitable for the company-name-centric processing path until an appropriate source is onboarded.",
+  "all_systems_target": false,
+  "research": {
+    "pass_date": "2026-06-19",
+    "basis": "KVK HVDS publication review plus shard schema verification",
+    "priority": "P1",
+    "approach": "Current KVK HVDS open dataset excludes organisation name and KVK number under privacy-driven implementation constraints",
+    "next_action": "Evaluate KVK non-HVDS product/API options that include organisation name and update onboarding once legal and technical access is confirmed"
+  },
+  "resources": [
+    {
+      "name": "kvk_business_register_open_data",
+      "url": "https://www.kvk.nl/en/ordering-products/kvk-business-register-open-data-set/",
+      "file_format": "zip",
+      "file_name": "kvk-open-data-set-basis-bedrijfsgegevens.zip",
+      "extract": false,
+      "file_name_template": null,
+      "download_url_template": null,
+      "notes": "KVK Business Register Open Data Set bulk download (CSV/XML in zip archive).",
+      "publication_frequency": "monthly",
+      "snapshot_date_mode": "month_start",
+      "refresh_if_older_than_days": 30,
+      "adapter": "direct_download",
+      "request_headers": [],
+      "required_env_vars": [],
+      "auth_header_name": null,
+      "auth_header_env": null,
+      "auth_header_prefix": null
+    }
+  ],
+  "company_type_column": null,
+  "registry": "country"
+}

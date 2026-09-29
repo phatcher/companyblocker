@@ -1,0 +1,50 @@
+[build-system]
+requires = ["hatchling>=1.25.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "company_cleanse"
+version = "0.1.0"
+description = "Deterministic company-name cleansing for Polars workflows"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+license = { text = "MIT" }
+authors = [
+  { name = "Paul Hatcher" }
+]
+dependencies = [
+  "polars",
+]
+
+[dependency-groups]
+dev = [
+  "pytest",
+  "pytest-cov",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/company_cleanse"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "src/company_cleanse",
+  "tests",
+  "README.md",
+]
+
+[tool.hatch.build]
+include = [
+  "src/company_cleanse/py.typed",
+  "src/company_cleanse/resources/company_type_rules.json",
+  "src/company_cleanse/resources/noise_words.json",
+  "src/company_cleanse/resources/manual_noise_words.json",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-v --tb=short"
+markers = [
+  "performance: performance benchmark tests (opt-in via PERF_BENCHMARK=1)",
+]

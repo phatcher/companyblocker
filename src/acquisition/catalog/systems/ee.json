@@ -1,0 +1,34 @@
+{
+  "code": "ee",
+  "display_name": "Estonia",
+  "region": "eu",
+  "status": "supported",
+  "access_mode": "api_contract",
+  "info_url": "https://ariregister.rik.ee/eng",
+  "notes": "Estonia is enabled through a contractual API adapter for e-Business Register data. Access and integration terms are managed through avaandmed.ariregister.rik.ee. Set EE_ARIREGISTER_API_KEY before acquisition runs.",
+  "all_systems_target": false,
+  "research": null,
+  "resources": [
+    {
+      "name": "ee_company_api",
+      "url": "https://avaandmed.ariregister.rik.ee/api/company/v1",
+      "file_format": "jsonl",
+      "file_name": null,
+      "extract": false,
+      "file_name_template": "ee-company-{snapshot_date}.jsonl",
+      "download_url_template": null,
+      "notes": "Contractual API snapshot from Estonian e-Business Register.",
+      "publication_frequency": "daily",
+      "snapshot_date_mode": "run_date",
+      "refresh_if_older_than_days": 1,
+      "adapter": "api_json_snapshot",
+      "request_headers": [],
+      "required_env_vars": [],
+      "auth_header_name": "X-API-KEY",
+      "auth_header_env": "EE_ARIREGISTER_API_KEY",
+      "auth_header_prefix": null
+    }
+  ],
+  "company_type_column": null,
+  "registry": "country"
+}

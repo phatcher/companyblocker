@@ -1,0 +1,2 @@
+# Known offenders, one per line, for test_direct_tests.py. A new line here is a regression: fix the code
+# instead. Delete a line in the same commit that clears it; the test warns when one is stale.

@@ -1,0 +1,227 @@
+[
+  {
+    "input": "243 RUGBY ROAD MANAGEMENT COMPANY LIMITED",
+    "expected": {
+      "short_name": "243 RUGBY ROAD",
+      "company_type": "LTD",
+      "name_cleansed": "243 RUGBY ROAD MANAGEMENT COMPANY LTD"
+    }
+  },
+  {
+    "input": "(MISG) MEDICAL INDUSTRY SUPPORT GROUP LTD",
+    "expected": {
+      "short_name": "MISG",
+      "acronym": "MISG",
+      "company_type": "LTD",
+      "name_cleansed": "MEDICAL INDUSTRY SUPPORT GROUP LTD"
+    }
+  },
+  {
+    "input": "(MIG) MEDICAL INDUSTRY SUPPORT GROUP LTD",
+    "expected": {
+      "short_name": "MIG",
+      "acronym": null,
+      "company_type": "LTD",
+      "name_cleansed": "MEDICAL INDUSTRY SUPPORT GROUP LTD"
+    }
+  },
+  {
+    "input": "\"LMBS\" LIGHTING MAINTENANCE BUILDING SERVICES LTD",
+    "expected": {
+      "short_name": "LMBS",
+      "quoted_name": "LMBS",
+      "acronym": "LMBS",
+      "company_type": "LTD",
+      "name_cleansed": "LIGHTING MAINTENANCE BUILDING SERVICES LTD"
+    }
+  },
+  {
+    "input": "\"TRIPLE D\" \"PROPERTIES LIMITED\"",
+    "expected": {
+      "short_name": "TRIPLE D PROPERTIES",
+      "quoted_name": "TRIPLE D",
+      "acronym": null,
+      "company_type": "LTD",
+      "name_cleansed": "TRIPLE D PROPERTIES LTD"
+    }
+  },
+  {
+    "input": "\"K\" LINE SHIPPING LTD",
+    "expected": {
+      "short_name": "K LINE SHIPPING",
+      "quoted_name": "K",
+      "acronym": null,
+      "company_type": "LTD",
+      "name_cleansed": "K LINE SHIPPING LTD"
+    }
+  },
+  {
+    "input": "\"ABC LIMITED\" LTD",
+    "expected": {
+      "short_name": "ABC",
+      "quoted_name": "ABC",
+      "acronym": null,
+      "company_type": "LTD",
+      "name_cleansed": "ABC LTD"
+    }
+  },
+  {
+    "input": "\"VARIG\" S.A. (VIACAO AEREA RIO GRANDENSE)",
+    "expected": {
+      "short_name": "VARIG",
+      "quoted_name": "VARIG",
+      "acronym": "VARIG",
+      "company_type": "SA",
+      "name_cleansed": "VIACAO AEREA RIO GRANDENSE SA"
+    }
+  },
+  {
+    "input": "\"FIRST LEADER (UK) LIMITED\"",
+    "expected": {
+      "short_name": "FIRST LEADER",
+      "acronym": null,
+      "company_type": "LTD",
+      "name_cleansed": "FIRST LEADER UK LTD"
+    }
+  },
+  {
+    "input": "\"VARIG\" (VIACAO AEREA RIO GRANDENSE)",
+    "expected": {
+      "short_name": "VARIG",
+      "quoted_name": "VARIG",
+      "acronym": "VARIG",
+      "company_type": "PRIVATE",
+      "name_cleansed": "VIACAO AEREA RIO GRANDENSE"
+    }
+  },
+  {
+    "input": "V.A.FLETCHER (OLD PARK HOUSE FARM PARTNERSHIP)",
+    "expected": {
+      "short_name": "VA FLETCHER OLD PARK HOUSE FARM",
+      "acronym": null,
+      "company_type": "PRIVATE",
+      "name_cleansed": "VA FLETCHER OLD PARK HOUSE FARM PARTNERSHIP"
+    }
+  },
+  {
+    "input": "ABRIDGE TAX PARTNERS",
+    "expected": {
+      "short_name": "ABRIDGE TAX PARTNERS",
+      "acronym": null,
+      "company_type": "PRIVATE",
+      "name_cleansed": "ABRIDGE TAX PARTNERS"
+    }
+  },
+  {
+    "input": "MIDDLE EAST TIMES (THE)",
+    "expected": {
+      "short_name": "MIDDLE EAST TIMES",
+      "company_type": "PRIVATE",
+      "name_cleansed": "THE MIDDLE EAST TIMES"
+    }
+  },
+  {
+    "input": "(THE) MIDDLE EAST TIMES LTD",
+    "expected": {
+      "short_name": "MIDDLE EAST TIMES",
+      "company_type": "LTD",
+      "name_cleansed": "THE MIDDLE EAST TIMES LTD"
+    }
+  },
+  {
+    "input": "A.C.R.UK LIMITED",
+    "expected": {
+      "short_name": "ACR",
+      "company_type": "LTD",
+      "name_cleansed": "ACR UK LTD"
+    }
+  },
+  {
+    "input": "ABC & CO",
+    "expected": {
+      "short_name": "ABC",
+      "company_type": "CO",
+      "name_cleansed": "ABC & CO"
+    }
+  },
+  {
+    "input": "ABC SOCIEDAD ANÓNIMA",
+    "expected": {
+      "short_name": "ABC",
+      "company_type": "SA",
+      "name_cleansed": "ABC SA"
+    }
+  },
+  {
+    "input": "OMEGA ETERORRYTHMI ETAIRIA",
+    "expected": {
+      "short_name": "OMEGA",
+      "company_type": "EE",
+      "name_cleansed": "OMEGA EE"
+    }
+  },
+  {
+    "input": "OMEGA ΕΤΕΡΟΡΡΥΘΜΗ ΕΤΑΙΡΙΑ",
+    "expected": {
+      "short_name": "OMEGA",
+      "company_type": "EE",
+      "name_cleansed": "OMEGA EE"
+    }
+  },
+  {
+    "input": "DELTA SPOLKA JAWNA",
+    "expected": {
+      "short_name": "DELTA",
+      "company_type": "SP J",
+      "name_cleansed": "DELTA SP J"
+    }
+  },
+  {
+    "input": "EPSILON SP Z O O",
+    "expected": {
+      "short_name": "EPSILON",
+      "company_type": "SP ZOO",
+      "name_cleansed": "EPSILON SP ZOO"
+    }
+  },
+  {
+    "input": "THETA SPOLKA ZOO",
+    "expected": {
+      "short_name": "THETA",
+      "company_type": "SP ZOO",
+      "name_cleansed": "THETA SP ZOO"
+    }
+  },
+  {
+    "input": "ALFA ДРУЖЕСТВО С ОГРАНИЧЕНА ОТГОВОРНОСТ",
+    "expected": {
+      "short_name": "ALFA",
+      "company_type": "OOD",
+      "name_cleansed": "ALFA OOD"
+    }
+  },
+  {
+    "input": "BEKINA BOOTS NV",
+    "expected": {
+      "short_name": "BEKINA BOOTS",
+      "company_type": "NV",
+      "name_cleansed": "BEKINA BOOTS NV"
+    }
+  },
+  {
+    "input": "OMEGA JSC",
+    "expected": {
+      "short_name": "OMEGA JSC",
+      "company_type": "PRIVATE",
+      "name_cleansed": "OMEGA JSC"
+    }
+  },
+  {
+    "input": "(B) DEEP CLEAN LTD",
+    "expected": {
+      "short_name": "DEEP CLEAN",
+      "company_type": "LTD",
+      "name_cleansed": "DEEP CLEAN LTD"
+    }
+  }
+]

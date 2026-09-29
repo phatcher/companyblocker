@@ -1,0 +1,1017 @@
+{
+  "generated_utc": "2026-08-30T00:53:10Z",
+  "system": "gb",
+  "source_stats_path": "artifacts/tokenizers/gb/token_tfidf_stats.parquet",
+  "tfidf_use_case": "corpus",
+  "tfidf_namespace": "corpus_tfidf",
+  "selection": {
+    "max_candidates": 200,
+    "candidate_count": 200,
+    "min_token_length": 2,
+    "source_token_count": 1295457,
+    "document_frequency_pct_cutoff": 0.001283897545116293,
+    "idf_cutoff": 7.657718368539624
+  },
+  "candidates": [
+    {
+      "token": "ltd",
+      "document_frequency_pct": 0.9530884264252649,
+      "idf": 1.048047583559922
+    },
+    {
+      "token": "services",
+      "document_frequency_pct": 0.04445205688599741,
+      "idf": 4.113340271553801
+    },
+    {
+      "token": "management",
+      "document_frequency_pct": 0.028553383006854356,
+      "idf": 4.555973885207491
+    },
+    {
+      "token": "the",
+      "document_frequency_pct": 0.0275151738930069,
+      "idf": 4.593011446069157
+    },
+    {
+      "token": "property",
+      "document_frequency_pct": 0.026375004080182875,
+      "idf": 4.6353320542867955
+    },
+    {
+      "token": "uk",
+      "document_frequency_pct": 0.025770610539261538,
+      "idf": 4.658513928489805
+    },
+    {
+      "token": "group",
+      "document_frequency_pct": 0.023093484097114318,
+      "idf": 4.768197351294846
+    },
+    {
+      "token": "holdings",
+      "document_frequency_pct": 0.021581096310918008,
+      "idf": 4.835929562059084
+    },
+    {
+      "token": "solutions",
+      "document_frequency_pct": 0.021090772398800056,
+      "idf": 4.858911515970096
+    },
+    {
+      "token": "company",
+      "document_frequency_pct": 0.02108919297317047,
+      "idf": 4.858986405196484
+    },
+    {
+      "token": "properties",
+      "document_frequency_pct": 0.02070416410302488,
+      "idf": 4.877412133915392
+    },
+    {
+      "token": "consulting",
+      "document_frequency_pct": 0.014722703752048427,
+      "idf": 5.218352759499856
+    },
+    {
+      "token": "investments",
+      "document_frequency_pct": 0.012375852758221173,
+      "idf": 5.391994058565282
+    },
+    {
+      "token": "co",
+      "document_frequency_pct": 0.010992626890177623,
+      "idf": 5.510514724758969
+    },
+    {
+      "token": "consultancy",
+      "document_frequency_pct": 0.009704342051645814,
+      "idf": 5.63516395125937
+    },
+    {
+      "token": "construction",
+      "document_frequency_pct": 0.009584481195533946,
+      "idf": 5.647591896325538
+    },
+    {
+      "token": "llp",
+      "document_frequency_pct": 0.00896060807184772,
+      "idf": 5.714897780017766
+    },
+    {
+      "token": "lp",
+      "document_frequency_pct": 0.008439573105821167,
+      "idf": 5.774802933328854
+    },
+    {
+      "token": "london",
+      "document_frequency_pct": 0.00841746114700697,
+      "idf": 5.777426349853544
+    },
+    {
+      "token": "developments",
+      "document_frequency_pct": 0.008161067719804278,
+      "idf": 5.808358942747087
+    },
+    {
+      "token": "care",
+      "document_frequency_pct": 0.008073497343230599,
+      "idf": 5.8191469536756895
+    },
+    {
+      "token": "cic",
+      "document_frequency_pct": 0.007629854233053728,
+      "idf": 5.87566371340653
+    },
+    {
+      "token": "trading",
+      "document_frequency_pct": 0.006913321472431827,
+      "idf": 5.974279871743866
+    },
+    {
+      "token": "international",
+      "document_frequency_pct": 0.006887875170621841,
+      "idf": 5.977967332213099
+    },
+    {
+      "token": "house",
+      "document_frequency_pct": 0.006865412228334405,
+      "idf": 5.9812338078373495
+    },
+    {
+      "token": "global",
+      "document_frequency_pct": 0.006490561878912808,
+      "idf": 6.037379313778832
+    },
+    {
+      "token": "of",
+      "document_frequency_pct": 0.006452480172066138,
+      "idf": 6.04326367758192
+    },
+    {
+      "token": "design",
+      "document_frequency_pct": 0.006389127655146102,
+      "idf": 6.053130245727176
+    },
+    {
+      "token": "electrical",
+      "document_frequency_pct": 0.006319106452234484,
+      "idf": 6.064149869230199
+    },
+    {
+      "token": "homes",
+      "document_frequency_pct": 0.006258737294836998,
+      "idf": 6.073748960711516
+    },
+    {
+      "token": "road",
+      "document_frequency_pct": 0.006219251654097363,
+      "idf": 6.080077650704637
+    },
+    {
+      "token": "engineering",
+      "document_frequency_pct": 0.006186961174559174,
+      "idf": 6.085283048901831
+    },
+    {
+      "token": "capital",
+      "document_frequency_pct": 0.005885817354518228,
+      "idf": 6.135180020046454
+    },
+    {
+      "token": "estates",
+      "document_frequency_pct": 0.005690670543396123,
+      "idf": 6.168896529316056
+    },
+    {
+      "token": "building",
+      "document_frequency_pct": 0.005518337658034696,
+      "idf": 6.199646987393432
+    },
+    {
+      "token": "media",
+      "document_frequency_pct": 0.00482075800496782,
+      "idf": 6.334787873647812
+    },
+    {
+      "token": "business",
+      "document_frequency_pct": 0.004592092272151181,
+      "idf": 6.383381486205434
+    },
+    {
+      "token": "investment",
+      "document_frequency_pct": 0.004252340270053704,
+      "idf": 6.46024470271658
+    },
+    {
+      "token": "associates",
+      "document_frequency_pct": 0.004243039208012812,
+      "idf": 6.462434288603043
+    },
+    {
+      "token": "consultants",
+      "document_frequency_pct": 0.004146869736344725,
+      "idf": 6.48535936705222
+    },
+    {
+      "token": "transport",
+      "document_frequency_pct": 0.003982258487394604,
+      "idf": 6.525862269554032
+    },
+    {
+      "token": "partners",
+      "document_frequency_pct": 0.003955408251691652,
+      "idf": 6.532627267829887
+    },
+    {
+      "token": "club",
+      "document_frequency_pct": 0.003940666945815522,
+      "idf": 6.536360937381936
+    },
+    {
+      "token": "centre",
+      "document_frequency_pct": 0.003934524735033801,
+      "idf": 6.537920756759182
+    },
+    {
+      "token": "court",
+      "document_frequency_pct": 0.003872927135479972,
+      "idf": 6.553699556172872
+    },
+    {
+      "token": "systems",
+      "document_frequency_pct": 0.003712176704735504,
+      "idf": 6.596089763535655
+    },
+    {
+      "token": "enterprises",
+      "document_frequency_pct": 0.0036993658079622006,
+      "idf": 6.599546615563346
+    },
+    {
+      "token": "home",
+      "document_frequency_pct": 0.003692170646760756,
+      "idf": 6.601493388572008
+    },
+    {
+      "token": "development",
+      "document_frequency_pct": 0.003548969389678348,
+      "idf": 6.64104875847707
+    },
+    {
+      "token": "health",
+      "document_frequency_pct": 0.0035266819391275325,
+      "idf": 6.647348226247277
+    },
+    {
+      "token": "estate",
+      "document_frequency_pct": 0.0034986032612682365,
+      "idf": 6.655341474580827
+    },
+    {
+      "token": "cleaning",
+      "document_frequency_pct": 0.003482458021499142,
+      "idf": 6.659966690206488
+    },
+    {
+      "token": "park",
+      "document_frequency_pct": 0.0034663127817300466,
+      "idf": 6.664613397895653
+    },
+    {
+      "token": "studio",
+      "document_frequency_pct": 0.0034368301699777863,
+      "idf": 6.673154809323722
+    },
+    {
+      "token": "digital",
+      "document_frequency_pct": 0.0034329693517721332,
+      "idf": 6.674278749362342
+    },
+    {
+      "token": "heating",
+      "document_frequency_pct": 0.0033759345373704387,
+      "idf": 6.691031286711093
+    },
+    {
+      "token": "logistics",
+      "document_frequency_pct": 0.003321883082491295,
+      "idf": 6.707170811220285
+    },
+    {
+      "token": "west",
+      "document_frequency_pct": 0.0032941553881052402,
+      "idf": 6.715552378509345
+    },
+    {
+      "token": "it",
+      "document_frequency_pct": 0.0032927514542122754,
+      "idf": 6.715978635975305
+    },
+    {
+      "token": "ventures",
+      "document_frequency_pct": 0.0032871357186404163,
+      "idf": 6.717685485120222
+    },
+    {
+      "token": "plumbing",
+      "document_frequency_pct": 0.003282046458278419,
+      "idf": 6.719234837640654
+    },
+    {
+      "token": "training",
+      "document_frequency_pct": 0.0032237832017203804,
+      "idf": 6.737145442114717
+    },
+    {
+      "token": "maintenance",
+      "document_frequency_pct": 0.0031556924079115885,
+      "idf": 6.758491909258457
+    },
+    {
+      "token": "productions",
+      "document_frequency_pct": 0.003136739300356564,
+      "idf": 6.764515687861445
+    },
+    {
+      "token": "energy",
+      "document_frequency_pct": 0.0031365638086199433,
+      "idf": 6.7645716334823165
+    },
+    {
+      "token": "north",
+      "document_frequency_pct": 0.0030203882789771076,
+      "idf": 6.802311961465164
+    },
+    {
+      "token": "financial",
+      "document_frequency_pct": 0.0030044185309446333,
+      "idf": 6.807612996218836
+    },
+    {
+      "token": "green",
+      "document_frequency_pct": 0.0029880977994389177,
+      "idf": 6.813059728475611
+    },
+    {
+      "token": "medical",
+      "document_frequency_pct": 0.0029754623944022347,
+      "idf": 6.817297022951126
+    },
+    {
+      "token": "healthcare",
+      "document_frequency_pct": 0.0029672142827810665,
+      "idf": 6.820072751885225
+    },
+    {
+      "token": "tech",
+      "document_frequency_pct": 0.0029175501213174375,
+      "idf": 6.836951041332621
+    },
+    {
+      "token": "contractors",
+      "document_frequency_pct": 0.002912987336165302,
+      "idf": 6.838516081079019
+    },
+    {
+      "token": "community",
+      "document_frequency_pct": 0.002902808815441307,
+      "idf": 6.8420161751718025
+    },
+    {
+      "token": "street",
+      "document_frequency_pct": 0.0028936832451370363,
+      "idf": 6.845164639870009
+    },
+    {
+      "token": "security",
+      "document_frequency_pct": 0.0028773625136313207,
+      "idf": 6.850820385173786
+    },
+    {
+      "token": "technology",
+      "document_frequency_pct": 0.002869640877220014,
+      "idf": 6.853507409691264
+    },
+    {
+      "token": "food",
+      "document_frequency_pct": 0.0028461249845128543,
+      "idf": 6.861735381935964
+    },
+    {
+      "token": "beauty",
+      "document_frequency_pct": 0.002804708934670393,
+      "idf": 6.876393119055001
+    },
+    {
+      "token": "technologies",
+      "document_frequency_pct": 0.002732406339182707,
+      "idf": 6.902508566582229
+    },
+    {
+      "token": "in",
+      "document_frequency_pct": 0.002725562161454504,
+      "idf": 6.905016364572096
+    },
+    {
+      "token": "marketing",
+      "document_frequency_pct": 0.0026548389915964027,
+      "idf": 6.931305344678819
+    },
+    {
+      "token": "south",
+      "document_frequency_pct": 0.0026157043343300094,
+      "idf": 6.946154959982015
+    },
+    {
+      "token": "events",
+      "document_frequency_pct": 0.002615528842593389,
+      "idf": 6.946222049311482
+    },
+    {
+      "token": "for",
+      "document_frequency_pct": 0.0025930659003059525,
+      "idf": 6.95484685852002
+    },
+    {
+      "token": "association",
+      "document_frequency_pct": 0.0025777981192199604,
+      "idf": 6.960751786255731
+    },
+    {
+      "token": "farm",
+      "document_frequency_pct": 0.002577447135746719,
+      "idf": 6.9608879425633825
+    },
+    {
+      "token": "project",
+      "document_frequency_pct": 0.0025690235323889304,
+      "idf": 6.964161267908351
+    },
+    {
+      "token": "east",
+      "document_frequency_pct": 0.00253374969332819,
+      "idf": 6.9779858974524345
+    },
+    {
+      "token": "trust",
+      "document_frequency_pct": 0.002528133957756331,
+      "idf": 6.980204576862181
+    },
+    {
+      "token": "one",
+      "document_frequency_pct": 0.0024437224324418234,
+      "idf": 7.014161179921162
+    },
+    {
+      "token": "roofing",
+      "document_frequency_pct": 0.0024410900563925147,
+      "idf": 7.015238882364083
+    },
+    {
+      "token": "service",
+      "document_frequency_pct": 0.0024310870274051404,
+      "idf": 7.019344776841104
+    },
+    {
+      "token": "finance",
+      "document_frequency_pct": 0.0024263487505163843,
+      "idf": 7.021295574035036
+    },
+    {
+      "token": "new",
+      "document_frequency_pct": 0.002414239820689563,
+      "idf": 7.026298303337694
+    },
+    {
+      "token": "st",
+      "document_frequency_pct": 0.0024140643289529426,
+      "idf": 7.026370990962659
+    },
+    {
+      "token": "projects",
+      "document_frequency_pct": 0.0023854591758837853,
+      "idf": 7.038290257517071
+    },
+    {
+      "token": "creative",
+      "document_frequency_pct": 0.0023791414733654436,
+      "idf": 7.040941997432743
+    },
+    {
+      "token": "academy",
+      "document_frequency_pct": 0.002365804101382278,
+      "idf": 7.04656331401027
+    },
+    {
+      "token": "residents",
+      "document_frequency_pct": 0.0023333381301074677,
+      "idf": 7.060380330566948
+    },
+    {
+      "token": "commercial",
+      "document_frequency_pct": 0.002305259452248172,
+      "idf": 7.072486099954146
+    },
+    {
+      "token": "sons",
+      "document_frequency_pct": 0.002294905439787557,
+      "idf": 7.076987347302433
+    },
+    {
+      "token": "partnership",
+      "document_frequency_pct": 0.0022871838033762504,
+      "idf": 7.080357448531328
+    },
+    {
+      "token": "car",
+      "document_frequency_pct": 0.0022687571710310874,
+      "idf": 7.088445926169101
+    },
+    {
+      "token": "trade",
+      "document_frequency_pct": 0.0021845211374532008,
+      "idf": 7.1262784780418675
+    },
+    {
+      "token": "real",
+      "document_frequency_pct": 0.0021829417118236156,
+      "idf": 7.127001689130483
+    },
+    {
+      "token": "education",
+      "document_frequency_pct": 0.002161005244746041,
+      "idf": 7.137100744869016
+    },
+    {
+      "token": "hire",
+      "document_frequency_pct": 0.002145561971923428,
+      "idf": 7.144272155279464
+    },
+    {
+      "token": "builders",
+      "document_frequency_pct": 0.0021278373065247475,
+      "idf": 7.152566868791978
+    },
+    {
+      "token": "recruitment",
+      "document_frequency_pct": 0.002123800996582474,
+      "idf": 7.15446542068505
+    },
+    {
+      "token": "no",
+      "document_frequency_pct": 0.0021039704303443462,
+      "idf": 7.163845807402094
+    },
+    {
+      "token": "support",
+      "document_frequency_pct": 0.002095020351776696,
+      "idf": 7.168108424078266
+    },
+    {
+      "token": "school",
+      "document_frequency_pct": 0.0020481640580989964,
+      "idf": 7.1907259652210325
+    },
+    {
+      "token": "catering",
+      "document_frequency_pct": 0.0020035891569973644,
+      "idf": 7.212727718899449
+    },
+    {
+      "token": "holding",
+      "document_frequency_pct": 0.002003238173524123,
+      "idf": 7.212902896266981
+    },
+    {
+      "token": "travel",
+      "document_frequency_pct": 0.001969192776619727,
+      "idf": 7.230042639112737
+    },
+    {
+      "token": "sales",
+      "document_frequency_pct": 0.001950590652537944,
+      "idf": 7.23953326456126
+    },
+    {
+      "token": "scotland",
+      "document_frequency_pct": 0.0019395346731308463,
+      "idf": 7.2452168921126985
+    },
+    {
+      "token": "supplies",
+      "document_frequency_pct": 0.0019354983631885724,
+      "idf": 7.247299943176106
+    },
+    {
+      "token": "hair",
+      "document_frequency_pct": 0.0019281277102505075,
+      "idf": 7.251115008208489
+    },
+    {
+      "token": "sports",
+      "document_frequency_pct": 0.0019211080407856836,
+      "idf": 7.254761985263084
+    },
+    {
+      "token": "blue",
+      "document_frequency_pct": 0.0019135618961109977,
+      "idf": 7.258697376787924
+    },
+    {
+      "token": "foods",
+      "document_frequency_pct": 0.0019033833753870032,
+      "idf": 7.264030232383436
+    },
+    {
+      "token": "advisory",
+      "document_frequency_pct": 0.0019028569001771415,
+      "idf": 7.264306844805097
+    },
+    {
+      "token": "by",
+      "document_frequency_pct": 0.0018459975775120677,
+      "idf": 7.294640569131953
+    },
+    {
+      "token": "enterprise",
+      "document_frequency_pct": 0.00183494159810497,
+      "idf": 7.300647165825065
+    },
+    {
+      "token": "retail",
+      "document_frequency_pct": 0.0018170414409696691,
+      "idf": 7.31044928159397
+    },
+    {
+      "token": "music",
+      "document_frequency_pct": 0.0018168659492330485,
+      "idf": 7.310545857961807
+    },
+    {
+      "token": "rtm",
+      "document_frequency_pct": 0.0018163394740231867,
+      "idf": 7.310835643039904
+    },
+    {
+      "token": "housing",
+      "document_frequency_pct": 0.001810899230187948,
+      "idf": 7.3138350163881
+    },
+    {
+      "token": "hill",
+      "document_frequency_pct": 0.0017898402217934764,
+      "idf": 7.325531056151291
+    },
+    {
+      "token": "foundation",
+      "document_frequency_pct": 0.001781767601908929,
+      "idf": 7.330051059916314
+    },
+    {
+      "token": "interiors",
+      "document_frequency_pct": 0.0017770293250201727,
+      "idf": 7.3327136520913685
+    },
+    {
+      "token": "lettings",
+      "document_frequency_pct": 0.0017517585149468067,
+      "idf": 7.347035130087229
+    },
+    {
+      "token": "freehold",
+      "document_frequency_pct": 0.001738947618173503,
+      "idf": 7.354374428099621
+    },
+    {
+      "token": "joinery",
+      "document_frequency_pct": 0.0017229778701410288,
+      "idf": 7.363599492254364
+    },
+    {
+      "token": "auto",
+      "document_frequency_pct": 0.001715431725466343,
+      "idf": 7.367988374012278
+    },
+    {
+      "token": "europe",
+      "document_frequency_pct": 0.0017142032833099988,
+      "idf": 7.368704669770711
+    },
+    {
+      "token": "shop",
+      "document_frequency_pct": 0.0016929687831789065,
+      "idf": 7.3811681364566875
+    },
+    {
+      "token": "cars",
+      "document_frequency_pct": 0.0016863000971873237,
+      "idf": 7.3851145534593154
+    },
+    {
+      "token": "build",
+      "document_frequency_pct": 0.001675244117780226,
+      "idf": 7.39169180742562
+    },
+    {
+      "token": "ai",
+      "document_frequency_pct": 0.001668750923525264,
+      "idf": 7.395574899884218
+    },
+    {
+      "token": "living",
+      "document_frequency_pct": 0.0016373379026701769,
+      "idf": 7.414576586189632
+    },
+    {
+      "token": "motors",
+      "document_frequency_pct": 0.001618560286851773,
+      "idf": 7.426109993474759
+    },
+    {
+      "token": "software",
+      "document_frequency_pct": 0.0016166298777489465,
+      "idf": 7.427303246314722
+    },
+    {
+      "token": "city",
+      "document_frequency_pct": 0.001605047423131987,
+      "idf": 7.434492819767289
+    },
+    {
+      "token": "studios",
+      "document_frequency_pct": 0.0016025905388192985,
+      "idf": 7.436024548731975
+    },
+    {
+      "token": "james",
+      "document_frequency_pct": 0.001592763001568545,
+      "idf": 7.442175034897026
+    },
+    {
+      "token": "cafe",
+      "document_frequency_pct": 0.0015487145756767752,
+      "idf": 7.470216865594161
+    },
+    {
+      "token": "leisure",
+      "document_frequency_pct": 0.0015394135136358835,
+      "idf": 7.47623995329527
+    },
+    {
+      "token": "nw",
+      "document_frequency_pct": 0.0015371321210598157,
+      "idf": 7.477722871493217
+    },
+    {
+      "token": "store",
+      "document_frequency_pct": 0.001536079170640092,
+      "idf": 7.478408037672813
+    },
+    {
+      "token": "direct",
+      "document_frequency_pct": 0.0015197584391343764,
+      "idf": 7.489088587092609
+    },
+    {
+      "token": "life",
+      "document_frequency_pct": 0.001480272798394742,
+      "idf": 7.515410513824989
+    },
+    {
+      "token": "to",
+      "document_frequency_pct": 0.0014753590297693652,
+      "idf": 7.518735142866867
+    },
+    {
+      "token": "legal",
+      "document_frequency_pct": 0.0014737796041397798,
+      "idf": 7.519806125298027
+    },
+    {
+      "token": "clinic",
+      "document_frequency_pct": 0.001472024686773574,
+      "idf": 7.520997452577359
+    },
+    {
+      "token": "fire",
+      "document_frequency_pct": 0.0014697432941975061,
+      "idf": 7.522548302873282
+    },
+    {
+      "token": "world",
+      "document_frequency_pct": 0.0014697432941975061,
+      "idf": 7.522548302873282
+    },
+    {
+      "token": "hub",
+      "document_frequency_pct": 0.0014672864098848176,
+      "idf": 7.524221143507144
+    },
+    {
+      "token": "little",
+      "document_frequency_pct": 0.0014639520668890264,
+      "idf": 7.526495912521579
+    },
+    {
+      "token": "products",
+      "document_frequency_pct": 0.0014600912486833733,
+      "idf": 7.529136336523224
+    },
+    {
+      "token": "elite",
+      "document_frequency_pct": 0.001450614694905861,
+      "idf": 7.535647090170978
+    },
+    {
+      "token": "land",
+      "document_frequency_pct": 0.001450614694905861,
+      "idf": 7.535647090170978
+    },
+    {
+      "token": "pro",
+      "document_frequency_pct": 0.0014397342072353838,
+      "idf": 7.543175051899462
+    },
+    {
+      "token": "place",
+      "document_frequency_pct": 0.0014378037981325573,
+      "idf": 7.5445165973168375
+    },
+    {
+      "token": "yorkshire",
+      "document_frequency_pct": 0.0014372773229226956,
+      "idf": 7.544882785908052
+    },
+    {
+      "token": "star",
+      "document_frequency_pct": 0.0014293801947747686,
+      "idf": 7.550391767215296
+    },
+    {
+      "token": "smart",
+      "document_frequency_pct": 0.0014286782278282863,
+      "idf": 7.55088292636073
+    },
+    {
+      "token": "family",
+      "document_frequency_pct": 0.0014263968352522184,
+      "idf": 7.552480861677082
+    },
+    {
+      "token": "power",
+      "document_frequency_pct": 0.0014207810996803593,
+      "idf": 7.55642515373754
+    },
+    {
+      "token": "bar",
+      "document_frequency_pct": 0.0014197281492606358,
+      "idf": 7.557166443615814
+    },
+    {
+      "token": "lane",
+      "document_frequency_pct": 0.0014192016740507739,
+      "idf": 7.557537294723347
+    },
+    {
+      "token": "network",
+      "document_frequency_pct": 0.001411831021112709,
+      "idf": 7.56274370291392
+    },
+    {
+      "token": "on",
+      "document_frequency_pct": 0.0014099006120098824,
+      "idf": 7.564111777252041
+    },
+    {
+      "token": "garden",
+      "document_frequency_pct": 0.0013955102896069933,
+      "idf": 7.574369560466518
+    },
+    {
+      "token": "plant",
+      "document_frequency_pct": 0.0013898945540351342,
+      "idf": 7.578401315959375
+    },
+    {
+      "token": "son",
+      "document_frequency_pct": 0.0013888416036154105,
+      "idf": 7.579159083108541
+    },
+    {
+      "token": "first",
+      "document_frequency_pct": 0.0013826993928336897,
+      "idf": 7.58359087257173
+    },
+    {
+      "token": "films",
+      "document_frequency_pct": 0.0013760307068421069,
+      "idf": 7.588424872571377
+    },
+    {
+      "token": "communications",
+      "document_frequency_pct": 0.001374626772949142,
+      "idf": 7.589445541197877
+    },
+    {
+      "token": "kitchen",
+      "document_frequency_pct": 0.0013737493142660393,
+      "idf": 7.590083988515739
+    },
+    {
+      "token": "my",
+      "document_frequency_pct": 0.0013695375125871447,
+      "idf": 7.593154222474121
+    },
+    {
+      "token": "red",
+      "document_frequency_pct": 0.0013670806282744564,
+      "idf": 7.5949495550927955
+    },
+    {
+      "token": "hall",
+      "document_frequency_pct": 0.0013669051365378358,
+      "idf": 7.59507791655886
+    },
+    {
+      "token": "express",
+      "document_frequency_pct": 0.001359885467073012,
+      "idf": 7.600225933076262
+    },
+    {
+      "token": "coaching",
+      "document_frequency_pct": 0.0013593589918631502,
+      "idf": 7.600613104791751
+    },
+    {
+      "token": "residential",
+      "document_frequency_pct": 0.0013567266158138413,
+      "idf": 7.602551215095432
+    },
+    {
+      "token": "gardens",
+      "document_frequency_pct": 0.001352865797608188,
+      "idf": 7.605400588866279
+    },
+    {
+      "token": "private",
+      "document_frequency_pct": 0.001344091210777158,
+      "idf": 7.611906792689017
+    },
+    {
+      "token": "contracts",
+      "document_frequency_pct": 0.0013342636735264046,
+      "idf": 7.619244351815334
+    },
+    {
+      "token": "midlands",
+      "document_frequency_pct": 0.001326717528851719,
+      "idf": 7.624915319865384
+    },
+    {
+      "token": "carpentry",
+      "document_frequency_pct": 0.0013244361362756512,
+      "idf": 7.626636148935213
+    },
+    {
+      "token": "all",
+      "document_frequency_pct": 0.0013177674502840686,
+      "idf": 7.631683310665474
+    },
+    {
+      "token": "tree",
+      "document_frequency_pct": 0.0013168899916009655,
+      "idf": 7.632349311356092
+    },
+    {
+      "token": "aesthetics",
+      "document_frequency_pct": 0.0013160125329178625,
+      "idf": 7.633015755899252
+    },
+    {
+      "token": "asset",
+      "document_frequency_pct": 0.0013118007312389682,
+      "idf": 7.6362208868482
+    },
+    {
+      "token": "fitness",
+      "document_frequency_pct": 0.001307939913033315,
+      "idf": 7.63916797538445
+    },
+    {
+      "token": "accounting",
+      "document_frequency_pct": 0.0013075889295600738,
+      "idf": 7.639436323702175
+    },
+    {
+      "token": "safety",
+      "document_frequency_pct": 0.0012895132806881521,
+      "idf": 7.653354526894782
+    },
+    {
+      "token": "accountancy",
+      "document_frequency_pct": 0.001283897545116293,
+      "idf": 7.657718368539624
+    }
+  ]
+}

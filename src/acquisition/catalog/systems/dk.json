@@ -1,0 +1,34 @@
+{
+  "code": "dk",
+  "display_name": "Denmark",
+  "region": "eu",
+  "status": "supported",
+  "access_mode": "api_contract",
+  "info_url": "https://datacvr.virk.dk/",
+  "notes": "Denmark is enabled through a CVR system-to-system API adapter. Access requires contractual onboarding and credentials issued via cvrselvbetjening@erst.dk. Set DK_CVR_AUTH_HEADER_VALUE before acquisition runs.",
+  "all_systems_target": false,
+  "research": null,
+  "resources": [
+    {
+      "name": "cvr_company_search_api",
+      "url": "https://distribution.virk.dk/cvr-permanent/virksomhed/_search",
+      "file_format": "jsonl",
+      "file_name": null,
+      "extract": false,
+      "file_name_template": "dk-cvr-company-{snapshot_date}.jsonl",
+      "download_url_template": null,
+      "notes": "CVR ElasticSearch company search snapshot; requires contract credentials.",
+      "publication_frequency": "daily",
+      "snapshot_date_mode": "run_date",
+      "refresh_if_older_than_days": 1,
+      "adapter": "api_json_snapshot",
+      "request_headers": [],
+      "required_env_vars": [],
+      "auth_header_name": "Authorization",
+      "auth_header_env": "DK_CVR_AUTH_HEADER_VALUE",
+      "auth_header_prefix": null
+    }
+  ],
+  "company_type_column": null,
+  "registry": "country"
+}

@@ -1,0 +1,120 @@
+@startuml
+!include _style.puml
+
+title Blocking: one run of scripts/run_blocking.py
+
+start
+
+partition "run_blocking.py" {
+  :import _polars_threads first:\nPOLARS_MAX_THREADS defaults to 4\n(an environment value wins);
+  :_resolve_settings -> BlockingStrategyConfig;
+  :_build_config: load_dataset_descriptor\nsource = matched layer (carries match_uri truth)\ntarget = latest_canonical_snapshot_dir;
+  :validate_blocking_run_config;
+  if (--dry-run?) then (yes)
+    :report_resolved_settings\n+ report_output_plan;
+    stop
+  endif
+  :resolve_blocking_run_keys\n(each country loaded and keyed,\nno name forms derived);
+  :resolve_run_location_for(keys);
+  if (is_finished_run?) then (yes)
+    :reuse the finished run directory;
+    stop
+  endif
+  :enter produce_blocking_run\n(staged directory);
+}
+
+partition "execute_blocking_run" {
+  :_resolve_run_setup: clustering strategy,\ntarget index build settings, text view, countries;
+
+  while (next country?) is (yes)
+    partition "_score_country (each box is a timed _phase)" {
+      :load_frames: load_country_frame\nsource and target;
+      :ensure_dense_vocabulary_scale_supported;
+      :population_keys: rows_digest per side;
+      :name_forms: resolve_name_forms\n(derive_name_forms + name_preprocessing);
+      note right
+        name forms store:
+        read back when these rows were met
+        under the same profiles and deriver
+        version; derived and stored otherwise
+      end note
+
+      :exact_name_split;
+      if (exact_name_filter?) then (on)
+        :_cascade_exact_name_matches\nraw -> basic -> cleansed -> transform\neach join takes only the rows left;
+        note right
+          edges at similarity 1.0, counted per level
+          in exact_match_summary
+        end note
+      else (off)
+        :no exact edges;
+      endif
+      if (target_neighbor_min_similarity set?) then (yes)
+        :scan only the residual\n(sources no form matched);
+      else (no)
+        :scan every source;
+      endif
+
+      if (text view = tokens?) then (yes)
+        :tokenize (name_preprocessed);
+      endif
+      :text_view: build_clustering_text_view;
+
+      :target_index: resolve_target_index;
+      if (cache hit on index_key?) then (hit)
+        :read the cached target index;
+      else (miss)
+        :build it (encode or vectoriser fit)\nand store it;
+      endif
+      note right
+        target-index cache, shared with
+        the validation harness
+      end note
+      :ensure_sklearn_dense_target_index_memory_supported\n(refuses sklearn on a dense target\nthat will not fit in memory);
+
+      :backend_index;
+      if (backend is dense_brute or hnsw?) then (yes)
+        :no eager sklearn NearestNeighbors;
+        note right
+          hnsw: index_dir from resolve_hnsw_index_dir,
+          reopened when already built
+        end note
+      else (no)
+        :build_target_nearest_neighbors;
+      endif
+      :build_backend_index;
+
+      if (target_neighbor_min_similarity\nand _max_per_target set?) then (yes)
+        :target_neighbors: resolve_target_neighbor_edges\n(_probe_target_neighbors on a cache miss);
+      endif
+
+      :scoring: score_source_chunk\nper source_chunk_size rows\n(top_k, min_similarity, max_candidates_per_source);
+      :union exact edges with scored edges\n(exact edge kept on a duplicate);
+      :pruning: candidate_similarity_ratio,\nthen max_candidates_per_target;
+
+      if (_can_evaluate_truth?) then (yes)
+        :truth_eval: compute_pair_truth_eval (raw and pruned)\n+ compute_pair_truth_eval_detail;
+        note right
+          each truth pair placed at a name_equality level:
+          raw, basic, cleansed, preprocessed, never
+        end note
+      endif
+    }
+  endwhile (no)
+
+  :_aggregate_country_results;
+  :build_connected_components over matched_edges\n(+ target-neighbour edges) -> clusters;
+  if (keys differ from expected_keys?) then (yes)
+    :raise: inputs changed mid-run;
+    stop
+  endif
+}
+
+partition "run_blocking.py (inside produce_blocking_run)" {
+  :write_blocking_report (summary.json and artefacts);
+  :write_run_manifest (manifest.json);
+  :production record written last,\nstaged directory becomes the run key directory;
+}
+
+stop
+@enduml

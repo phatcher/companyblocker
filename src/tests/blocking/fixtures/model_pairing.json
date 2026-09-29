@@ -1,0 +1,115 @@
+{
+  "description": "Known-answer test population: one source row per clustering edge case, run through every representation and similarity backend this area supports without an optional extra, plus the sbert cells where the optional extra is available. Loaded by test_model_pairing.py, which builds a matched/cleansed layer pair from these rows and runs blocking.workflow.execute_blocking_run() over them once per (representation, similarity_backend) cell.",
+  "source_system": "pairsrc",
+  "target_system": "pairtgt",
+  "country": "xx",
+  "cases": {
+    "identical": "A source row byte-identical to its target's raw name: the exact-join cascade resolves it at the raw level, never reaching the scan.",
+    "basic_equal": "Punctuation and case differ but the basic-cleansed form is identical: resolved at the basic level.",
+    "cleansed_equal": "The legal-suffix wording differs (\"Limited\" vs \"Ltd\") so the basic form disagrees, but the fully-cleansed form is identical: resolved at the cleansed level.",
+    "renamed_twin": "The exact-join cascade's motivating case. The source's raw name is byte-identical to a *different*, unrelated target (the decoy) that happens to share the name, so the exact-join cascade resolves it there first. The source's true match carries a different, shortened name (the renamed twin) with no exact-form match at any level: only the scan, which the cascade decided must run over every source regardless of an exact match, reaches it. The expected cluster spans the decoy and the true twin, since the source carries an edge to both once the scan runs.",
+    "near_family": "The target side carries a family of near-but-distinct names (differing by one qualifying word each); the source's own name is a generic stem of the family with no exact-form match to any member. The scan connects the source to whichever family member it lands closest to (allowed to differ by representation), and the target-neighbour edges then link every family member to the others, so the whole family forms one cluster regardless of which member the source itself reached.",
+    "near_family_over_cap": "Target-neighbour linking's calibration case: a target-side family of four near-but-distinct names, each with three other family members to link to against `target_neighbor_max_per_target`'s test-time cap of two, so every member's own neighbour list is truncated. No source targets this family -- the case exists to exercise `target_neighbor_summary`'s `targets_at_cap` count, not a cluster assertion.",
+    "shared_form": "Two distinct target rows happen to carry the exact same name (a legitimate real-world duplicate, e.g. two separate legal entities). The source's raw name matches both, so the exact-join cascade -- which adds an edge for every match, never just the first -- connects the source to both, merging them into one cluster.",
+    "never_pair": "The source and its true target are never equal at any derived name form (raw, basic or cleansed) but share enough of their tokens that a real similarity backend is expected to find the pair anyway: the actual residual population the cascade's motivation is about, and the case a run's own `never`-population recall line is read from.",
+    "unlabelled": "A source row with no recorded ground truth (`match_uri` null): still scored and clustered like any other row, landing near the target its name resembles, but excluded from truth evaluation and the `never_pair` case's recall reading.",
+    "no_candidate": "A source row sharing no meaningful token or character run with any target: expected to score below every backend's `min_similarity` and end the run in its own singleton cluster with no edges at all."
+  },
+  "targets": [
+    {"id": "t1", "name": "Acme Trading Ltd", "case": "identical"},
+    {"id": "t2", "name": "beta consulting group plc", "case": "basic_equal"},
+    {"id": "t3", "name": "Gamma Analytics Ltd", "case": "cleansed_equal"},
+    {"id": "t4", "name": "Delta Robotics International Holdings", "case": "renamed_twin_decoy"},
+    {"id": "t5", "name": "Delta Robotics Holdings", "case": "renamed_twin_true"},
+    {"id": "t6", "name": "Sigma Advisory Northern Ltd", "case": "near_family"},
+    {"id": "t7", "name": "Sigma Advisory Western Ltd", "case": "near_family"},
+    {"id": "t8", "name": "Kappa Services Ltd", "case": "shared_form"},
+    {"id": "t9", "name": "Kappa Services Ltd", "case": "shared_form"},
+    {"id": "t10", "name": "Northwind Traders Overseas", "case": "never_pair"},
+    {"id": "t11", "name": "Omega Vantage Systems Ltd", "case": "unlabelled"},
+    {"id": "t12", "name": "Rho Capital Ventures Northern Ltd", "case": "near_family_over_cap"},
+    {"id": "t13", "name": "Rho Capital Ventures Southern Ltd", "case": "near_family_over_cap"},
+    {"id": "t14", "name": "Rho Capital Ventures Eastern Ltd", "case": "near_family_over_cap"},
+    {"id": "t15", "name": "Rho Capital Ventures Western Ltd", "case": "near_family_over_cap"}
+  ],
+  "sources": [
+    {
+      "id": "s1",
+      "name": "Acme Trading Ltd",
+      "case": "identical",
+      "match_target": "t1",
+      "expected_cluster_targets": ["t1"],
+      "divergence_notes": {}
+    },
+    {
+      "id": "s2",
+      "name": "BETA CONSULTING GROUP, PLC",
+      "case": "basic_equal",
+      "match_target": "t2",
+      "expected_cluster_targets": ["t2"],
+      "divergence_notes": {}
+    },
+    {
+      "id": "s3",
+      "name": "Gamma Analytics Limited",
+      "case": "cleansed_equal",
+      "match_target": "t3",
+      "expected_cluster_targets": ["t3"],
+      "divergence_notes": {}
+    },
+    {
+      "id": "s4",
+      "name": "Delta Robotics International Holdings",
+      "case": "renamed_twin",
+      "match_target": "t5",
+      "expected_cluster_targets": ["t4", "t5"],
+      "divergence_notes": {
+        "kmeans": {
+          "representations": ["tfidf", "wordpiece", "sentencepiece", "sbert"],
+          "expected_cluster_targets": ["t4"],
+          "reason": "kmeans routes a source to its single nearest partition's centroid rather than scanning every target (company_vectorize.partition_similarity). Verified 2026-09-14 against this fixture: under tfidf's character n-gram vectors the decoy (t4) and the true twin (t5) land in different partitions, so only the exact-join edge to the decoy is found -- exactly the miss the exact-join cascade is about, reproduced here as this backend's own known limit rather than a fixture bug. Under wordpiece/sentencepiece's token vectors the same source's nearest partition held both t4 and t5 while the tokenizer read the raw name; since 2026-09-19 both paths read the preprocessed name, cleansed with the company type removed, and the token cells land as tfidf's do, the decoy and the twin in different partitions -- confirmed by running both cells directly rather than assumed. sbert's dense embeddings land the same way as tfidf's here (once the sbert cells could run for the first time): the decoy and the true twin fall in different partitions under all-MiniLM-L6-v2's embedding space too, confirmed by running the cell directly rather than assumed."
+        }
+      }
+    },
+    {
+      "id": "s5",
+      "name": "Sigma Advisory",
+      "case": "near_family",
+      "match_target": "t6",
+      "expected_cluster_targets": ["t6", "t7"],
+      "divergence_notes": {}
+    },
+    {
+      "id": "s6",
+      "name": "Kappa Services Ltd",
+      "case": "shared_form",
+      "match_target": "t8",
+      "expected_cluster_targets": ["t8", "t9"],
+      "divergence_notes": {}
+    },
+    {
+      "id": "s7",
+      "name": "Northwind Traders Group",
+      "case": "never_pair",
+      "match_target": "t10",
+      "expected_cluster_targets": ["t10"],
+      "divergence_notes": {}
+    },
+    {
+      "id": "s8",
+      "name": "Omega Vantage Solutions",
+      "case": "unlabelled",
+      "match_target": null,
+      "expected_cluster_targets": ["t11"],
+      "divergence_notes": {}
+    },
+    {
+      "id": "s9",
+      "name": "Vexillon Ironforge Trust Partners",
+      "case": "no_candidate",
+      "match_target": null,
+      "expected_cluster_targets": [],
+      "divergence_notes": {}
+    }
+  ]
+}

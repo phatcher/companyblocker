@@ -1,0 +1,49 @@
+{
+  "code": "gb",
+  "display_name": "United Kingdom",
+  "region": "eu",
+  "status": "live",
+  "access_mode": "bulk_download",
+  "info_url": "https://www.gov.uk/guidance/companies-house-data-products",
+  "notes": "Companies House publishes a free monthly bulk snapshot of live company records. The snapshot is provided as ZIP files containing CSV data and is updated within 5 working days of month end.",
+  "all_systems_target": true,
+  "research": null,
+  "resources": [
+    {
+      "name": "basic_company_data_as_one_file",
+      "url": "https://www.gov.uk/guidance/companies-house-data-products",
+      "file_format": "zip",
+      "file_name": null,
+      "extract": false,
+      "file_name_template": "BasicCompanyDataAsOneFile-{snapshot_date}.zip",
+      "download_url_template": "https://download.companieshouse.gov.uk/{file_name}",
+      "notes": "Monthly live-companies snapshot containing CSV data in a single ZIP archive.",
+      "publication_frequency": "monthly",
+      "snapshot_date_mode": "month_start",
+      "refresh_if_older_than_days": 90,
+      "adapter": "direct_download",
+      "request_headers": [],
+      "required_env_vars": [],
+      "auth_header_name": null,
+      "auth_header_env": null,
+      "auth_header_prefix": null
+    }
+  ],
+  "system_uri_identifier_candidates": [
+    "CompanyNumber"
+  ],
+  "system_field_candidates": {
+    "name": ["CompanyName"],
+    "company_number": ["CompanyNumber"],
+    "company_type": ["CompanyCategory"],
+    "current_status": ["CompanyStatus"],
+    "incorporation_date": ["IncorporationDate"],
+    "dissolution_date": ["DissolutionDate"],
+    "registry_url": ["URI"]
+  },
+  "company_type_column": "CompanyCategory",
+  "name_variant_type_map": {
+    "PREVIOUS_NAME": "previous"
+  },
+  "registry": "country"
+}

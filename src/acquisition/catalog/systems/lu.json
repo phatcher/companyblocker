@@ -1,0 +1,20 @@
+{
+  "code": "lu",
+  "display_name": "Luxembourg",
+  "region": "eu",
+  "status": "research_required",
+  "access_mode": "search_portal",
+  "info_url": "https://www.lbr.lu",
+  "notes": "No official bulk-download source is currently configured for this pipeline. Next step is to validate legal access terms and confirm an automatable bulk file or API endpoint before promotion to supported.",
+  "all_systems_target": false,
+  "research": {
+    "pass_date": "2026-06-15",
+    "basis": "BRIS registry table plus LBR service path check",
+    "priority": "P2",
+    "approach": "Attempted services path returned 404 from state login gateway and no API evidence captured",
+    "next_action": "Identify correct LBR technical services URL and request data access specifications"
+  },
+  "resources": [],
+  "company_type_column": null,
+  "registry": "country"
+}

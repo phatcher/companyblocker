@@ -1,0 +1,391 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://blocking.local/acquisition/catalog/systems.schema.json",
+  "title": "Acquisition System Plan",
+  "type": "object",
+  "required": [
+    "registry",
+    "code",
+    "display_name",
+    "region",
+    "status",
+    "access_mode",
+    "info_url",
+    "notes",
+    "all_systems_target"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "registry": {
+      "type": "string",
+      "enum": ["country", "system"]
+    },
+    "code": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[a-z0-9-]+$"
+    },
+    "display_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "region": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": ["live", "supported", "research_required", "blocked", "stopped"]
+    },
+    "access_mode": {
+      "type": "string",
+      "enum": ["bulk_download", "api_open", "api_contract", "search_portal"]
+    },
+    "info_url": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "all_systems_target": {
+      "description": "Whether '--systems all' targets this system. Required on every entry rather than defaulted, so onboarding a system forces the decision instead of inheriting one from 'status', which records how far onboarding got and why it stopped. A system declaring true must also carry a runnable status (live/supported); the loader rejects the pair otherwise.",
+      "type": "boolean"
+    },
+    "and_tokens": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      ]
+    },
+    "personal_owner_markers": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      ]
+    },
+    "company_type_column": {
+      "type": ["string", "null"]
+    },
+    "system_uri_identifier_candidates": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      ]
+    },
+    "system_field_candidates": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "minLength": 1
+          },
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "minItems": 1,
+            "uniqueItems": true
+          }
+        }
+      ]
+    },
+    "canonical_input_columns": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      ]
+    },
+    "canonical_source_column_aliases": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "minLength": 1
+          },
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      ]
+    },
+    "primary_name_override_type_priority": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      ]
+    },
+    "name_variant_type_map": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "minLength": 1
+          },
+          "additionalProperties": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      ]
+    },
+    "canonical_derived_fields": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "minLength": 1
+          },
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["type", "parts"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["concat"]
+              },
+              "parts": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "minItems": 1
+              },
+              "separator": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "supported_countries": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "anyOf": [
+              { "enum": ["live", "supported", "local"] },
+              { "pattern": "^[a-z]{2}$" }
+            ]
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      ]
+    },
+    "research": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "pass_date": { "type": ["string", "null"] },
+        "basis": { "type": ["string", "null"] },
+        "priority": {
+          "type": ["string", "null"],
+          "enum": ["P1", "P2", "P3", "P4", "P5", null]
+        },
+        "approach": { "type": ["string", "null"] },
+        "next_action": { "type": ["string", "null"] },
+        "allow_research_runtime": { "type": ["boolean", "null"] },
+        "allowed_stages": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["acquire", "shard", "canonical", "cleanse", "tokenize"]
+              },
+              "minItems": 1,
+              "uniqueItems": true
+            }
+          ]
+        }
+      }
+    },
+    "resources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "url", "file_format"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "url": { "type": "string", "minLength": 1 },
+          "file_format": { "type": "string", "minLength": 1 },
+          "file_name": { "type": ["string", "null"] },
+          "extract": { "type": "boolean" },
+          "file_name_template": { "type": ["string", "null"] },
+          "download_url_template": { "type": ["string", "null"] },
+          "notes": { "type": ["string", "null"] },
+          "publication_frequency": { "type": "string" },
+          "snapshot_date_mode": { "type": "string" },
+          "refresh_if_older_than_days": { "type": ["integer", "null"], "minimum": 0 },
+          "adapter": { "type": "string" },
+          "request_headers": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "prefixItems": [{ "type": "string" }, { "type": "string" }],
+              "items": false,
+              "minItems": 2,
+              "maxItems": 2
+            }
+          },
+          "required_env_vars": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "auth_header_name": { "type": ["string", "null"] },
+          "auth_header_env": { "type": ["string", "null"] },
+          "auth_header_prefix": { "type": ["string", "null"] },
+          "projection_defaults": {
+            "type": ["object", "null"],
+            "additionalProperties": false,
+            "properties": {
+              "engine": {
+                "type": ["string", "null"],
+                "enum": ["python", "wikisieve", null]
+              },
+              "binary_path": { "type": ["string", "null"] },
+              "output_mode": {
+                "type": ["string", "null"],
+                "enum": ["jsonl", "ids", null]
+              }
+            }
+          },
+          "output_defaults": {
+            "type": ["object", "null"],
+            "additionalProperties": false,
+            "properties": {
+              "chunk_size": {
+                "type": ["integer", "null"],
+                "exclusiveMinimum": 0
+              }
+            }
+          },
+          "read_defaults": {
+            "oneOf": [
+              { "type": "null" },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "by_extension": {
+                    "type": "object",
+                    "propertyNames": {
+                      "type": "string",
+                      "pattern": "^\\..+$"
+                    },
+                    "additionalProperties": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "reader_mode": {
+                          "type": "string",
+                          "enum": ["line_iter", "chunked", "chunked_indexed"]
+                        },
+                        "chunk_size_mb": {
+                          "type": "integer",
+                          "minimum": 1
+                        }
+                      }
+                    }
+                  },
+                  "runtime": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "indexed_bzip2_parallelization": {
+                        "oneOf": [
+                          { "type": "string", "enum": ["auto"] },
+                          { "type": "integer", "minimum": 1 }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

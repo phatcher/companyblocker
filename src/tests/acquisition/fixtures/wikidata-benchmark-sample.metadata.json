@@ -1,0 +1,19 @@
+{
+  "generated_at_utc": "2026-07-17T10:44:56Z",
+  "source_path": "raw/wikidata/acquire/2026-07-16/wikidata-all.json.gz",
+  "rows": 10000,
+  "uncompressed_bytes": 478458872,
+  "canonical_jsonl_sha256": "115c5999a57dcbd2e788acc22e5ce03f340bc20e5aedb8d1897b55cf705a3b6b",
+  "fixtures": {
+    "wikidata-benchmark-sample.jsonl.bz2": {
+      "path": "src/tests/acquisition/fixtures/wikidata-benchmark-sample.jsonl.bz2",
+      "bytes": 48225443,
+      "sha256": "ea822ca9fec06141c906d7ce494b2dea0bd76fe17fa98e3ba4ceea6ae9b975b8"
+    },
+    "wikidata-benchmark-sample.jsonl.gz": {
+      "path": "src/tests/acquisition/fixtures/wikidata-benchmark-sample.jsonl.gz",
+      "bytes": 68277912,
+      "sha256": "668c67039b9316b3f00484d30775b9048c2d2b3534a917101098558f7e2e127f"
+    }
+  }
+}

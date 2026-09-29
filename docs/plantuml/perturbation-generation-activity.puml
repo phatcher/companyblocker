@@ -1,0 +1,66 @@
+@startuml
+!include _style.puml
+
+title Perturbation: what one record turns into
+
+start
+:One SourceRecord\nlocal_id, name, system, country;
+:Open this record's generator\nRandom(hash of run seed + local_id);
+
+partition "Which scenarios apply" {
+  while (Another scenario in the profile?) is (yes)
+    :Take the scenario's own exclusions\nif it has a block, otherwise the\nprofile's (replaces, never merges);
+    if (System excluded, country excluded,\nor any step's family excluded?) then (yes)
+      :Not applicable to this record;
+    else (no)
+      :Applicable;
+    endif
+  endwhile
+}
+
+:Draw one value from the generator;
+
+if (Any applicable scenario\nwith weight above zero?) then (no)
+  :Row emitted unchanged\nscenario_id null,\nno steps reported;
+  stop
+else (yes)
+  :Pick one scenario,\nweighted among those applicable;
+endif
+
+partition "Run that scenario's chain, in order" {
+  while (Another step in the chain?) is (yes)
+    :Find the operator's sites\nin the name as it stands now;
+    :Trials = min(attempts, sites found);
+    while (Another trial?) is (yes)
+      :Draw twice: whether it fires,\nand which site;
+      if (Fired?) then (yes)
+        :Take that site, and discard\nevery site overlapping it;
+      else (no)
+        :Nothing taken\n(the two draws are spent either way);
+      endif
+    endwhile
+    :Apply the taken changes\nright to left, highest offset first;
+    if (Asked for changes and landed none?) then (yes)
+      :Report this step in\nsteps_that_landed_nothing;
+    else (no)
+      :Record what landed\nas AppliedChange entries;
+    endif
+  endwhile
+}
+
+:Row emitted\nmutated name, original_name,\nscenario_id, changed;
+stop
+
+note right
+  **One record in, exactly one row out**, whether or not
+  anything landed. That is what keeps the perturbed set
+  joinable one-to-one against its source.
+
+  Nothing is drawn from entropy. One generator runs the
+  whole chain and every trial spends the same two values
+  whether it fires or not, so a step that lands nothing
+  and a step that lands several leave the stream in the
+  same place.
+end note
+
+@enduml

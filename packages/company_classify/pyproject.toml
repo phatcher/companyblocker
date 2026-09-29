@@ -1,0 +1,50 @@
+[build-system]
+requires = ["hatchling>=1.25.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "company_classify"
+version = "0.1.0"
+description = "Company-name validity and pair classifiers, with training, evaluation and inference"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+license = { text = "MIT" }
+authors = [
+  { name = "Paul Hatcher" }
+]
+dependencies = [
+  "company-perturbation",
+  "gensim>=4.4.0",
+  "joblib",
+  "numpy",
+  "polars",
+  "scikit-learn",
+]
+
+[dependency-groups]
+dev = [
+  "pytest",
+  "pytest-cov",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/company_classify"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "src/company_classify",
+  "tests",
+  "README.md",
+]
+
+[tool.hatch.build]
+include = [
+  "src/company_classify/py.typed",
+  "src/company_classify/resources/fasttext_checkpoints.json",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-v --tb=short"

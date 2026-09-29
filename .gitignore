@@ -1,0 +1,64 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+
+# Python virtual environment
+.venv/
+venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+
+# Python build artifacts
+dist/
+build/
+*.egg-info/
+.eggs/
+
+# Rust build artifacts
+target/
+tools/bin/
+
+# Data files
+_tmp*/
+data/
+tmp/
+mlruns/*
+mlflow.db
+
+# Agent/coordinator worktrees (nested so they're visible in the same
+# VSCode window as the main checkout; each is its own git worktree)
+.worktrees/
+
+# Drafts of authored configuration: iterated on locally, tracked only once promoted
+config/**/draft/
+
+# Everything under artifacts/ is generated: runs, stores, analysis, coverage,
+# retrained tokenizers. Nothing there is tracked, so a worktree links the whole
+# directory to shared storage the way it links data/.
+artifacts/
+
+# Coverage artifacts
+.coverage
+
+# Structurizr generated runtime artifacts
+# Structurizr Lite runtime state, now written at the docs/ mount root
+docs/.structurizr/
+docs/structurizr/.structurizr/1/images/
+docs/structurizr/.structurizr/index/
+docs/structurizr/workspace.json
+
+# Graphify generated runtime artifacts
+graphify-out/*
+# graph.json is 16MB and rewritten wholesale on every regeneration, so it is built
+# locally rather than tracked. GRAPH_REPORT.md stays: it is small, readable, and
+# `tooling/design_artifact_status.py` reads its commit date to date the last run.
+!graphify-out/GRAPH_REPORT.md
+
+# pyscn reports
+.pyscn/reports/
+
+# tach test's impact-analysis cache
+.tach/

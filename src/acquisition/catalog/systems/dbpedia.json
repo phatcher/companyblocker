@@ -1,0 +1,87 @@
+{
+  "code": "dbpedia",
+  "display_name": "DBpedia",
+  "region": "global",
+  "status": "stopped",
+  "access_mode": "bulk_download",
+  "info_url": "http://dev.dbpedia.org/Download_DBpedia",
+  "notes": "DBpedia exposes bulk datasets through Databus collections/groups and documents query patterns that resolve latest-version download URLs. Current scope was English-only (all resources filter dataid-cv:lang=en). Stopped 2026-08-29: acquisition was deliberately discontinued due to poor upstream data quality and replaced with wikidata as the equivalent global/cross-jurisdiction source (see docs/architecture.md section 7, 'DBpedia -- a stopped case study'). This status was previously left as research_required after the decision to stop was made, which read as still-pending rather than closed; corrected to stopped so the catalog matches the documented decision.",
+  "all_systems_target": false,
+  "research": {
+    "pass_date": "2026-06-25",
+    "basis": "DBpedia dev Download_DBpedia documentation plus DBpedia forum guidance on large extraction workloads",
+    "priority": "P2",
+    "approach": "Use Databus bulk-first acquisition: resolve latest file URLs from documented Databus query patterns (group/artifact + language/contentVariant filters), then process downloaded RDF dump files offline. Restrict discovery and extraction to English distributions for the current phase.",
+    "next_action": "None while stopped. Reclassify status away from stopped first (e.g. back to research_required) if DBpedia is ever revisited, then resume from: expand English Databus resource coverage for organization extraction, then define RDF parsing/flattening rules that produce deterministic company-name rows for sharding validation.",
+    "allow_research_runtime": false,
+    "allowed_stages": ["acquire", "shard", "canonical", "cleanse"]
+  },
+  "resources": [
+    {
+      "name": "dbpedia_mappings_instance_types_en_latest",
+      "url": "https://databus.dbpedia.org/sparql?format=text%2Fcsv&query=SELECT%20DISTINCT%20%3Ffile%20WHERE%20%7B%20GRAPH%20%3Fg%20%7B%20%3Fd%20%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23downloadURL%3E%20%3Ffile%20.%20%7D%20FILTER%28CONTAINS%28STR%28%3Fg%29%2C%20%22%2Fdbpedia%2Fmappings%2Finstance-types%2F%22%29%29%20FILTER%28CONTAINS%28STR%28%3Fg%29%2C%20%22%2Fdataid.jsonld%22%29%29%20FILTER%28CONTAINS%28LCASE%28STR%28%3Ffile%29%29%2C%20%22lang%3Den%22%29%29%20%7D%20ORDER%20BY%20DESC%28STR%28%3Fg%29%29%20ASC%28STR%28%3Ffile%29%29%20LIMIT%201",
+      "file_format": "ttl",
+      "file_name": null,
+      "extract": false,
+      "file_name_template": "dbpedia-instance-types-en-{snapshot_date}.ttl.bz2",
+      "download_url_template": null,
+      "notes": "Discovery-stage Databus resolver for latest English mappings/instance-types artifact. Used to validate deterministic bulk acquisition flow before broadening artifact coverage.",
+      "publication_frequency": "monthly",
+      "snapshot_date_mode": "month_start",
+      "refresh_if_older_than_days": 30,
+      "adapter": "dbpedia_databus_latest",
+      "request_headers": [],
+      "required_env_vars": [],
+      "auth_header_name": null,
+      "auth_header_env": null,
+      "auth_header_prefix": null
+    },
+    {
+      "name": "dbpedia_mappings_mappingbased_literals_en_latest",
+      "url": "https://databus.dbpedia.org/sparql?format=text%2Fcsv&query=SELECT%20DISTINCT%20%3Ffile%20WHERE%20%7B%20GRAPH%20%3Fg%20%7B%20%3Fd%20%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23downloadURL%3E%20%3Ffile%20.%20%7D%20FILTER%28CONTAINS%28STR%28%3Fg%29%2C%20%22%2Fdbpedia%2Fmappings%2Fmappingbased-literals%2F%22%29%29%20FILTER%28CONTAINS%28STR%28%3Fg%29%2C%20%22%2Fdataid.jsonld%22%29%29%20FILTER%28CONTAINS%28LCASE%28STR%28%3Ffile%29%29%2C%20%22lang%3Den%22%29%29%20%7D%20ORDER%20BY%20DESC%28STR%28%3Fg%29%29%20ASC%28STR%28%3Ffile%29%29%20LIMIT%201",
+      "file_format": "ttl",
+      "file_name": null,
+      "extract": false,
+      "file_name_template": "dbpedia-mappingbased-literals-en-{snapshot_date}.ttl.bz2",
+      "download_url_template": null,
+      "notes": "Discovery-stage Databus resolver for latest English mappings/mappingbased-literals artifact to complement instance types for organization extraction.",
+      "publication_frequency": "monthly",
+      "snapshot_date_mode": "month_start",
+      "refresh_if_older_than_days": 30,
+      "adapter": "dbpedia_databus_latest",
+      "request_headers": [],
+      "required_env_vars": [],
+      "auth_header_name": null,
+      "auth_header_env": null,
+      "auth_header_prefix": null
+    },
+    {
+      "name": "dbpedia_generic_labels_en_latest",
+      "url": "https://databus.dbpedia.org/sparql?format=text%2Fcsv&query=SELECT%20DISTINCT%20%3Ffile%20WHERE%20%7B%20GRAPH%20%3Fg%20%7B%20%3Fd%20%3Chttp%3A%2F%2Fwww.w3.org%2Fns%2Fdcat%23downloadURL%3E%20%3Ffile%20.%20%7D%20FILTER%28CONTAINS%28STR%28%3Fg%29%2C%20%22%2Fdbpedia%2Fgeneric%2Flabels%2F%22%29%29%20FILTER%28CONTAINS%28STR%28%3Fg%29%2C%20%22%2Fdataid.jsonld%22%29%29%20FILTER%28CONTAINS%28LCASE%28STR%28%3Ffile%29%29%2C%20%22lang%3Den%22%29%29%20%7D%20ORDER%20BY%20DESC%28STR%28%3Fg%29%29%20ASC%28STR%28%3Ffile%29%29%20LIMIT%201",
+      "file_format": "ttl",
+      "file_name": null,
+      "extract": false,
+      "file_name_template": "dbpedia-labels-en-{snapshot_date}.ttl.bz2",
+      "download_url_template": null,
+      "notes": "Discovery-stage Databus resolver for latest English generic/labels artifact to provide lexical labels for organization-like entities.",
+      "publication_frequency": "monthly",
+      "snapshot_date_mode": "month_start",
+      "refresh_if_older_than_days": 30,
+      "adapter": "dbpedia_databus_latest",
+      "request_headers": [],
+      "required_env_vars": [],
+      "auth_header_name": null,
+      "auth_header_env": null,
+      "auth_header_prefix": null
+    }
+  ],
+  "system_uri_identifier_candidates": [
+    "dbpedia_uri"
+  ],
+  "system_field_candidates": {
+    "name": ["CompanyName"],
+    "registry_url": ["dbpedia_uri"]
+  },
+  "company_type_column": null,
+  "registry": "system"
+}

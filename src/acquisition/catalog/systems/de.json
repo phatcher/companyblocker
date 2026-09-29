@@ -1,0 +1,20 @@
+{
+  "code": "de",
+  "display_name": "Germany",
+  "region": "eu",
+  "status": "blocked",
+  "access_mode": "search_portal",
+  "info_url": "https://www.handelsregister.de/rp_web/welcome.do?language=en",
+  "notes": "The BRIS directory links to Handelsregister and Unternehmensregister for Germany. Official portal searches and prior catalog checks did not surface a public bulk-download dataset for company registry data, so Germany remains deferred from the initial bulk-only phase.",
+  "all_systems_target": false,
+  "research": {
+    "pass_date": "2026-06-15",
+    "basis": "BRIS registry table and prior catalog checks",
+    "priority": "P1",
+    "approach": "No confirmed public bulk source in current scope",
+    "next_action": "Track official bulk source announcements and legal access path"
+  },
+  "resources": [],
+  "company_type_column": null,
+  "registry": "country"
+}

@@ -1,0 +1,20 @@
+{
+  "code": "ch",
+  "display_name": "Switzerland",
+  "region": "eu",
+  "status": "research_required",
+  "access_mode": "search_portal",
+  "info_url": "",
+  "notes": "Switzerland was included in the 2026-06-15 research pass for coverage completeness. An official bulk/API source URL is not yet identified, so this entry remains research-required until source discovery and legal-access validation are complete.",
+  "all_systems_target": false,
+  "research": {
+    "pass_date": "2026-06-15",
+    "basis": "Manual inclusion for coverage completeness",
+    "priority": "P1",
+    "approach": "Identify official company register portal and any bulk or API access path",
+    "next_action": "Record validated source URL and onboarding constraints"
+  },
+  "resources": [],
+  "company_type_column": null,
+  "registry": "country"
+}

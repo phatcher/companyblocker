@@ -1,0 +1,32 @@
+[
+  {
+    "slug": "en-cc-300",
+    "source_url": "https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.en.300.bin.gz",
+    "languages": ["en"],
+    "jurisdictions": ["gb", "ie"],
+    "coverage": "monolingual",
+    "dimension": 300,
+    "checksum": "cac6b2d4301055c539bf90f938beb3a1cb017bf7ee36760d9c9835de357e5a1a",
+    "notes": "Facebook fastText Common Crawl + Wikipedia pretrained vectors, English, 300d. The pretrained ingredient's default checkpoint; downloaded and checksummed once."
+  },
+  {
+    "slug": "fr-cc-300",
+    "source_url": "https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.fr.300.bin.gz",
+    "languages": ["fr"],
+    "jurisdictions": ["fr"],
+    "coverage": "monolingual",
+    "dimension": 300,
+    "checksum": "d8bf7571db8200fb205804932e74a8c851c9154072e8743d76ab1df6ce86e015",
+    "notes": "Facebook fastText Common Crawl + Wikipedia pretrained vectors, French, 300d. Downloaded and checksummed."
+  },
+  {
+    "slug": "de-cc-300",
+    "source_url": "https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.de.300.bin.gz",
+    "languages": ["de"],
+    "jurisdictions": ["de"],
+    "coverage": "monolingual",
+    "dimension": 300,
+    "checksum": "05174bb3881664f8e1634397e741eb1867f96df14be81408aade432d8e666101",
+    "notes": "Facebook fastText Common Crawl + Wikipedia pretrained vectors, German, 300d. Downloaded and checksummed."
+  }
+]

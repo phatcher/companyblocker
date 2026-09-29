@@ -1,0 +1,6 @@
+# Known layers holding two layout generations of the same partition, one per line
+# with the count of doubled partition values, for test_stale_layout_generations.py.
+# A new line here is a regression: fix the write path instead. Delete or lower a
+# line only once a fresh run against the real data/ (shared physical storage,
+# identical across every worktree) no longer finds it -- never to silence a
+# violation a change here introduced. See test_stale_layout_generations.py.

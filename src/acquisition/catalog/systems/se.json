@@ -1,0 +1,20 @@
+{
+  "code": "se",
+  "display_name": "Sweden",
+  "region": "eu",
+  "status": "research_required",
+  "access_mode": "search_portal",
+  "info_url": "http://www.bolagsverket.se/en",
+  "notes": "No official bulk-download source is currently configured for this pipeline. Next step is to validate legal access terms and confirm an automatable bulk file or API endpoint before promotion to supported.",
+  "all_systems_target": false,
+  "research": {
+    "pass_date": "2026-06-15",
+    "basis": "BRIS registry table and national portal",
+    "priority": "P1",
+    "approach": "Bolagsverket portal extraction remained unresolved in this pass and API evidence is still missing",
+    "next_action": "Run manual source review on Bolagsverket data products and capture official API or bulk URL before adapter work"
+  },
+  "resources": [],
+  "company_type_column": null,
+  "registry": "country"
+}

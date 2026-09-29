@@ -1,0 +1,42 @@
+@startuml
+!include _style.puml
+
+title Cleanse: company_type resolution decision flow
+
+start
+:Input fields prepared\n(normalized name body, optional source type);
+
+if (Special company type from a leading\nquoted/parenthesised token?) then (yes)
+  :matched = special company type;
+elseif (Match company type from\nname suffix?) then (yes)
+  :matched = matched suffix;
+else (no)
+  :matched = none;
+endif
+
+if (Source company type mapping\nconfigured and mapped?) then (yes)
+  if (Matched type found and mapped\nvalue is already canonical?) then (yes)
+    :discard matched\n(source mapping wins);
+  else (no)
+  endif
+else (no)
+endif
+
+if (matched present?) then (yes)
+  :effective = matched;
+  :company_type_source = name_suffix;
+  :company_type_missing = false;
+elseif (mapped source value present?) then (yes)
+  :effective = mapped source value;
+  :company_type_source = source_mapping;
+  :company_type_missing = false;
+else (no)
+  :effective = none;
+  :company_type_source = default_private;
+  :company_type_missing = true;
+endif
+
+:company_type = company_type_mapping(effective)\n(null filled as private);
+:Use company_type in cleansed-name\nreplacement/generation;
+stop
+@enduml

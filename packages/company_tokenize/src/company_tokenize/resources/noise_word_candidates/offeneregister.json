@@ -1,0 +1,1017 @@
+{
+  "generated_utc": "2026-08-30T00:53:26Z",
+  "system": "offeneregister",
+  "source_stats_path": "artifacts/tokenizers/offeneregister/token_tfidf_stats.parquet",
+  "tfidf_use_case": "corpus",
+  "tfidf_namespace": "corpus_tfidf",
+  "selection": {
+    "max_candidates": 200,
+    "candidate_count": 200,
+    "min_token_length": 2,
+    "source_token_count": 1052260,
+    "document_frequency_pct_cutoff": 0.0014646465312793727,
+    "idf_cutoff": 7.526012854389795
+  },
+  "candidates": [
+    {
+      "token": "gmbh",
+      "document_frequency_pct": 0.595790729132368,
+      "idf": 1.5178656713227492
+    },
+    {
+      "token": "ev",
+      "document_frequency_pct": 0.12440769079843497,
+      "idf": 3.084189950940311
+    },
+    {
+      "token": "kg",
+      "document_frequency_pct": 0.11283413721463094,
+      "idf": 3.1818348689182354
+    },
+    {
+      "token": "co",
+      "document_frequency_pct": 0.10972748829234578,
+      "idf": 3.2097538369360628
+    },
+    {
+      "token": "ug",
+      "document_frequency_pct": 0.04212833062901772,
+      "idf": 4.167030542691199
+    },
+    {
+      "token": "fur",
+      "document_frequency_pct": 0.039011127054081475,
+      "idf": 4.243903721615976
+    },
+    {
+      "token": "verwaltungs",
+      "document_frequency_pct": 0.03257938559482158,
+      "idf": 4.4240699377041235
+    },
+    {
+      "token": "ek",
+      "document_frequency_pct": 0.03194195996507164,
+      "idf": 4.443829062030062
+    },
+    {
+      "token": "gesellschaft",
+      "document_frequency_pct": 0.026007229560114118,
+      "idf": 4.649373661050461
+    },
+    {
+      "token": "der",
+      "document_frequency_pct": 0.025953136965277266,
+      "idf": 4.651455718032624
+    },
+    {
+      "token": "verein",
+      "document_frequency_pct": 0.01747058880072194,
+      "idf": 5.047225852220433
+    },
+    {
+      "token": "immobilien",
+      "document_frequency_pct": 0.016456399766516007,
+      "idf": 5.107029569364654
+    },
+    {
+      "token": "service",
+      "document_frequency_pct": 0.015076190456445378,
+      "idf": 5.194626257559706
+    },
+    {
+      "token": "ohg",
+      "document_frequency_pct": 0.013104543646033138,
+      "idf": 5.334782071794062
+    },
+    {
+      "token": "bau",
+      "document_frequency_pct": 0.012739465749869434,
+      "idf": 5.36303595851363
+    },
+    {
+      "token": "forderverein",
+      "document_frequency_pct": 0.01229126996407837,
+      "idf": 5.398850882082742
+    },
+    {
+      "token": "verwaltungsgesellschaft",
+      "document_frequency_pct": 0.01223208851885617,
+      "idf": 5.403677353993158
+    },
+    {
+      "token": "beteiligungs",
+      "document_frequency_pct": 0.011918087602486149,
+      "idf": 5.429682440573049
+    },
+    {
+      "token": "mbh",
+      "document_frequency_pct": 0.010897113434433085,
+      "idf": 5.5192402400222695
+    },
+    {
+      "token": "in",
+      "document_frequency_pct": 0.00951652717248206,
+      "idf": 5.65470567309285
+    },
+    {
+      "token": "mit",
+      "document_frequency_pct": 0.00928941366454336,
+      "idf": 5.678859742192719
+    },
+    {
+      "token": "zweigniederlassung",
+      "document_frequency_pct": 0.009269435214882361,
+      "idf": 5.68101268300604
+    },
+    {
+      "token": "ag",
+      "document_frequency_pct": 0.009222881657653434,
+      "idf": 5.686047499027206
+    },
+    {
+      "token": "deutschland",
+      "document_frequency_pct": 0.008791648706480198,
+      "idf": 5.7339317693612
+    },
+    {
+      "token": "von",
+      "document_frequency_pct": 0.00838736781475529,
+      "idf": 5.781006253922513
+    },
+    {
+      "token": "consulting",
+      "document_frequency_pct": 0.008153657648909657,
+      "idf": 5.809265734363679
+    },
+    {
+      "token": "zur",
+      "document_frequency_pct": 0.007884325530366583,
+      "idf": 5.842854884160496
+    },
+    {
+      "token": "beschrankter",
+      "document_frequency_pct": 0.00734038396695489,
+      "idf": 5.914338638377414
+    },
+    {
+      "token": "club",
+      "document_frequency_pct": 0.007147384604192044,
+      "idf": 5.940982597723458
+    },
+    {
+      "token": "management",
+      "document_frequency_pct": 0.007143426609447884,
+      "idf": 5.9415365047603705
+    },
+    {
+      "token": "vertriebs",
+      "document_frequency_pct": 0.006969651792585243,
+      "idf": 5.96616315994601
+    },
+    {
+      "token": "haftung",
+      "document_frequency_pct": 0.006682225983783153,
+      "idf": 6.008276099149029
+    },
+    {
+      "token": "des",
+      "document_frequency_pct": 0.006517121060169624,
+      "idf": 6.033293824517962
+    },
+    {
+      "token": "handels",
+      "document_frequency_pct": 0.006463028465332772,
+      "idf": 6.041628295088479
+    },
+    {
+      "token": "handelsgesellschaft",
+      "document_frequency_pct": 0.006398758169725223,
+      "idf": 6.051622077253074
+    },
+    {
+      "token": "im",
+      "document_frequency_pct": 0.006259851401799229,
+      "idf": 6.073568912120427
+    },
+    {
+      "token": "ltd",
+      "document_frequency_pct": 0.006213674796450697,
+      "idf": 6.08097265988491
+    },
+    {
+      "token": "beteiligungsgesellschaft",
+      "document_frequency_pct": 0.0060843803014748055,
+      "idf": 6.101999610018624
+    },
+    {
+      "token": "dr",
+      "document_frequency_pct": 0.006062894044292223,
+      "idf": 6.10553712999887
+    },
+    {
+      "token": "apotheke",
+      "document_frequency_pct": 0.005924364228246625,
+      "idf": 6.128650276250851
+    },
+    {
+      "token": "partner",
+      "document_frequency_pct": 0.005679533981929304,
+      "idf": 6.170853098969982
+    },
+    {
+      "token": "holding",
+      "document_frequency_pct": 0.005647493072095628,
+      "idf": 6.17651035199484
+    },
+    {
+      "token": "hans",
+      "document_frequency_pct": 0.005515182962076567,
+      "idf": 6.200216466518857
+    },
+    {
+      "token": "am",
+      "document_frequency_pct": 0.005227003249513685,
+      "idf": 6.253881288573316
+    },
+    {
+      "token": "forderung",
+      "document_frequency_pct": 0.0051825229276269355,
+      "idf": 6.262427111149947
+    },
+    {
+      "token": "berlin",
+      "document_frequency_pct": 0.005023072282219349,
+      "idf": 6.293676191204698
+    },
+    {
+      "token": "karl",
+      "document_frequency_pct": 0.004848920513476312,
+      "idf": 6.328960492908433
+    },
+    {
+      "token": "eg",
+      "document_frequency_pct": 0.004791435351715894,
+      "idf": 6.34088610979797
+    },
+    {
+      "token": "international",
+      "document_frequency_pct": 0.004753928639616474,
+      "idf": 6.348744463662229
+    },
+    {
+      "token": "die",
+      "document_frequency_pct": 0.0044755496759438925,
+      "idf": 6.409084179192323
+    },
+    {
+      "token": "export",
+      "document_frequency_pct": 0.004215452878470525,
+      "idf": 6.468953727576856
+    },
+    {
+      "token": "marketing",
+      "document_frequency_pct": 0.004178700070131897,
+      "idf": 6.477710154347431
+    },
+    {
+      "token": "wilhelm",
+      "document_frequency_pct": 0.004171726460344568,
+      "idf": 6.479380319720884
+    },
+    {
+      "token": "haus",
+      "document_frequency_pct": 0.004108775496318405,
+      "idf": 6.49458454560238
+    },
+    {
+      "token": "heinrich",
+      "document_frequency_pct": 0.004017176189382132,
+      "idf": 6.517129335687815
+    },
+    {
+      "token": "vertrieb",
+      "document_frequency_pct": 0.003965156829887459,
+      "idf": 6.530162527682106
+    },
+    {
+      "token": "import",
+      "document_frequency_pct": 0.003955356080997158,
+      "idf": 6.532637187489705
+    },
+    {
+      "token": "autohaus",
+      "document_frequency_pct": 0.0038709188597884133,
+      "idf": 6.554214868081477
+    },
+    {
+      "token": "verwaltung",
+      "document_frequency_pct": 0.003843966800340086,
+      "idf": 6.561201582712079
+    },
+    {
+      "token": "steuerberatungsgesellschaft",
+      "document_frequency_pct": 0.003805140756659279,
+      "idf": 6.571352953580242
+    },
+    {
+      "token": "elektro",
+      "document_frequency_pct": 0.0038038214250778924,
+      "idf": 6.571699719987007
+    },
+    {
+      "token": "vertriebsgesellschaft",
+      "document_frequency_pct": 0.0037972247671709592,
+      "idf": 6.573435358021585
+    },
+    {
+      "token": "freunde",
+      "document_frequency_pct": 0.003711468214380827,
+      "idf": 6.596277143254929
+    },
+    {
+      "token": "peter",
+      "document_frequency_pct": 0.0036990288023277533,
+      "idf": 6.599634216601046
+    },
+    {
+      "token": "vermogensverwaltungs",
+      "document_frequency_pct": 0.003666422464673483,
+      "idf": 6.60848768145774
+    },
+    {
+      "token": "services",
+      "document_frequency_pct": 0.0036047908322287075,
+      "idf": 6.625439436496592
+    },
+    {
+      "token": "muller",
+      "document_frequency_pct": 0.0035233692260631315,
+      "idf": 6.648284277475912
+    },
+    {
+      "token": "hotel",
+      "document_frequency_pct": 0.0035158301884552078,
+      "idf": 6.650426179231868
+    },
+    {
+      "token": "eingetragener",
+      "document_frequency_pct": 0.0034541985560104316,
+      "idf": 6.668110440753794
+    },
+    {
+      "token": "sport",
+      "document_frequency_pct": 0.003410095186004078,
+      "idf": 6.680959994301439
+    },
+    {
+      "token": "deutsche",
+      "document_frequency_pct": 0.003407833474721701,
+      "idf": 6.681623417589814
+    },
+    {
+      "token": "verlag",
+      "document_frequency_pct": 0.003388985880701892,
+      "idf": 6.687169128342408
+    },
+    {
+      "token": "spedition",
+      "document_frequency_pct": 0.0032664765195731323,
+      "idf": 6.723985882027326
+    },
+    {
+      "token": "media",
+      "document_frequency_pct": 0.0032659110917525377,
+      "idf": 6.724158987246881
+    },
+    {
+      "token": "haftungsbeschrankt",
+      "document_frequency_pct": 0.0032606337654269915,
+      "idf": 6.725776082603604
+    },
+    {
+      "token": "transport",
+      "document_frequency_pct": 0.0032544140594004544,
+      "idf": 6.727685308211758
+    },
+    {
+      "token": "josef",
+      "document_frequency_pct": 0.003243105502988569,
+      "idf": 6.73116599393956
+    },
+    {
+      "token": "st",
+      "document_frequency_pct": 0.0032218077217461842,
+      "idf": 6.737754362813724
+    },
+    {
+      "token": "heinz",
+      "document_frequency_pct": 0.003157725902078833,
+      "idf": 6.757843664715715
+    },
+    {
+      "token": "technik",
+      "document_frequency_pct": 0.002953229506963903,
+      "idf": 6.824792329537059
+    },
+    {
+      "token": "handel",
+      "document_frequency_pct": 0.002946255897176574,
+      "idf": 6.827156321309801
+    },
+    {
+      "token": "grundstucks",
+      "document_frequency_pct": 0.0029398477152098386,
+      "idf": 6.829333576268257
+    },
+    {
+      "token": "logistik",
+      "document_frequency_pct": 0.002888582259475958,
+      "idf": 6.846924406888218
+    },
+    {
+      "token": "software",
+      "document_frequency_pct": 0.002875011991781695,
+      "idf": 6.851633067736356
+    },
+    {
+      "token": "germany",
+      "document_frequency_pct": 0.0028346781405793036,
+      "idf": 6.865760580231912
+    },
+    {
+      "token": "walter",
+      "document_frequency_pct": 0.0028326049052371243,
+      "idf": 6.866492182140106
+    },
+    {
+      "token": "vermogensverwaltung",
+      "document_frequency_pct": 0.0028273275789115777,
+      "idf": 6.868356860357544
+    },
+    {
+      "token": "hermann",
+      "document_frequency_pct": 0.0028152651187388997,
+      "idf": 6.872632083970114
+    },
+    {
+      "token": "betriebs",
+      "document_frequency_pct": 0.0027879361074101766,
+      "idf": 6.88238628999489
+    },
+    {
+      "token": "auto",
+      "document_frequency_pct": 0.002741947978001842,
+      "idf": 6.899018123171738
+    },
+    {
+      "token": "bad",
+      "document_frequency_pct": 0.0027351628441547107,
+      "idf": 6.901495586416763
+    },
+    {
+      "token": "projekt",
+      "document_frequency_pct": 0.0027180115335966844,
+      "idf": 6.907785567410421
+    },
+    {
+      "token": "sportverein",
+      "document_frequency_pct": 0.0027093416403475724,
+      "idf": 6.910980236423731
+    },
+    {
+      "token": "objekt",
+      "document_frequency_pct": 0.002706326025304403,
+      "idf": 6.912093822284911
+    },
+    {
+      "token": "werner",
+      "document_frequency_pct": 0.0027044412659024217,
+      "idf": 6.912790443699358
+    },
+    {
+      "token": "grundbesitz",
+      "document_frequency_pct": 0.002676169874872708,
+      "idf": 6.9232984212977735
+    },
+    {
+      "token": "friedrich",
+      "document_frequency_pct": 0.0026648613184608225,
+      "idf": 6.927532725436562
+    },
+    {
+      "token": "industrie",
+      "document_frequency_pct": 0.0026403594462350707,
+      "idf": 6.936769025556073
+    },
+    {
+      "token": "franz",
+      "document_frequency_pct": 0.002615103670248526,
+      "idf": 6.946379656797485
+    },
+    {
+      "token": "otto",
+      "document_frequency_pct": 0.002571942679943163,
+      "idf": 6.963020668649012
+    },
+    {
+      "token": "consult",
+      "document_frequency_pct": 0.002534812919724139,
+      "idf": 6.977561279857141
+    },
+    {
+      "token": "ms",
+      "document_frequency_pct": 0.002508237812156208,
+      "idf": 6.98809988780057
+    },
+    {
+      "token": "design",
+      "document_frequency_pct": 0.0024942905925815495,
+      "idf": 6.993675550225924
+    },
+    {
+      "token": "hamburg",
+      "document_frequency_pct": 0.002491086501598182,
+      "idf": 6.994960848856728
+    },
+    {
+      "token": "schmidt",
+      "document_frequency_pct": 0.0024516950300967804,
+      "idf": 7.010898960285567
+    },
+    {
+      "token": "georg",
+      "document_frequency_pct": 0.0024435905646682625,
+      "idf": 7.014209839152185
+    },
+    {
+      "token": "center",
+      "document_frequency_pct": 0.0024247429706484532,
+      "idf": 7.02195221291618
+    },
+    {
+      "token": "bauunternehmung",
+      "document_frequency_pct": 0.002405706900688446,
+      "idf": 7.029833335211541
+    },
+    {
+      "token": "sohn",
+      "document_frequency_pct": 0.0023732890389743743,
+      "idf": 7.043399281881279
+    },
+    {
+      "token": "solutions",
+      "document_frequency_pct": 0.0023683886645292237,
+      "idf": 7.045466055271981
+    },
+    {
+      "token": "bautrager",
+      "document_frequency_pct": 0.0023678232367086295,
+      "idf": 7.045704804228588
+    },
+    {
+      "token": "trading",
+      "document_frequency_pct": 0.002329562620848417,
+      "idf": 7.061994030999303
+    },
+    {
+      "token": "unternehmensberatung",
+      "document_frequency_pct": 0.0023239083426424743,
+      "idf": 7.0644239690165955
+    },
+    {
+      "token": "ernst",
+      "document_frequency_pct": 0.002309018743366825,
+      "idf": 7.07085119693446
+    },
+    {
+      "token": "paul",
+      "document_frequency_pct": 0.002286590106483252,
+      "idf": 7.080611372835253
+    },
+    {
+      "token": "de",
+      "document_frequency_pct": 0.00227094660344681,
+      "idf": 7.087475725968325
+    },
+    {
+      "token": "nord",
+      "document_frequency_pct": 0.0022707581275066124,
+      "idf": 7.08755871696385
+    },
+    {
+      "token": "beratung",
+      "document_frequency_pct": 0.002255680052290765,
+      "idf": 7.0942204120137555
+    },
+    {
+      "token": "grundstucksgesellschaft",
+      "document_frequency_pct": 0.002253606816948586,
+      "idf": 7.095139875446276
+    },
+    {
+      "token": "feuerwehr",
+      "document_frequency_pct": 0.0022349476988689746,
+      "idf": 7.103453312922331
+    },
+    {
+      "token": "transporte",
+      "document_frequency_pct": 0.0022324975116463997,
+      "idf": 7.1045501280502155
+    },
+    {
+      "token": "systems",
+      "document_frequency_pct": 0.002221377431174712,
+      "idf": 7.109543156660556
+    },
+    {
+      "token": "wohnbau",
+      "document_frequency_pct": 0.002218927243952137,
+      "idf": 7.110646675298919
+    },
+    {
+      "token": "invest",
+      "document_frequency_pct": 0.0021416521084709193,
+      "idf": 7.146089921913047
+    },
+    {
+      "token": "computer",
+      "document_frequency_pct": 0.002132793739281609,
+      "idf": 7.150234365921184
+    },
+    {
+      "token": "internationale",
+      "document_frequency_pct": 0.0021158309046637805,
+      "idf": 7.158218794428346
+    },
+    {
+      "token": "fritz",
+      "document_frequency_pct": 0.002104145396371499,
+      "idf": 7.163756500612868
+    },
+    {
+      "token": "kultur",
+      "document_frequency_pct": 0.002100752829447933,
+      "idf": 7.165369982497502
+    },
+    {
+      "token": "gemeinnutzige",
+      "document_frequency_pct": 0.002092648364019415,
+      "idf": 7.16923498214054
+    },
+    {
+      "token": "baugesellschaft",
+      "document_frequency_pct": 0.0020856747542320857,
+      "idf": 7.17257267862234
+    },
+    {
+      "token": "sanitar",
+      "document_frequency_pct": 0.0020709736308966347,
+      "idf": 7.179645613440202
+    },
+    {
+      "token": "institut",
+      "document_frequency_pct": 0.0020702197271358423,
+      "idf": 7.180009680068415
+    },
+    {
+      "token": "it",
+      "document_frequency_pct": 0.002051937560936627,
+      "idf": 7.188879120555824
+    },
+    {
+      "token": "deutscher",
+      "document_frequency_pct": 0.0020489219458934577,
+      "idf": 7.190349709056146
+    },
+    {
+      "token": "niederlassung",
+      "document_frequency_pct": 0.002041005956405138,
+      "idf": 7.19422032489209
+    },
+    {
+      "token": "forderer",
+      "document_frequency_pct": 0.0020330899669168184,
+      "idf": 7.198105980627505
+    },
+    {
+      "token": "pro",
+      "document_frequency_pct": 0.002005384003707699,
+      "idf": 7.211825921445394
+    },
+    {
+      "token": "verband",
+      "document_frequency_pct": 0.0019901174525516533,
+      "idf": 7.2194671076268735
+    },
+    {
+      "token": "klaus",
+      "document_frequency_pct": 0.001983332318704522,
+      "idf": 7.222882022726942
+    },
+    {
+      "token": "vermogensverwaltungsgesellschaft",
+      "document_frequency_pct": 0.0019763587089171924,
+      "idf": 7.226403991052721
+    },
+    {
+      "token": "kommanditgesellschaft",
+      "document_frequency_pct": 0.0019754163292162023,
+      "idf": 7.226880885525015
+    },
+    {
+      "token": "team",
+      "document_frequency_pct": 0.001967311863787684,
+      "idf": 7.230991593478827
+    },
+    {
+      "token": "ing",
+      "document_frequency_pct": 0.001964673200624911,
+      "idf": 7.232333618220124
+    },
+    {
+      "token": "engineering",
+      "document_frequency_pct": 0.0019392289486981685,
+      "idf": 7.245367836059031
+    },
+    {
+      "token": "umgebung",
+      "document_frequency_pct": 0.001914161648651822,
+      "idf": 7.258377262947625
+    },
+    {
+      "token": "tiefbau",
+      "document_frequency_pct": 0.0019030415681801347,
+      "idf": 7.264203001468265
+    },
+    {
+      "token": "europe",
+      "document_frequency_pct": 0.0018887173967250797,
+      "idf": 7.2717577093674555
+    },
+    {
+      "token": "munchen",
+      "document_frequency_pct": 0.0018730738936886381,
+      "idf": 7.28007397391912
+    },
+    {
+      "token": "mobel",
+      "document_frequency_pct": 0.001872508465868044,
+      "idf": 7.280375860713866
+    },
+    {
+      "token": "gastronomie",
+      "document_frequency_pct": 0.0018723199899278458,
+      "idf": 7.2804765099012085
+    },
+    {
+      "token": "grundstucksverwaltungsgesellschaft",
+      "document_frequency_pct": 0.0018561110590708098,
+      "idf": 7.2891704587174235
+    },
+    {
+      "token": "rudolf",
+      "document_frequency_pct": 0.001756030334825623,
+      "idf": 7.344592372510384
+    },
+    {
+      "token": "dienstleistungen",
+      "document_frequency_pct": 0.0017319054144802673,
+      "idf": 7.358424449537393
+    },
+    {
+      "token": "michael",
+      "document_frequency_pct": 0.0017302091310184844,
+      "idf": 7.359404254743426
+    },
+    {
+      "token": "wolfgang",
+      "document_frequency_pct": 0.001727193515975315,
+      "idf": 7.36114850461332
+    },
+    {
+      "token": "real",
+      "document_frequency_pct": 0.001719277526486995,
+      "idf": 7.365741688541651
+    },
+    {
+      "token": "leasing",
+      "document_frequency_pct": 0.0017126808685800619,
+      "idf": 7.369585523926193
+    },
+    {
+      "token": "treuhand",
+      "document_frequency_pct": 0.0017032570715701573,
+      "idf": 7.3751024749159
+    },
+    {
+      "token": "agentur",
+      "document_frequency_pct": 0.0017023146918691667,
+      "idf": 7.375655847737282
+    },
+    {
+      "token": "an",
+      "document_frequency_pct": 0.0017013723121681763,
+      "idf": 7.376209526949699
+    },
+    {
+      "token": "schule",
+      "document_frequency_pct": 0.0016930793707994603,
+      "idf": 7.381095168468847
+    },
+    {
+      "token": "carl",
+      "document_frequency_pct": 0.0016491644767333048,
+      "idf": 7.4073724063512945
+    },
+    {
+      "token": "markt",
+      "document_frequency_pct": 0.0016429447707067679,
+      "idf": 7.411150532088787
+    },
+    {
+      "token": "helmut",
+      "document_frequency_pct": 0.001641248487244985,
+      "idf": 7.412183412194386
+    },
+    {
+      "token": "systeme",
+      "document_frequency_pct": 0.0016357826849792403,
+      "idf": 7.41551885723273
+    },
+    {
+      "token": "gebr",
+      "document_frequency_pct": 0.0016329555458762688,
+      "idf": 7.41724846273742
+    },
+    {
+      "token": "jurgen",
+      "document_frequency_pct": 0.001627112791730128,
+      "idf": 7.420832488771703
+    },
+    {
+      "token": "energie",
+      "document_frequency_pct": 0.001624662604507553,
+      "idf": 7.4223392986772
+    },
+    {
+      "token": "metallbau",
+      "document_frequency_pct": 0.001596014261597443,
+      "idf": 7.440127947965527
+    },
+    {
+      "token": "maschinen",
+      "document_frequency_pct": 0.0015918677909130849,
+      "idf": 7.442729037159629
+    },
+    {
+      "token": "gerhard",
+      "document_frequency_pct": 0.0015905484593316983,
+      "idf": 7.443558077297123
+    },
+    {
+      "token": "kinder",
+      "document_frequency_pct": 0.0015896060796307078,
+      "idf": 7.444150669907057
+    },
+    {
+      "token": "anlagen",
+      "document_frequency_pct": 0.001587909796168925,
+      "idf": 7.4452182223481636
+    },
+    {
+      "token": "horst",
+      "document_frequency_pct": 0.001585836560826746,
+      "idf": 7.44652455826222
+    },
+    {
+      "token": "windpark",
+      "document_frequency_pct": 0.0015771666675776337,
+      "idf": 7.452005982854252
+    },
+    {
+      "token": "firma",
+      "document_frequency_pct": 0.001567742870567729,
+      "idf": 7.457998330603238
+    },
+    {
+      "token": "schneider",
+      "document_frequency_pct": 0.0015669889668069367,
+      "idf": 7.458479273260098
+    },
+    {
+      "token": "ingenieurburo",
+      "document_frequency_pct": 0.001561523164541192,
+      "idf": 7.461973042249778
+    },
+    {
+      "token": "kfm",
+      "document_frequency_pct": 0.0015504030840695047,
+      "idf": 7.469118957718195
+    },
+    {
+      "token": "group",
+      "document_frequency_pct": 0.001549083752488118,
+      "idf": 7.4699701768369
+    },
+    {
+      "token": "maschinenbau",
+      "document_frequency_pct": 0.00154889527654792,
+      "idf": 7.470091838738626
+    },
+    {
+      "token": "fischer",
+      "document_frequency_pct": 0.0015390945276576192,
+      "idf": 7.47643874152885
+    },
+    {
+      "token": "capital",
+      "document_frequency_pct": 0.0015334402494516764,
+      "idf": 7.480118824190469
+    },
+    {
+      "token": "dieter",
+      "document_frequency_pct": 0.0015157235110730557,
+      "idf": 7.491738237983057
+    },
+    {
+      "token": "kurt",
+      "document_frequency_pct": 0.0015095038050465187,
+      "idf": 7.495849624824721
+    },
+    {
+      "token": "schutzenverein",
+      "document_frequency_pct": 0.0015046034306013683,
+      "idf": 7.499100846895826
+    },
+    {
+      "token": "thomas",
+      "document_frequency_pct": 0.001503849526840576,
+      "idf": 7.499601974443271
+    },
+    {
+      "token": "dienstleistungs",
+      "document_frequency_pct": 0.0014993261042758217,
+      "idf": 7.502614024913263
+    },
+    {
+      "token": "reisen",
+      "document_frequency_pct": 0.0014942372538904731,
+      "idf": 7.506013461614727
+    },
+    {
+      "token": "johann",
+      "document_frequency_pct": 0.0014932948741894828,
+      "idf": 7.506644257068684
+    },
+    {
+      "token": "partnerschaft",
+      "document_frequency_pct": 0.001491787066667898,
+      "idf": 7.507654358164669
+    },
+    {
+      "token": "gross",
+      "document_frequency_pct": 0.0014900907832061153,
+      "idf": 7.508791942816199
+    },
+    {
+      "token": "rhein",
+      "document_frequency_pct": 0.0014897138313257191,
+      "idf": 7.509044915243553
+    },
+    {
+      "token": "business",
+      "document_frequency_pct": 0.0014887714516247286,
+      "idf": 7.509677626432013
+    },
+    {
+      "token": "meyer",
+      "document_frequency_pct": 0.0014802900343158145,
+      "idf": 7.515390114197404
+    },
+    {
+      "token": "weiss",
+      "document_frequency_pct": 0.0014706777613657117,
+      "idf": 7.521903963144124
+    },
+    {
+      "token": "textil",
+      "document_frequency_pct": 0.0014697353816647213,
+      "idf": 7.522544865556628
+    },
+    {
+      "token": "grosshandel",
+      "document_frequency_pct": 0.0014687930019637307,
+      "idf": 7.523186178988471
+    },
+    {
+      "token": "buro",
+      "document_frequency_pct": 0.0014655889109803633,
+      "idf": 7.525369726192182
+    },
+    {
+      "token": "edv",
+      "document_frequency_pct": 0.0014646465312793727,
+      "idf": 7.526012854389795
+    }
+  ]
+}

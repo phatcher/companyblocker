@@ -1,0 +1,53 @@
+[build-system]
+requires = ["hatchling>=1.25.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "company_tokenize"
+version = "0.1.0"
+description = "Tokenizer training and runtime tokenization for company-name workflows"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+license = { text = "MIT" }
+authors = [
+  { name = "Paul Hatcher" }
+]
+dependencies = [
+  "company-cleanse",
+  "polars",
+  "scikit-learn",
+  "sentencepiece",
+  "tokenizers",
+]
+
+[dependency-groups]
+dev = [
+  "pytest",
+  "pytest-cov",
+]
+
+[tool.uv.sources]
+company_cleanse = { workspace = true }
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/company_tokenize"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "src/company_tokenize",
+  "tests",
+  "README.md",
+]
+
+[tool.hatch.build]
+include = [
+  "src/company_tokenize/resources/company_wordpiece_tokenizer.json",
+  "src/company_tokenize/resources/noise_word_candidates/*.json",
+  "src/company_tokenize/py.typed",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-v --tb=short"

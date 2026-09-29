@@ -1,0 +1,12 @@
+{
+  "registry": "system",
+  "code": "perturbed",
+  "display_name": "Perturbation profiles (synthetic)",
+  "region": "synthetic",
+  "status": "live",
+  "access_mode": "bulk_download",
+  "info_url": "",
+  "notes": "Synthetic pseudo-system for materialized perturbation-profile output -- not a real acquisition source; see src/validation/perturbation_materializer.py.",
+  "all_systems_target": false,
+  "resources": []
+}

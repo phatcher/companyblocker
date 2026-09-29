@@ -1,0 +1,43 @@
+@startuml
+!include _style.puml
+
+title Cleanse: short_name derivation activity
+
+start
+:Have candidate row with\nname_cleansed + company_type\n+ optional jurisdiction_code;
+
+if (Leading special or quoted token\nproduces valid short_name?) then (yes)
+  :short_name = extracted lead token;
+else (no)
+endif
+
+:Optionally derive acronym from\nshort_name vs cleansed initials;
+
+if (short_name already set?) then (yes)
+else (no)
+  if (name_cleansed is empty?) then (yes)
+    :short_name stays null;
+  else (no)
+    if (Single-token name?) then (yes)
+      :short_name = token;
+    else (no)
+      :Tokenize name_cleansed;
+      if (short_name_profile includes company_type?) then (yes)
+        :Trim trailing company-type components;
+      endif
+      if (short_name_profile sets geographic tiers?) then (yes)
+        :Strip geographic terms;
+      endif
+      if (short_name_profile includes noise words?) then (yes)
+        :Union suffix-scope noise words with\ncorpus noise words for jurisdiction_code\n(global list when unmapped, none when absent);
+        :Remove anywhere-scope noise words\n(keep at least one token);
+        :Trim trailing suffix-scope noise words\n(keep at least one token);
+      endif
+      :short_name = remaining tokens joined;
+    endif
+  endif
+endif
+
+:Recombine quoted_name into short_name\n(when short_name is set);
+stop
+@enduml

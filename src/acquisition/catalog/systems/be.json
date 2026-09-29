@@ -1,0 +1,20 @@
+{
+  "code": "be",
+  "display_name": "Belgium",
+  "region": "eu",
+  "status": "research_required",
+  "access_mode": "search_portal",
+  "info_url": "https://kbopub.economie.fgov.be/kbopub/zoeknummerform.html?lang=en",
+  "notes": "No official bulk-download source is currently configured for this pipeline. Next step is to validate legal access terms and confirm an automatable bulk file or API endpoint before promotion to supported.",
+  "all_systems_target": false,
+  "research": {
+    "pass_date": "2026-06-15",
+    "basis": "BRIS registry table plus CBE public search review",
+    "priority": "P2",
+    "approach": "Public search is confirmed but API or bulk endpoint not confirmed in this pass",
+    "next_action": "Follow CBE service documentation to locate official data feed or API terms"
+  },
+  "resources": [],
+  "company_type_column": null,
+  "registry": "country"
+}

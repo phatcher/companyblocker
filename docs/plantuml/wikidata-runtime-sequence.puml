@@ -1,0 +1,53 @@
+@startuml
+!include _style.puml
+
+title Wikidata runtime: engine dispatch and projection execution
+
+participant "extract_wikidata_company_projection_two_pass" as API
+participant "wikisieve subprocess" as Subprocess
+participant "WikidataProjectionEngine" as Engine
+participant "reader strategy" as Reader
+participant "WikidataProgressEmitter" as Emitter
+database "data/wikidata" as Storage
+
+API -> API: resolve engine from projection_defaults (wikisieve / python)
+
+alt engine is wikisieve
+  API -> Subprocess: build CLI command and spawn subprocess
+  loop stderr progress lines
+    Subprocess --> API: lines_scanned/candidates/emitted progress line
+    API -> Emitter: forward enriched progress
+  end
+  alt resuming run
+    Subprocess -> Storage: write chunk files, dropping any the last checkpoint does not cover
+  else non-resuming run
+    Subprocess -> Storage: write .tmp staging files beside the live extract
+  end
+  API -> Storage: write run manifest beside destination
+  alt non-resuming run
+    API -> API: check staged row count against summary records_emitted
+    API -> Storage: rename staging files over the live extract and cache (removed on failure)
+  else resuming run
+    API -> API: validate chunk summary against emitted row counts
+    API -> Subprocess: wikisieve merge-chunks (skipped for a bounded run)
+    Subprocess -> Storage: verify row count, then rename merged file over the live extract
+  end
+else engine is python
+  opt p279.json beside source
+    API -> API: load legal-form QIDs and build legal-form matcher
+  end
+  API -> Emitter: emit single-scan header
+  API -> API: build reader strategy + progress emitter
+  API -> Engine: construct engine (source, destination, reader strategy, emitter, matcher)
+  Engine -> Reader: open source
+  loop for each content line
+    Reader --> Engine: content line
+    Engine -> Engine: matcher(line) candidate check + project matched line
+    Engine -> Storage: write projected line to current chunk (byte-size rollover)
+    Engine -> Emitter: emit progress / ETA updates
+  end
+  Engine -> Storage: finalize last chunk
+  Engine --> API: company_count, projected_count
+end
+
+@enduml

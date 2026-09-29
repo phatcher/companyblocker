@@ -1,0 +1,1017 @@
+{
+  "generated_utc": "2026-08-30T00:53:21Z",
+  "system": "global",
+  "source_stats_path": "artifacts/tokenizers/global/token_tfidf_stats.parquet",
+  "tfidf_use_case": "corpus",
+  "tfidf_namespace": "corpus_tfidf",
+  "selection": {
+    "max_candidates": 200,
+    "candidate_count": 200,
+    "min_token_length": 2,
+    "source_token_count": 4723389,
+    "document_frequency_pct_cutoff": 0.0012234777150255827,
+    "idf_cutoff": 7.706028702869751
+  },
+  "candidates": [
+    {
+      "token": "ltd",
+      "document_frequency_pct": 0.24145990566636436,
+      "idf": 2.421051729440105
+    },
+    {
+      "token": "gmbh",
+      "document_frequency_pct": 0.10784827346092707,
+      "idf": 3.22702961922092
+    },
+    {
+      "token": "sci",
+      "document_frequency_pct": 0.049043543972314654,
+      "idf": 4.015046029735493
+    },
+    {
+      "token": "de",
+      "document_frequency_pct": 0.040468938771805,
+      "idf": 4.2072196953063585
+    },
+    {
+      "token": "ev",
+      "document_frequency_pct": 0.02394991592791721,
+      "idf": 4.73178900836651
+    },
+    {
+      "token": "kg",
+      "document_frequency_pct": 0.022948394661017838,
+      "idf": 4.7745057721009445
+    },
+    {
+      "token": "la",
+      "document_frequency_pct": 0.021049251199102906,
+      "idf": 4.860888629176181
+    },
+    {
+      "token": "du",
+      "document_frequency_pct": 0.01717945768760352,
+      "idf": 5.064038884009987
+    },
+    {
+      "token": "co",
+      "document_frequency_pct": 0.0169671546288127,
+      "idf": 5.076473813008722
+    },
+    {
+      "token": "services",
+      "document_frequency_pct": 0.016549663416704174,
+      "idf": 5.101387390116958
+    },
+    {
+      "token": "sarl",
+      "document_frequency_pct": 0.016391741117836027,
+      "idf": 5.110975515950416
+    },
+    {
+      "token": "des",
+      "document_frequency_pct": 0.015815755554157998,
+      "idf": 5.1467464239812415
+    },
+    {
+      "token": "mbh",
+      "document_frequency_pct": 0.015376848119042451,
+      "idf": 5.174889980266791
+    },
+    {
+      "token": "les",
+      "document_frequency_pct": 0.01346193745454639,
+      "idf": 5.30788640335538
+    },
+    {
+      "token": "le",
+      "document_frequency_pct": 0.01276642862957875,
+      "idf": 5.3609335520260775
+    },
+    {
+      "token": "management",
+      "document_frequency_pct": 0.009921467532559005,
+      "idf": 5.613050864007229
+    },
+    {
+      "token": "the",
+      "document_frequency_pct": 0.009624143141029117,
+      "idf": 5.643476747881392
+    },
+    {
+      "token": "holding",
+      "document_frequency_pct": 0.009059384111615205,
+      "idf": 5.703950229301461
+    },
+    {
+      "token": "association",
+      "document_frequency_pct": 0.008744469099518613,
+      "idf": 5.739329828472509
+    },
+    {
+      "token": "consulting",
+      "document_frequency_pct": 0.008494303302556778,
+      "idf": 5.768355366540638
+    },
+    {
+      "token": "ug",
+      "document_frequency_pct": 0.008323938857434134,
+      "idf": 5.788615456337482
+    },
+    {
+      "token": "fur",
+      "document_frequency_pct": 0.007637725888863532,
+      "idf": 5.874650733258881
+    },
+    {
+      "token": "group",
+      "document_frequency_pct": 0.007545947183589695,
+      "idf": 5.886739954409289
+    },
+    {
+      "token": "llc",
+      "document_frequency_pct": 0.007303897384328351,
+      "idf": 5.9193423256984925
+    },
+    {
+      "token": "societe",
+      "document_frequency_pct": 0.006963955066547427,
+      "idf": 5.967002611061077
+    },
+    {
+      "token": "holdings",
+      "document_frequency_pct": 0.006815936430071509,
+      "idf": 5.988486606295772
+    },
+    {
+      "token": "solutions",
+      "document_frequency_pct": 0.006538133336975402,
+      "idf": 6.030098144077536
+    },
+    {
+      "token": "company",
+      "document_frequency_pct": 0.006402199313815634,
+      "idf": 6.051108156100286
+    },
+    {
+      "token": "verwaltungs",
+      "document_frequency_pct": 0.006344135964627979,
+      "idf": 6.060218763000953
+    },
+    {
+      "token": "property",
+      "document_frequency_pct": 0.006244563041298165,
+      "idf": 6.076038417482329
+    },
+    {
+      "token": "ek",
+      "document_frequency_pct": 0.00614130752870337,
+      "idf": 6.092711820934687
+    },
+    {
+      "token": "bv",
+      "document_frequency_pct": 0.006078059951909675,
+      "idf": 6.103063874197719
+    },
+    {
+      "token": "srl",
+      "document_frequency_pct": 0.006058860433120407,
+      "idf": 6.106227678701465
+    },
+    {
+      "token": "service",
+      "document_frequency_pct": 0.00579614523002257,
+      "idf": 6.1505560652095665
+    },
+    {
+      "token": "uk",
+      "document_frequency_pct": 0.005748414582753162,
+      "idf": 6.158825003024083
+    },
+    {
+      "token": "private",
+      "document_frequency_pct": 0.005731467521475484,
+      "idf": 6.1617774667992675
+    },
+    {
+      "token": "club",
+      "document_frequency_pct": 0.005695392447996208,
+      "idf": 6.168091531674241
+    },
+    {
+      "token": "international",
+      "document_frequency_pct": 0.005637186085633215,
+      "idf": 6.17836395233423
+    },
+    {
+      "token": "sl",
+      "document_frequency_pct": 0.0054406144761296885,
+      "idf": 6.213856733542858
+    },
+    {
+      "token": "der",
+      "document_frequency_pct": 0.005239251925252305,
+      "idf": 6.251569764851803
+    },
+    {
+      "token": "invest",
+      "document_frequency_pct": 0.005199243989451205,
+      "idf": 6.259235209752154
+    },
+    {
+      "token": "gesellschaft",
+      "document_frequency_pct": 0.005180688029950964,
+      "idf": 6.262810541729741
+    },
+    {
+      "token": "properties",
+      "document_frequency_pct": 0.005150655263129762,
+      "idf": 6.268624431114511
+    },
+    {
+      "token": "france",
+      "document_frequency_pct": 0.004700592800337768,
+      "idf": 6.360059080145886
+    },
+    {
+      "token": "fund",
+      "document_frequency_pct": 0.004698018563181665,
+      "idf": 6.3606068669487925
+    },
+    {
+      "token": "trust",
+      "document_frequency_pct": 0.0046298727851326075,
+      "idf": 6.375218200951961
+    },
+    {
+      "token": "investments",
+      "document_frequency_pct": 0.004600340564425094,
+      "idf": 6.381617206386722
+    },
+    {
+      "token": "construction",
+      "document_frequency_pct": 0.004580747759403644,
+      "idf": 6.385885258599221
+    },
+    {
+      "token": "sa",
+      "document_frequency_pct": 0.004578459548598219,
+      "idf": 6.3863849072941345
+    },
+    {
+      "token": "ab",
+      "document_frequency_pct": 0.004559367289690456,
+      "idf": 6.390563611405063
+    },
+    {
+      "token": "ass",
+      "document_frequency_pct": 0.004535734362465677,
+      "idf": 6.395760429541449
+    },
+    {
+      "token": "soc",
+      "document_frequency_pct": 0.00449604820630909,
+      "idf": 6.404548528029496
+    },
+    {
+      "token": "indivision",
+      "document_frequency_pct": 0.004237516138589921,
+      "idf": 6.463769596231569
+    },
+    {
+      "token": "capital",
+      "document_frequency_pct": 0.004038584811693301,
+      "idf": 6.511852125377867
+    },
+    {
+      "token": "saint",
+      "document_frequency_pct": 0.003984096791889122,
+      "idf": 6.525435706193259
+    },
+    {
+      "token": "immo",
+      "document_frequency_pct": 0.003893676711781007,
+      "idf": 6.54839225101643
+    },
+    {
+      "token": "as",
+      "document_frequency_pct": 0.0038429785411233136,
+      "idf": 6.561498283561112
+    },
+    {
+      "token": "lp",
+      "document_frequency_pct": 0.003766573752198425,
+      "idf": 6.581580053333423
+    },
+    {
+      "token": "in",
+      "document_frequency_pct": 0.003695281684291908,
+      "idf": 6.600688853988584
+    },
+    {
+      "token": "auto",
+      "document_frequency_pct": 0.0034587021389872828,
+      "idf": 6.6668515632279455
+    },
+    {
+      "token": "en",
+      "document_frequency_pct": 0.003432637987781741,
+      "idf": 6.674415840874088
+    },
+    {
+      "token": "global",
+      "document_frequency_pct": 0.0034303497769763163,
+      "idf": 6.675082660378261
+    },
+    {
+      "token": "centre",
+      "document_frequency_pct": 0.003393309364563502,
+      "idf": 6.68593911944122
+    },
+    {
+      "token": "verein",
+      "document_frequency_pct": 0.003361524686344398,
+      "idf": 6.695350032009313
+    },
+    {
+      "token": "immobilien",
+      "document_frequency_pct": 0.0033494758263220826,
+      "idf": 6.698940776657467
+    },
+    {
+      "token": "conseil",
+      "document_frequency_pct": 0.003341002295683244,
+      "idf": 6.701473762926085
+    },
+    {
+      "token": "trading",
+      "document_frequency_pct": 0.003333923143503961,
+      "idf": 6.7035948589777865
+    },
+    {
+      "token": "inc",
+      "document_frequency_pct": 0.003324698793694592,
+      "idf": 6.706365479306838
+    },
+    {
+      "token": "sas",
+      "document_frequency_pct": 0.003315367184003719,
+      "idf": 6.709176148771486
+    },
+    {
+      "token": "synd",
+      "document_frequency_pct": 0.0032501889293429466,
+      "idf": 6.729031187664359
+    },
+    {
+      "token": "transport",
+      "document_frequency_pct": 0.0030487906251717273,
+      "idf": 6.792998592114015
+    },
+    {
+      "token": "rue",
+      "document_frequency_pct": 0.0030228694871415247,
+      "idf": 6.801536945630087
+    },
+    {
+      "token": "st",
+      "document_frequency_pct": 0.002957583972599248,
+      "idf": 6.823370516556566
+    },
+    {
+      "token": "aps",
+      "document_frequency_pct": 0.0028999854162314446,
+      "idf": 6.843037277933342
+    },
+    {
+      "token": "ag",
+      "document_frequency_pct": 0.0028695593631780617,
+      "idf": 6.853584369315866
+    },
+    {
+      "token": "of",
+      "document_frequency_pct": 0.00283208991123923,
+      "idf": 6.866727766818827
+    },
+    {
+      "token": "immobilier",
+      "document_frequency_pct": 0.0027513947270541707,
+      "idf": 6.895634363628894
+    },
+    {
+      "token": "earl",
+      "document_frequency_pct": 0.0027461389928604605,
+      "idf": 6.897546372795913
+    },
+    {
+      "token": "llp",
+      "document_frequency_pct": 0.0027389525807996733,
+      "idf": 6.900166683648113
+    },
+    {
+      "token": "design",
+      "document_frequency_pct": 0.002714711847579704,
+      "idf": 6.909056330358479
+    },
+    {
+      "token": "eurl",
+      "document_frequency_pct": 0.002627330797447544,
+      "idf": 6.941773281698199
+    },
+    {
+      "token": "investment",
+      "document_frequency_pct": 0.0025486735510110658,
+      "idf": 6.972168238879416
+    },
+    {
+      "token": "ohg",
+      "document_frequency_pct": 0.002518462017720691,
+      "idf": 6.984092713577112
+    },
+    {
+      "token": "engineering",
+      "document_frequency_pct": 0.002494614570732904,
+      "idf": 6.99360674604466
+    },
+    {
+      "token": "bau",
+      "document_frequency_pct": 0.002483638309525632,
+      "idf": 6.99801637391954
+    },
+    {
+      "token": "beteiligungs",
+      "document_frequency_pct": 0.0024257894801009857,
+      "idf": 7.021583545804869
+    },
+    {
+      "token": "verwaltungsgesellschaft",
+      "document_frequency_pct": 0.0023655809332832453,
+      "idf": 7.046716571358608
+    },
+    {
+      "token": "forderverein",
+      "document_frequency_pct": 0.002329470106510135,
+      "idf": 7.062099146986752
+    },
+    {
+      "token": "consultancy",
+      "document_frequency_pct": 0.0023090907290243203,
+      "idf": 7.0708860078996425
+    },
+    {
+      "token": "media",
+      "document_frequency_pct": 0.0022931090066801814,
+      "idf": 7.077831181594609
+    },
+    {
+      "token": "civile",
+      "document_frequency_pct": 0.0022200650273757607,
+      "idf": 7.110202723183625
+    },
+    {
+      "token": "partners",
+      "document_frequency_pct": 0.002170761235177623,
+      "idf": 7.132660938819008
+    },
+    {
+      "token": "developments",
+      "document_frequency_pct": 0.0021248182525999528,
+      "idf": 7.154052217828022
+    },
+    {
+      "token": "snc",
+      "document_frequency_pct": 0.0021173100608946525,
+      "idf": 7.157591984865647
+    },
+    {
+      "token": "com",
+      "document_frequency_pct": 0.00210032724632314,
+      "idf": 7.165645127983631
+    },
+    {
+      "token": "care",
+      "document_frequency_pct": 0.002045767719931292,
+      "idf": 7.191964705961657
+    },
+    {
+      "token": "europe",
+      "document_frequency_pct": 0.00203779473540614,
+      "idf": 7.195869558713109
+    },
+    {
+      "token": "distribution",
+      "document_frequency_pct": 0.0020155561866409175,
+      "idf": 7.206842395760779
+    },
+    {
+      "token": "business",
+      "document_frequency_pct": 0.002007654708703435,
+      "idf": 7.210770277180447
+    },
+    {
+      "token": "paris",
+      "document_frequency_pct": 0.0019947835229229206,
+      "idf": 7.217201856859505
+    },
+    {
+      "token": "jean",
+      "document_frequency_pct": 0.0019860239659334035,
+      "idf": 7.221602679460196
+    },
+    {
+      "token": "art",
+      "document_frequency_pct": 0.001969577450769413,
+      "idf": 7.229918134378469
+    },
+    {
+      "token": "dr",
+      "document_frequency_pct": 0.0019660378746797712,
+      "idf": 7.231716843063897
+    },
+    {
+      "token": "house",
+      "document_frequency_pct": 0.0019046852224593183,
+      "idf": 7.263419786305376
+    },
+    {
+      "token": "pro",
+      "document_frequency_pct": 0.0018966764846403313,
+      "idf": 7.267633328523629
+    },
+    {
+      "token": "immobiliere",
+      "document_frequency_pct": 0.0018945312870102455,
+      "idf": 7.26876497707895
+    },
+    {
+      "token": "finance",
+      "document_frequency_pct": 0.0018869515887172759,
+      "idf": 7.272773756367748
+    },
+    {
+      "token": "action",
+      "document_frequency_pct": 0.0018763328604483513,
+      "idf": 7.27841699425128
+    },
+    {
+      "token": "comite",
+      "document_frequency_pct": 0.0018593142925830042,
+      "idf": 7.287528325778524
+    },
+    {
+      "token": "systems",
+      "document_frequency_pct": 0.001852878699692747,
+      "idf": 7.290995535261778
+    },
+    {
+      "token": "pour",
+      "document_frequency_pct": 0.001850018436185966,
+      "idf": 7.292540384463485
+    },
+    {
+      "token": "concept",
+      "document_frequency_pct": 0.0018428677774190133,
+      "idf": 7.296412981035273
+    },
+    {
+      "token": "sud",
+      "document_frequency_pct": 0.0018413303857841186,
+      "idf": 7.297247551716532
+    },
+    {
+      "token": "marketing",
+      "document_frequency_pct": 0.0018405438133197538,
+      "idf": 7.297674810855695
+    },
+    {
+      "token": "hotel",
+      "document_frequency_pct": 0.001829960838344664,
+      "idf": 7.303441210376459
+    },
+    {
+      "token": "ii",
+      "document_frequency_pct": 0.0018206292286537908,
+      "idf": 7.308553505683308
+    },
+    {
+      "token": "mit",
+      "document_frequency_pct": 0.0018112976189629177,
+      "idf": 7.313692070910562
+    },
+    {
+      "token": "london",
+      "document_frequency_pct": 0.0018110115926122396,
+      "idf": 7.313849992660663
+    },
+    {
+      "token": "maison",
+      "document_frequency_pct": 0.0018009649170446713,
+      "idf": 7.319412876338179
+    },
+    {
+      "token": "energy",
+      "document_frequency_pct": 0.001782158684487586,
+      "idf": 7.32990987952832
+    },
+    {
+      "token": "zweigniederlassung",
+      "document_frequency_pct": 0.0017632809453428315,
+      "idf": 7.340558791243236
+    },
+    {
+      "token": "oy",
+      "document_frequency_pct": 0.0017601346554853721,
+      "idf": 7.342344687202426
+    },
+    {
+      "token": "deutschland",
+      "document_frequency_pct": 0.0017589190434949902,
+      "idf": 7.343035547554202
+    },
+    {
+      "token": "gestion",
+      "document_frequency_pct": 0.0017461908708898148,
+      "idf": 7.350298069530252
+    },
+    {
+      "token": "studio",
+      "document_frequency_pct": 0.0017445104660795809,
+      "idf": 7.351260839103263
+    },
+    {
+      "token": "batiment",
+      "document_frequency_pct": 0.0017351073498010382,
+      "idf": 7.356665424567955
+    },
+    {
+      "token": "technology",
+      "document_frequency_pct": 0.0017041092440462989,
+      "idf": 7.374691797612694
+    },
+    {
+      "token": "sport",
+      "document_frequency_pct": 0.0016997115889046232,
+      "idf": 7.3772756969548405
+    },
+    {
+      "token": "estate",
+      "document_frequency_pct": 0.0016892716271048724,
+      "idf": 7.383436703888994
+    },
+    {
+      "token": "von",
+      "document_frequency_pct": 0.0016772227670825573,
+      "idf": 7.390594687319434
+    },
+    {
+      "token": "union",
+      "document_frequency_pct": 0.0016710016939553087,
+      "idf": 7.394310655290006
+    },
+    {
+      "token": "for",
+      "document_frequency_pct": 0.0016699648484341004,
+      "idf": 7.394931327990703
+    },
+    {
+      "token": "copr",
+      "document_frequency_pct": 0.001665638699880094,
+      "idf": 7.397525196343215
+    },
+    {
+      "token": "fils",
+      "document_frequency_pct": 0.0016422202924183246,
+      "idf": 7.411684380592553
+    },
+    {
+      "token": "it",
+      "document_frequency_pct": 0.001632638409670608,
+      "idf": 7.417536053439979
+    },
+    {
+      "token": "au",
+      "document_frequency_pct": 0.0016238788526810911,
+      "idf": 7.422915656906208
+    },
+    {
+      "token": "di",
+      "document_frequency_pct": 0.0016090769890334995,
+      "idf": 7.4320723793680665
+    },
+    {
+      "token": "enterprises",
+      "document_frequency_pct": 0.0015786151826862815,
+      "idf": 7.451184670411104
+    },
+    {
+      "token": "medical",
+      "document_frequency_pct": 0.0015771492976390563,
+      "idf": 7.4521136699907595
+    },
+    {
+      "token": "cic",
+      "document_frequency_pct": 0.0015753973862411529,
+      "idf": 7.453225071037377
+    },
+    {
+      "token": "home",
+      "document_frequency_pct": 0.0015675674148913398,
+      "idf": 7.458207506352302
+    },
+    {
+      "token": "groupe",
+      "document_frequency_pct": 0.0015594514171908486,
+      "idf": 7.463398284388586
+    },
+    {
+      "token": "sociale",
+      "document_frequency_pct": 0.0015482248829267332,
+      "idf": 7.470623184088944
+    },
+    {
+      "token": "developpement",
+      "document_frequency_pct": 0.0015475455703438726,
+      "idf": 7.471062038915884
+    },
+    {
+      "token": "entreprise",
+      "document_frequency_pct": 0.001544184760723405,
+      "idf": 7.473236053371293
+    },
+    {
+      "token": "real",
+      "document_frequency_pct": 0.0015425043559131712,
+      "idf": 7.474324835548695
+    },
+    {
+      "token": "food",
+      "document_frequency_pct": 0.0015404664181645896,
+      "idf": 7.475646866101556
+    },
+    {
+      "token": "zur",
+      "document_frequency_pct": 0.001539787105581729,
+      "idf": 7.4760879316301505
+    },
+    {
+      "token": "technologies",
+      "document_frequency_pct": 0.0015371413618379566,
+      "idf": 7.477807622509677
+    },
+    {
+      "token": "road",
+      "document_frequency_pct": 0.0015326722001086114,
+      "idf": 7.480719239581231
+    },
+    {
+      "token": "am",
+      "document_frequency_pct": 0.0015267371533320407,
+      "idf": 7.484599018205751
+    },
+    {
+      "token": "transports",
+      "document_frequency_pct": 0.0015249494886403025,
+      "idf": 7.48577058214312
+    },
+    {
+      "token": "electrical",
+      "document_frequency_pct": 0.001506965581841417,
+      "idf": 7.497633509135756
+    },
+    {
+      "token": "homes",
+      "document_frequency_pct": 0.0014944876822930847,
+      "idf": 7.505947930894095
+    },
+    {
+      "token": "tech",
+      "document_frequency_pct": 0.0014903045469144174,
+      "idf": 7.50875083145344
+    },
+    {
+      "token": "commune",
+      "document_frequency_pct": 0.0014880878426966622,
+      "idf": 7.510239319952402
+    },
+    {
+      "token": "consultants",
+      "document_frequency_pct": 0.0014869437372939498,
+      "idf": 7.5110084398288
+    },
+    {
+      "token": "productions",
+      "document_frequency_pct": 0.0014664570999266306,
+      "idf": 7.524881578669955
+    },
+    {
+      "token": "development",
+      "document_frequency_pct": 0.0014624527310171372,
+      "idf": 7.52761588861796
+    },
+    {
+      "token": "gaec",
+      "document_frequency_pct": 0.001455981384833045,
+      "idf": 7.5320505943386715
+    },
+    {
+      "token": "ireland",
+      "document_frequency_pct": 0.0014466140218483373,
+      "idf": 7.538504931528399
+    },
+    {
+      "token": "atelier",
+      "document_frequency_pct": 0.0014406789750717667,
+      "idf": 7.542615985140271
+    },
+    {
+      "token": "building",
+      "document_frequency_pct": 0.0014358880336979086,
+      "idf": 7.545946918643353
+    },
+    {
+      "token": "beschrankter",
+      "document_frequency_pct": 0.0014107534681320703,
+      "idf": 7.56360603542887
+    },
+    {
+      "token": "garage",
+      "document_frequency_pct": 0.0014075356716869416,
+      "idf": 7.5658894890013615
+    },
+    {
+      "token": "partner",
+      "document_frequency_pct": 0.0014059267734643772,
+      "idf": 7.567033174078943
+    },
+    {
+      "token": "im",
+      "document_frequency_pct": 0.0013977392691762165,
+      "idf": 7.572873612007144
+    },
+    {
+      "token": "associates",
+      "document_frequency_pct": 0.001390731623584603,
+      "idf": 7.577899650230523
+    },
+    {
+      "token": "ventures",
+      "document_frequency_pct": 0.0013903740906462555,
+      "idf": 7.578156759297605
+    },
+    {
+      "token": "export",
+      "document_frequency_pct": 0.0013630585741564968,
+      "idf": 7.5979979586560455
+    },
+    {
+      "token": "sp",
+      "document_frequency_pct": 0.0013580173597257951,
+      "idf": 7.601703175156364
+    },
+    {
+      "token": "vertriebs",
+      "document_frequency_pct": 0.0013558006555080399,
+      "idf": 7.603336774971609
+    },
+    {
+      "token": "groupement",
+      "document_frequency_pct": 0.0013524040925937373,
+      "idf": 7.605845060224422
+    },
+    {
+      "token": "estates",
+      "document_frequency_pct": 0.001349865608731469,
+      "idf": 7.607723790120923
+    },
+    {
+      "token": "bois",
+      "document_frequency_pct": 0.0013440735751302376,
+      "idf": 7.612023730389217
+    },
+    {
+      "token": "handels",
+      "document_frequency_pct": 0.0013362078504865899,
+      "idf": 7.617892918083557
+    },
+    {
+      "token": "family",
+      "document_frequency_pct": 0.0013348849786147035,
+      "idf": 7.618883401493629
+    },
+    {
+      "token": "etablissements",
+      "document_frequency_pct": 0.001334527445676356,
+      "idf": 7.619151268204756
+    },
+    {
+      "token": "new",
+      "document_frequency_pct": 0.001333311833685974,
+      "idf": 7.620062552105933
+    },
+    {
+      "token": "park",
+      "document_frequency_pct": 0.0013276628132600815,
+      "idf": 7.624308272462361
+    },
+    {
+      "token": "west",
+      "document_frequency_pct": 0.00132036914131779,
+      "idf": 7.629816886829598
+    },
+    {
+      "token": "pierre",
+      "document_frequency_pct": 0.0013164720322898008,
+      "idf": 7.632772700948606
+    },
+    {
+      "token": "green",
+      "document_frequency_pct": 0.0012941619769369088,
+      "idf": 7.649864324896941
+    },
+    {
+      "token": "import",
+      "document_frequency_pct": 0.0012918022595438145,
+      "idf": 7.651689294296024
+    },
+    {
+      "token": "haftung",
+      "document_frequency_pct": 0.0012810762713933855,
+      "idf": 7.660026844678622
+    },
+    {
+      "token": "handelsgesellschaft",
+      "document_frequency_pct": 0.0012803254522228556,
+      "idf": 7.66061308480261
+    },
+    {
+      "token": "digital",
+      "document_frequency_pct": 0.0012767143695455445,
+      "idf": 7.663437431977264
+    },
+    {
+      "token": "syndicat",
+      "document_frequency_pct": 0.0012690631646649054,
+      "idf": 7.669448179507013
+    },
+    {
+      "token": "ecole",
+      "document_frequency_pct": 0.0012589092292158326,
+      "idf": 7.677481259984961
+    },
+    {
+      "token": "paul",
+      "document_frequency_pct": 0.0012559059525337126,
+      "idf": 7.679869660324204
+    },
+    {
+      "token": "scm",
+      "document_frequency_pct": 0.0012529384291454272,
+      "idf": 7.682235243631333
+    },
+    {
+      "token": "sportive",
+      "document_frequency_pct": 0.0012453944841462924,
+      "idf": 7.688274272274028
+    },
+    {
+      "token": "nord",
+      "document_frequency_pct": 0.001239566697251226,
+      "idf": 7.692964590922207
+    },
+    {
+      "token": "conseils",
+      "document_frequency_pct": 0.0012393521774882175,
+      "idf": 7.6931376611891675
+    },
+    {
+      "token": "pty",
+      "document_frequency_pct": 0.0012321657654274301,
+      "idf": 7.698952892609643
+    },
+    {
+      "token": "corp",
+      "document_frequency_pct": 0.0012315222061384044,
+      "idf": 7.699475313170066
+    },
+    {
+      "token": "copropriete",
+      "document_frequency_pct": 0.001230521113911031,
+      "idf": 7.7002885102409016
+    },
+    {
+      "token": "cabinet",
+      "document_frequency_pct": 0.0012257301725371729,
+      "idf": 7.704189420546984
+    },
+    {
+      "token": "plus",
+      "document_frequency_pct": 0.0012237994946700955,
+      "idf": 7.705765741041527
+    },
+    {
+      "token": "software",
+      "document_frequency_pct": 0.0012234777150255827,
+      "idf": 7.706028702869751
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+[
+  {
+    "slug": "en-all-minilm-l6-v2",
+    "checkpoint": "sentence-transformers/all-MiniLM-L6-v2",
+    "languages": ["en"],
+    "jurisdictions": ["gb", "ie"],
+    "coverage": "monolingual",
+    "notes": "The sbert representation's default checkpoint. English-only; 384-dimensional."
+  },
+  {
+    "slug": "multi-paraphrase-minilm-l12-v2",
+    "checkpoint": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+    "languages": ["en", "fr", "de"],
+    "jurisdictions": ["gb", "ie", "fr", "de"],
+    "coverage": "multilingual",
+    "notes": "Documented for 50+ languages; listed languages/jurisdictions are this repo's corpora only. Same size class as the English default, so it is the like-for-like multilingual comparison."
+  },
+  {
+    "slug": "multi-paraphrase-mpnet-base-v2",
+    "checkpoint": "sentence-transformers/paraphrase-multilingual-mpnet-base-v2",
+    "languages": ["en", "fr", "de"],
+    "jurisdictions": ["gb", "ie", "fr", "de"],
+    "coverage": "multilingual",
+    "notes": "Same 50+ language coverage as multi-paraphrase-minilm-l12-v2, larger encoder; 768-dimensional."
+  },
+  {
+    "slug": "multi-labse",
+    "checkpoint": "sentence-transformers/LaBSE",
+    "languages": ["en", "fr", "de"],
+    "jurisdictions": ["gb", "ie", "fr", "de"],
+    "coverage": "multilingual",
+    "notes": "Documented for 109 languages, trained for cross-lingual sentence retrieval; 768-dimensional."
+  },
+  {
+    "slug": "fr-sentence-camembert-base",
+    "checkpoint": "dangvantuan/sentence-camembert-base",
+    "languages": ["fr"],
+    "jurisdictions": ["fr"],
+    "coverage": "monolingual",
+    "notes": "French CamemBERT encoder fine-tuned on French STS data."
+  },
+  {
+    "slug": "de-gbert-large-paraphrase-cosine",
+    "checkpoint": "deutsche-telekom/gbert-large-paraphrase-cosine",
+    "languages": ["de"],
+    "jurisdictions": ["de"],
+    "coverage": "monolingual",
+    "notes": "German GBERT encoder fine-tuned on German paraphrase data with a cosine objective."
+  }
+]

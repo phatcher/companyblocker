@@ -1,0 +1,20 @@
+{
+  "code": "gr",
+  "display_name": "Greece",
+  "region": "eu",
+  "status": "research_required",
+  "access_mode": "search_portal",
+  "info_url": "http://www.businessportal.gr/home/index_en",
+  "notes": "No official bulk-download source is currently configured for this pipeline. Next step is to validate legal access terms and confirm an automatable bulk file or API endpoint before promotion to supported.",
+  "all_systems_target": false,
+  "research": {
+    "pass_date": "2026-06-15",
+    "basis": "BRIS registry table plus failed portal fetch",
+    "priority": "P2",
+    "approach": "Original BRIS linked page did not resolve in this pass and API evidence was not captured",
+    "next_action": "Verify current GEMI endpoint and document official data access route"
+  },
+  "resources": [],
+  "company_type_column": null,
+  "registry": "country"
+}

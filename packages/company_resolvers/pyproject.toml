@@ -1,0 +1,42 @@
+[build-system]
+requires = ["hatchling>=1.25.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "company_resolvers"
+version = "0.1.0"
+description = "Resolver compositions that take a name to a decided entity through a candidate source, a scorer and a decision policy"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+license = { text = "MIT" }
+authors = [
+  { name = "Paul Hatcher" }
+]
+dependencies = []
+
+[dependency-groups]
+dev = [
+  "pytest",
+  "pytest-cov",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/company_resolvers"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "src/company_resolvers",
+  "tests",
+  "README.md",
+]
+
+[tool.hatch.build]
+include = [
+  "src/company_resolvers/py.typed",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-v --tb=short"

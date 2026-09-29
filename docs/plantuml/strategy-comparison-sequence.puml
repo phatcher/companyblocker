@@ -1,0 +1,101 @@
+@startuml
+!include _style.puml
+
+title Strategy comparison: finished blocking runs read back, compared at equal cost
+
+actor "Analyst" as Analyst
+participant "report_strategy_comparison.py" as Report
+participant "blocking.stored_runs" as Stored
+participant "blocking.run_layout" as Layout
+participant "workspace.records" as Records
+participant "blocking.comparison" as Comparison
+participant "blocking.audit" as Audit
+participant "blocking.workflow" as Workflow
+participant "blocking.reporting" as Reporting
+database "comparison/\n(per pairing)" as ComparisonDir
+participant "analyse_pair_outcomes.ipynb" as Notebook
+participant "analysis.pair_outcomes" as PairOutcomes
+
+== Separately, per run: an audit is its own production ==
+
+Analyst -> Audit: produce_pair_audit(roots, location)
+Audit -> Records: read_record(audit_reference_for(location))
+alt an audit of this run key exists
+  Audit --> Analyst: audit location, reused
+else none yet
+  Audit -> Stored: load_strategy_run_entry(roots, location)
+  Stored --> Audit: StrategyRunEntry
+  Audit -> Audit: compute_pair_audit(entry)
+  loop for each country holding a truth pair to rescore
+    Audit -> Workflow: rescore_missed_pairs(config, country,\nsource_rows, backend, top_k=_effective_top_k)
+    Workflow --> Audit: exact similarity and rank per pair
+  end
+  Audit -> Audit: verdict per truth pair,\nsummarize_pair_audit(pair_audit)
+  Audit -> Records: produce(...): pair_audit, pair_audit_summary
+end
+
+== The report: reads finished runs, runs nothing ==
+
+Analyst -> Report: ~--source ~--target [~--representation]
+opt ~--source and ~--target omitted
+  Report -> Stored: stored_pairings(roots)
+  Stored --> Report: every (source, target) with a finished run
+end
+
+loop for each pairing
+  Report -> Stored: load_stored_strategy_entries(roots, source, target, representation)
+  Stored -> Layout: select_blocking_runs(roots, source, target, representation)
+  Layout -> Records: select_references(...), read_record(ref)
+  Layout --> Stored: BlockingRunLocation per run with a record
+  loop for each run
+    Stored -> Records: read_record(reference_at(run directory))
+    Stored -> Stored: load_strategy_run_entry:\nblocking_run_config_from_record,\nload_blocking_run_result, _record_seconds
+  end
+  Stored --> Report: entries, unreadable (UnreadableRunError)
+
+  Report -> Comparison: build_strategy_comparison(entries, allow_mixed_population=True)
+  Comparison --> Report: one row per (label, stage, country, population)
+  Report -> Reporting: write_strategy_comparison_report(location, comparison)
+  Reporting -> ComparisonDir: strategy_comparison.parquet
+  Report -> ComparisonDir: strategy_comparison.csv
+
+  Report -> Comparison: build_pair_outcome_runs, build_pair_outcomes,\nbuild_pair_outcome_candidates, build_pair_outcome_source_candidates,\nbuild_pair_outcome_recall_curves (entries)
+  Comparison --> Report: runs, outcomes, candidates,\nsource_candidates, recall_curves
+
+  Report -> Report: _stored_audits(...)
+  loop for each reported run
+    Report -> Audit: read_pair_audit(roots, location)
+    alt the run has been audited
+      Audit --> Report: pair_audit rows
+    else not audited
+      Audit --> Report: None (no rows)
+    end
+  end
+
+  Report -> Reporting: write_pair_outcomes_report(location, runs, outcomes,\ncandidates, source_candidates, recall_curves, audits)
+  Reporting -> Reporting: validate all six schemas;\nevery label must be in runs
+  Reporting -> ComparisonDir: pair_outcome_runs, pair_outcomes,\npair_outcome_candidates, pair_outcome_source_candidates,\npair_outcome_recall_curves, pair_outcome_audits (.parquet)
+  Report -> ComparisonDir: pair_outcome_runs.csv
+end
+Report --> Analyst: runs reported, runs audited,\ncountries holding more than one population
+
+== Reading at equal cost ==
+
+Analyst -> Notebook: SOURCE, TARGET, LEVEL, BUDGET, CAP_PER_SOURCE
+Notebook -> ComparisonDir: read pair_outcome_runs, pair_outcomes,\npair_outcome_candidates, pair_outcome_source_candidates
+Notebook -> PairOutcomes: select_runs, latest_runs
+opt BUDGET > 0
+  Notebook -> PairOutcomes: cutoffs_for_candidates(candidates, chosen,\nbudget, max_rank)
+  PairOutcomes --> Notebook: cutoff per run (never below its own threshold)
+end
+Notebook -> PairOutcomes: pair_found_matrix(outcomes, chosen,\nmin_similarity=cutoffs, max_rank=cap)
+PairOutcomes --> Notebook: found-or-missed column per run
+Notebook -> PairOutcomes: random_pair_level(matrix),\nwith_name_similarity(matrix, random_level)
+Notebook -> PairOutcomes: level_metrics(outcomes, chosen, source_candidates,\nmin_similarity, max_rank, random_level)
+opt recall_curves and audits given
+  PairOutcomes -> PairOutcomes: recall_area per run;\nlost_to_backend, exact_scan_recall
+end
+PairOutcomes --> Notebook: precision, recall, reduction_ratio, f2,\nrecall_above_random, missed_findable, missed_random
+Notebook --> Analyst: tables and plots on the level
+
+@enduml

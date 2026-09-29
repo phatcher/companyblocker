@@ -1,0 +1,39 @@
+[package]
+name = "wikisieve"
+version = "0.1.0"
+edition = "2021"
+
+[lints.rust]
+warnings = "deny"
+
+[lints.clippy]
+correctness = "deny"
+suspicious = "deny"
+perf = "deny"
+style = "warn"
+complexity = "warn"
+pedantic = "warn"
+
+[lib]
+name = "wikisieve"
+path = "src/lib.rs"
+
+[[bin]]
+name = "wikisieve"
+path = "src/main.rs"
+
+[dependencies]
+aho-corasick = "1"
+flate2 = "1.0"
+memchr = "2.8"
+rapidgzip-core = "0.3"
+rayon = "1.10"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = { version = "1.0", features = ["raw_value"] }
+
+[package.metadata.quality]
+require_fmt = false
+require_clippy = false
+require_check = false
+require_test = true
+require_audit = false

@@ -1,0 +1,45 @@
+@startuml
+!include _style.puml
+
+title Acquisition: system selection, freshness, and artefact routing
+
+actor "Data Engineer" as Engineer
+participant "scripts/process_companies.py" as CLI
+participant "scripts/pipeline_runner.execute_acquire" as Runner
+participant "acquisition.pipeline.run_acquisition" as Pipeline
+participant "acquisition.plan_registry" as Registry
+participant "acquisition.pipeline_resources.collect_resource_artifacts" as Collector
+participant "download adapter" as Downloader
+database "data/<system>/acquire|prepare" as Storage
+
+Engineer -> CLI: ~--systems <targets> ~--processes acquire
+note right of CLI: --dry-run is reported by the CLI itself\nand never reaches run_acquisition\n(only scripts/acquire_companies.py passes dry_run)
+CLI -> Runner: execute_acquire(...)
+Runner -> Pipeline: run_acquisition(systems, roots, run_date,\nskip_unsupported, allow_research, progress)
+
+loop for each system
+  Pipeline -> Registry: get_system_plan(target)
+  Pipeline -> Pipeline: resolve status and research-stage policy
+  Pipeline -> Collector: collect_resource_artifacts(plan, ...)
+  loop for each configured resource
+    Collector -> Collector: resolve snapshot date and freshness
+    alt freshness gate fails (recent acquisition exists)
+      Collector -> Collector: record freshness_skip row\n(reuse latest existing artefacts)
+    else file already present for this snapshot
+      Collector -> Collector: reuse acquire/<snapshot> file\n(adapter not called; counted as downloaded)
+    else resource needs download
+      Collector -> Downloader: dispatch adapter for resource.adapter
+      Downloader -> Storage: write acquire/<snapshot> file
+    end
+    opt Wikidata projection (any branch) or zip extraction (not on freshness skip)
+      Collector -> Storage: write prepare/<snapshot> artefacts
+    end
+  end
+  Collector --> Pipeline: artefact rows, downloaded_any, skipped_for_freshness
+end
+
+Pipeline --> Runner: per-system acquisition results
+Runner -> CLI: print per-system status
+CLI -> Engineer: stage summary and next-step status
+
+@enduml

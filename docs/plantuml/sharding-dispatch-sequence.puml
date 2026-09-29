@@ -1,0 +1,50 @@
+@startuml
+!include _style.puml
+
+title Sharding: batch processor and handler dispatch
+
+actor "Data Engineer" as Engineer
+participant "acquisition.sharding.shard_system_source" as Sharding
+participant "ShardBatchProcessor" as BatchProcessor
+participant "resolve_handler" as Resolver
+participant "ShardSystemHandler" as Handler
+participant "read_source_batches" as Reader
+database "data/<system>/source" as Storage
+
+Engineer -> Sharding: shard system source for target plan
+Sharding -> Resolver: resolve_handler(plan.code)
+Resolver --> Sharding: system-specific handler
+Sharding -> Handler: try_shard_system_with_custom_logic(...)
+
+alt system-level custom logic produced output (e.g. DBpedia)
+  Handler --> Sharding: custom shard paths (returned early)
+else no system-level output
+  loop for each prepared resource
+    Sharding -> BatchProcessor: process prepared resource
+    BatchProcessor -> Resolver: resolve_handler(plan.code)
+    Resolver --> BatchProcessor: system-specific handler
+
+    alt resource-level custom logic available
+      BatchProcessor -> Handler: try_shard_resource_with_custom_logic(...)
+      Handler --> BatchProcessor: custom shard outputs
+    else generic batch path
+      BatchProcessor -> Reader: stream source batches from prepared resource
+      loop for each batch
+        Reader --> BatchProcessor: frame
+        BatchProcessor -> Handler: transform_frame_for_system(frame)
+        BatchProcessor -> BatchProcessor: filter_frame_by_supported_countries(frame)
+        opt frame is empty after filtering
+          BatchProcessor -> BatchProcessor: skip batch
+        end
+        BatchProcessor -> Handler: materialize_and_split_for_write(...)
+        BatchProcessor -> Storage: stage main / sidecar parquet in chunks/
+      end
+      BatchProcessor -> Storage: finalize(): repack chunks/ into shard files,\nremove chunks/
+    end
+    BatchProcessor --> Sharding: main and sidecar shard paths
+  end
+end
+
+Sharding --> Engineer: sharding result summary
+
+@enduml

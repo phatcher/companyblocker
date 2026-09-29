@@ -1,0 +1,110 @@
+@startuml
+!include _style.puml
+
+title Tokenizer optimize: search, select, finalize, promote
+
+start
+:train_tokenizer.py\nresolve_targets;
+
+if (--mode?) then (train)
+  :run_train_mode_system / run_train_mode_global\nreuse_stored_naive, else train once\nat ~--vocab-size and ~--min-frequency;
+  :finalize_train_target\npublish_naive_candidate;
+  :point_profile_at_candidate(profile="naive")\nconfig/tokenizers.json; the "promoted" entry is untouched;
+  stop
+else (optimize)
+  :run_optimize_workload: preset, candidate policy,\nseeds, vocab_schedule, min_frequencies;
+endif
+
+partition "Per target: corpus and reuse (run_optimize_target)" {
+  :resolve_optimize_corpus_for_target;
+  if (--force, or corpus older than\nits cleansed parquet?) then (yes)
+    :rebuild_optimize_corpus\nsample_training_corpus (country)\nsample_training_corpus_for_global (global);
+  else (fresh)
+    :Reuse the corpus;
+  endif
+  if (--dry-run?) then (yes)
+    :emit_optimize_dry_run_plan;
+    stop
+  endif
+  :prepare_optimize_target_execution\nsweep leaf keyed by corpus hash and grid hash\n(--force: purge_sweep_candidates);
+  if (--finalize and is_final_result_fresh?) then (yes)
+    if (--reoptimize true?) then (yes)
+      :Treat as not fresh: reselect\nand refine under the current code;
+    elseif (summary_winner_is_reselected?) then (yes)
+      :skip target\nreason=final_result_fresh_vs_corpus;
+      stop
+    else (no)
+      :stale: selection now picks\na different winner;
+    endif
+  endif
+  :Read run-log history: every stored trial\njoins excluded_candidate_keys,\nso it is reused, never retrained\n(--force: nothing reused);
+  :prepare_optimize_seed_splits\none train / validation split per seed\n(write_seed_split_artifacts, validation_fraction);
+}
+
+partition "Pilot (run_optimize_pilot_phase): pilot seeds only" {
+  while (Next vocab point in vocab_schedule, ascending?) is (yes)
+    :collect_candidate_jobs_for_pilot_vocab\nskip stopped lines and history keys;
+    if (--skip-equivalent-candidates true?) then (yes)
+      :run_pilot_vocab_with_carry\n1. line on its min_frequency plateau: carry\n2. per seed, train one probe at the highest\n   min_frequency not on a plateau\n3. probe reached full vocab: carry to lower\n   min_frequency (carried_from), else train them;
+    else (false)
+      :Train every job;
+    endif
+    :run_optimize_candidate per trained job\ntrain on the train split, measure both splits;
+    :update_pilot_combo_cutoffs\nwith --pilot-early-stop, a (seed, min_frequency) line\nstops when train fertility passes fertility_target\nor plateaus; PILOT_STOP_EXTRA_POINTS more run;
+  endwhile (done)
+}
+
+partition "Expansion (run_optimize_expansion_phase)" {
+  :select_frontier (select_vocab_frontier)\nper min_frequency: top_k nearest the target,\nfill kept within fertility_tolerance,\nplus any within distance_tolerance of the best;
+  :initialize_frontier_progress, prune_combos;
+  while (Next expansion seed and an unpruned combo?) is (yes)
+    :run_expansion_seed_with_carry\none representative per build_pilot_cell_classes\nclass, carried to the rest if this seed agrees;
+    :combo_prune_reason per combo\nineligible_pass_rate_ceiling,\nfertility_outside_range_consistent;
+  endwhile (done)
+}
+
+partition "Refining (run_optimize_refining_phase)" {
+  if (--refining-phase true?) then (yes)
+    :Interim winner: select_best_pair on merged run logs\n(on its min_frequency plateau: recentre on the best\ncell that trained its full vocabulary);
+    if (select_refining_bracket finds the winner\nbetween two frontier vocab points?) then (yes)
+      :predict_fertility_crossing in log vocab\n(none inside: use the winning vocab);
+      if (Winning cell has two or more seeds?) then (yes)
+        :se_diff = compute_standard_error_of_difference\nstep = derive_refine_step_vocab(se_diff, slope)\nor --refine-vocab-step;
+        :build_crossing_vocab_points\ncrossing and one step either side, inside the\nbracket, short of the min_frequency plateau;
+        :collect_candidate_jobs_for_refining_vocab\nevery seed at each point;
+        :evaluate_refined_points_against_fit\nfit_check: matched within 2 x se_diff\n(logged, selection unchanged);
+      else (no)
+        :refining skipped: no noise estimate;
+      endif
+    else (no interior bracket)
+      :refining skipped;
+    endif
+  else (false)
+  endif
+}
+
+partition "Selection (select_best_pair)" {
+  :merge_run_logs, scoped_history_for_trainer;
+  :reclassify_rejections: gates on validation metrics\nunk_rate, fertility_too_low, fertility_too_high\n(token counts reported, not gated);
+  :recompute_selection_scores, lower is better:\ntrain fertility_distance / fertility_tolerance\n+ unk_rate / unk_rate_threshold\n+ fertility and unk_rate generalization drift;
+  :Per (vocab, min_frequency): pass_rate >= eligibility_pass_rate;\nshortlist within vocab_size_distance_tolerance of the\nbest median score; smallest selection_vocab_size wins;
+}
+
+if (best_pair found?) then (no)
+  :No eligible parameter pair;
+  stop
+elseif (--finalize?) then (no)
+  :shard complete;
+  stop
+else (yes)
+endif
+
+partition "Finalize and promote (finalize_optimize_target)" {
+  :train_tokenizer_with_trainer on the whole corpus\nat the winner's vocab and min_frequency;
+  :evaluate_tokenizer_metrics, write summary\nand run manifest;
+  :publish_promoted_candidate\nstore_candidate under its tokenizer:// key\nthen point_profile_at_candidate;
+  :promote writes config/tokenizers.json\n"promoted" -> new reference, "replaced" -> old;
+}
+stop
+
+@enduml

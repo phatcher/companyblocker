@@ -1,0 +1,80 @@
+# Known offenders against the workspace path contract, one `<file> <rule> <count>` per line, for
+# test_layer_path_literals.py and the pre-commit hook. A new line here is a regression: fix the code instead.
+# Each area's script-wiring item clears its own files' lines; delete a line in the commit that clears it.
+# The rules are in scripts/check_layer_path_literals.py's docstring; the contract in src/workspace/README.md.
+scripts/acquire_companies.py default-roots
+scripts/acquire_companies.py path-from-flag
+scripts/analyze_cluster_shape.py path-flag 2
+scripts/analyze_matches.py path-flag
+scripts/analyze_matches.py path-from-flag
+scripts/analyze_tokens.py path-flag
+scripts/archive_optimize_candidate.py default-roots
+scripts/archive_optimize_candidate.py path-from-flag
+scripts/benchmark_analysis_loader.py path-flag
+scripts/benchmark_validate_clustering.py default-roots
+scripts/benchmark_validate_clustering.py path-from-flag 4
+scripts/benchmark_wikidata_line_filter.py path-flag
+scripts/benchmark_wikidata_line_filter.py path-from-flag 2
+scripts/benchmark_wikidata_line_filter.py repo-join 2
+scripts/benchmark_wikidata_line_filter.py root-literal
+scripts/build_promotion_report.py path-flag
+scripts/build_wikidata_jurisdiction_closure.py default-roots
+scripts/build_wikidata_jurisdiction_closure.py path-flag 2
+scripts/check_name_layer_identity.py default-roots
+scripts/check_name_layer_identity.py path-from-flag
+scripts/cli_common.py path-flag 3
+scripts/compare_tokenizer_candidates.py default-roots
+scripts/compare_tokenizer_candidates.py path-from-flag
+scripts/compare_tokenizer_scopes.py default-roots
+scripts/compare_tokenizer_scopes.py path-from-flag
+scripts/compare_wikidata_rust_wikisieve.py default-roots
+scripts/compare_wikidata_rust_wikisieve.py path-flag 7
+scripts/compare_wikidata_rust_wikisieve.py repo-join 4
+scripts/compare_wikidata_rust_wikisieve.py tempfile
+scripts/diagnostic_indexed_bzip2_scanner.py path-flag 2
+scripts/export_noise_word_candidates.py default-roots
+scripts/export_noise_word_candidates.py path-flag
+scripts/extract_wikidata_fixture.py path-from-flag
+scripts/generate_noise_words.py default-roots 2
+scripts/generate_noise_words.py path-flag 5
+scripts/generate_tokenizer_corpus_report.py default-roots
+scripts/generate_tokenizer_corpus_report.py path-from-flag
+scripts/generate_wikidata_benchmark_fixtures.py path-flag
+scripts/generate_wikidata_benchmark_fixtures.py path-from-flag
+scripts/generate_wikidata_benchmark_fixtures.py tempfile
+scripts/materialize_perturbations.py default-roots
+scripts/materialize_perturbations.py path-from-flag
+scripts/materialize_public_benchmark.py default-roots
+scripts/materialize_public_benchmark.py path-flag
+scripts/materialize_public_benchmark.py path-from-flag 2
+scripts/measure_gleif_jurisdiction_disparity.py default-roots
+scripts/measure_gleif_jurisdiction_disparity.py path-flag 3
+scripts/measure_gleif_jurisdiction_disparity.py path-from-flag 3
+scripts/measure_initialism_recall.py path-flag
+scripts/measure_pair_classifier_ceiling.py path-flag
+scripts/measure_pooled_subword_encoder_ceiling.py path-flag 3
+scripts/measure_prefix_suffix_divergence.py path-flag
+scripts/measure_short_name_pattern_layers.py path-flag
+scripts/pipeline_status.py default-roots
+scripts/pipeline_status.py path-from-flag
+scripts/plot_country_global_overlay.py default-roots
+scripts/plot_country_global_overlay.py path-from-flag
+scripts/plot_optimize_elbow.py default-roots
+scripts/plot_optimize_elbow.py path-from-flag
+scripts/process_companies.py default-roots
+scripts/process_companies.py path-flag
+scripts/process_companies.py repo-join 2
+scripts/profile_analysis_schema.py path-flag
+scripts/profile_wikidata.py path-from-flag
+scripts/promote_short_name_noise_words.py path-flag
+scripts/train_tokenizer.py default-roots
+scripts/train_tokenizer.py path-from-flag
+scripts/validate_catalog.py path-from-flag
+scripts/validate_clustering.py default-roots
+scripts/validate_clustering.py path-flag 2
+scripts/validate_clustering.py path-from-flag 4
+src/acquisition/cleanser_orchestrate.py default-roots
+src/acquisition/downloader_wikidata.py cwd 3
+src/acquisition/downloader_wikidata.py tempfile
+src/acquisition/private_analysis.py root-literal
+src/acquisition/sharding_io.py tempfile 2
