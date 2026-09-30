@@ -96,7 +96,7 @@ requires-dist = [
     { name = "psutil", specifier = ">=7.2.2" },
     { name = "sentencepiece", specifier = ">=0.2.1" },
     { name = "tokenizers", specifier = ">=0.23.1" },
-    { name = "upsetplot", editable = "../UpSetPlot" },
+    { name = "upsetplot", git = "https://github.com/phatcher/UpSetPlot.git?rev=4fe55b0fd343e43ce61b2d17aefdb7b30336a01b" },
 ]
 
 [package.metadata.requires-dev]
@@ -4044,22 +4044,12 @@ wheels = [
 [[package]]
 name = "upsetplot"
 version = "0.10.dev1"
-source = { editable = "../UpSetPlot" }
+source = { git = "https://github.com/phatcher/UpSetPlot.git?rev=4fe55b0fd343e43ce61b2d17aefdb7b30336a01b#4fe55b0fd343e43ce61b2d17aefdb7b30336a01b" }
 dependencies = [
     { name = "matplotlib" },
     { name = "numpy" },
     { name = "pandas" },
 ]
-
-[package.metadata]
-requires-dist = [
-    { name = "matplotlib", specifier = ">=3.5" },
-    { name = "numpy", specifier = ">=1.21" },
-    { name = "pandas", specifier = ">=1.3.4" },
-    { name = "pytest", marker = "extra == 'testing'" },
-    { name = "pytest-cov", marker = "extra == 'testing'" },
-]
-provides-extras = ["testing"]
 
 [[package]]
 name = "urllib3"

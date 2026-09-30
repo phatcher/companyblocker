@@ -104,7 +104,7 @@ company-tokenize = { workspace = true }
 company-vectorize = { workspace = true }
 company-resolvers = { workspace = true }
 torch = { index = "pytorch-cu126" }
-upsetplot = { path = "../UpSetPlot", editable = true }
+upsetplot = { git = "https://github.com/phatcher/UpSetPlot.git", rev = "4fe55b0fd343e43ce61b2d17aefdb7b30336a01b" }
 
 [tool.radon]
 cc_min = "B"
