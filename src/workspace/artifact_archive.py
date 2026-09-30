@@ -1,11 +1,11 @@
 """One shared convention for a content-addressed artifact archive.
 
 Every area that keeps a durable, content-addressed candidate archive used to
-invent its own key: `company_tokenize`'s optimize sweep already canonicalises
+invent its own key: `company_tokenize`'s optimize sweep already canonicalizes
 a settings payload to JSON and hashes it with `blake2b` to key the innermost
 directory beneath a corpus-hash/trainer/model-variant path, and a second area
 needing the same guarantee (a trained-model archive) would otherwise write a
-second canonicalisation that agrees with the first only by convention, until
+second canonicalization that agrees with the first only by convention, until
 the day one of them changes shape and they stop agreeing.
 
 **The shape.** A candidate directory is `root / facet / facet / .../
@@ -21,8 +21,8 @@ missing outright.
 
 **The consuming area hands over structured values and receives a resolved
 directory back.** It derives no key of its own: a package that instead
-canonicalised and hashed its own settings before calling this module would
-have already done the work this module exists to centralise. `resolve_candidate_dir`
+canonicalized and hashed its own settings before calling this module would
+have already done the work this module exists to centralize. `resolve_candidate_dir`
 is the one entry point that turns facets-plus-settings into a directory.
 
 **Durability is free by construction.** A different signature is a different

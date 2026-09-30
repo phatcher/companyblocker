@@ -15,7 +15,7 @@ that happens.
 A run resolves one entry from its own countries through
 `checkpoint_selection.resolve_checkpoint_for_jurisdictions`, the same rule
 `company_vectorize.clustering_policy.resolve_sbert_model_for_jurisdictions` applies to the
-sbert registry, generalised to take the registry as a parameter instead of being copied here
+sbert registry, generalized to take the registry as a parameter instead of being copied here
 with fastText's field names substituted in.
 """
 

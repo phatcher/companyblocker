@@ -8,27 +8,29 @@ Three diagram families, split by what each is for.
 | Behavioural | Behaviour over time: call sequences, activity, decision flow | `docs/plantuml/*.puml` | UML, authored in PlantUML |
 | Illustrative | Explaining an idea: data-lineage pictures, design-discussion visuals | `docs/diagrams/*.html` | Hand-authored HTML/SVG, per [`style-guide.md`](style-guide.md) |
 
-All three share one visual identity, the palette and type defined in [`style-guide.md`](style-guide.md), applied through each toolchain's own mechanism, so diagrams from different families read as one project.
+All three share one visual identity, described in [`style-guide.md`](style-guide.md). The palette and fonts are defined once, in [`house-style.css`](house-style.css); `tooling/sync_palette.py` writes them into the generated `docs/plantuml/_palette.puml` and `docs/structurizr/_palette.dsl`, which are never edited by hand.
+
+`tooling/export_diagrams.py` renders every diagram of all three families to `docs/diagrams/png/`, syncing the palette first; `--only html|structurizr|plantuml` narrows it to one family.
 
 ## Structural diagrams: C4 via Structurizr
 
 `docs/structurizr/{workspace,model,views}.dsl` is the **sole source of truth** for System Context, Container, and Component views. `workspace.json` is generated output and is never hand-edited.
 
-**Never hand-author a second C4 model.** A hand-authored PlantUML C4 set duplicating these structural facts drifted silently, since nothing kept the two in sync. Where a portable PlantUML or Mermaid rendering of the structure is wanted, export it from Structurizr rather than redrawing it.
+**Never hand-author a second C4 model**: nothing would keep it in sync with the DSL. Where a portable PlantUML or Mermaid rendering of the structure is wanted, export it from Structurizr rather than redrawing it.
 
 ### Running Structurizr Lite
 
 ```
-cd docs/structurizr/.structurizr && docker compose up
+uv run python tooling/start_structurizr.py
 ```
 
-The workspace UI is then at http://localhost:8090, and Structurizr's own validation warnings are listed at http://localhost:8090/workspace/inspections. Always render a DSL change before treating it as done: a syntax error takes the whole workspace down rather than one view.
+This runs the Docker Compose file under `docs/structurizr/.structurizr/` and opens the workspace UI at http://localhost:8090; it also takes `stop`, `restart`, `status` and `logs`. Structurizr's own validation warnings are listed at http://localhost:8090/workspace/inspections. Always render a DSL change before treating it as done: a syntax error takes the whole workspace down rather than one view.
 
 ## Behavioural diagrams: UML via PlantUML
 
 `docs/plantuml/*.puml` holds sequence, activity, and decision-flow diagrams: the things the Structurizr DSL genuinely cannot express. It has no `alt`/`loop` sequence blocks and no activity or class diagrams, and its "dynamic view" is only a numbered ordering over relationships that already exist in the static model.
 
-Shared skinparams live in `docs/plantuml/_style.puml` and are pulled in with `!include _style.puml`, so the palette is defined once rather than per diagram.
+Shared skinparams live in `docs/plantuml/_style.puml`, which reads the generated `_palette.puml`, and are pulled in with `!include _style.puml`.
 
 ## Illustrative diagrams
 

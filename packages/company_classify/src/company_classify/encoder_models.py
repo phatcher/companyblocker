@@ -73,7 +73,7 @@ class PooledSubwordContrastiveEncoder:
         learning_rate: Plain SGD step size.
         epochs: Passes over the training pairs.
         batch_size: Pairs per gradient step (embeddings updated once per batch).
-        random_state: Seed for embedding initialisation and per-epoch shuffling.
+        random_state: Seed for embedding initialization and per-epoch shuffling.
     """
 
     vocab: dict[str, int]

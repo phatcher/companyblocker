@@ -973,7 +973,7 @@ def materialize_perturbations(
 ) -> MaterializationResult:
     """One pass: read a batch of source rows, perturb, cleanse in flight, write.
 
-    Nothing holds the corpus. The previous shape materialised a list of every
+    Nothing holds the corpus. The previous shape materialized a list of every
     source record, a dict of every lineage, a list of every output row and then a
     frame, staged that frame to disk, read it back through `name_cleanse`, and
     merged the chunks -- four copies and three passes to produce one dataset. Here

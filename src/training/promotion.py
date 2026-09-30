@@ -148,7 +148,7 @@ def point_profile_at_candidate(
 def publish_promoted_candidate(
     *, roots: WorkspaceRoots, **trained: Any
 ) -> tuple[Reference, Reference | None]:
-    """Store the candidate, then point `promoted` at it: what the optimiser's
+    """Store the candidate, then point `promoted` at it: what the optimizer's
     final step does with the candidate it chose.
 
     Takes `store_candidate`'s arguments. Returns the candidate's reference and

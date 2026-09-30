@@ -10,9 +10,9 @@ then change here, in one place, without a caller or a recorded setting moving.
 It also carries a guarantee the steps before it cannot. A run may choose a
 cleanse profile that keeps capitals, or score the raw name, and a tokenizer
 handed text in a form it was not trained on answers in unknown tokens. So
-every profile here passes the name through cleanse's fixed normalisation,
+every profile here passes the name through cleanse's fixed normalization,
 lowercase with punctuation and diacritics normalised, and no profile can opt
-out of it: the least this step does is normalise, never nothing.
+out of it: the least this step does is normalize, never nothing.
 
 Today it means cleanse's own `strip_company_suffix`, so what a company type
 is, and what a noise word is, stay decided by `company_cleanse`. A profile

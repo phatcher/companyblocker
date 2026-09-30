@@ -218,7 +218,7 @@ free -- already computed per candidate) instead of
 token-count terms stay sourced from validation, and rejection gating
 (`classify_candidate_rejection`) is untouched -- OOV risk and the
 fertility/unk generalization-delta stability terms are genuinely about
-held-out behavior, unlike the target-crossing point, so validation still does
+held-out behaviour, unlike the target-crossing point, so validation still does
 real work there. `select_best_pair` also now recomputes `selection_score`
 from each run-log row's raw stored metrics under the *current* formula
 (`recompute_selection_scores`) rather than trusting a persisted scalar --
@@ -242,7 +242,7 @@ fertility-based sweep.
 optimize with the default grid to confirm the fix and re-promote. Result:
 `median_train_fertility_distance` reported mid-sweep (0.00738) matched the
 actual full-corpus retrain's `fertility_distance` (0.00679) to within ~8% --
-direct confirmation the train-split proxy tracks real deployment behavior,
+direct confirmation the train-split proxy tracks real deployment behaviour,
 versus the old validation number being off by 11x. Promoted vocab stayed at
 25,000 (`min_frequency` moved 8->1, an inconsequential tie-break -- train and
 validation `fertility_distance` are numerically identical across

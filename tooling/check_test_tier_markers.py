@@ -1,6 +1,6 @@
 """Flag a test that matches a broad-tier behavioural signature but carries no marker.
 
-`docs/TESTSTYLE.md`'s unit tier excludes a test that starts a subprocess, materialises
+`docs/TESTSTYLE.md`'s unit tier excludes a test that starts a subprocess, materializes
 a layer, or reads the real `data/` corpus; `tooling/test_tier_classifier.py` is the
 static rule for what counts. Enforcing that rule first went through a
 collection-time `conftest.py` hook that silently reclassified every matching test on
@@ -33,7 +33,7 @@ the hook below keeps that run's own collection, and `measure_in_session()` class
 in place. The hook marks nothing, deselects nothing and classifies nothing, which is what
 separates it from the reclassifying hook described above; it holds a list and lets the
 reader do the work. Registration stays on the invocation rather than in `pytest.ini`,
-since it is an optimisation and every editor and tool would otherwise inherit it.
+since it is an optimization and every editor and tool would otherwise inherit it.
 
 `measure()` remains the fallback, running the pass in a subprocess (collection has side
 effects on pytest's internal state that make a second, nested `pytest.main()` call

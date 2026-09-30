@@ -23,7 +23,7 @@ changes what `fertility` and `unk_rate` mean, so a comparison holds them fixed a
 states them:
 
 - `model_type`: `bpe` merges the most frequent adjacent pairs; `unigram` prunes a
-  large piece inventory to the one maximising corpus likelihood. Vocabularies of
+  large piece inventory to the one maximizing corpus likelihood. Vocabularies of
   the same size can differ in fertility on identical input.
 - `character_coverage`: the share of the corpus's characters guaranteed their own
   piece. `1.0` covers every character seen; lower values suit very large alphabets.

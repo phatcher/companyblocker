@@ -2,7 +2,7 @@
 """Profile the Wikidata bz2 read path, in one of two modes.
 
 Both modes read the same dump the same way (`indexed_bzip2` at
-`get_optimal_bzip2_threads()` parallelisation, counting `"P31"` byte hits up to
+`get_optimal_bzip2_threads()` parallelization, counting `"P31"` byte hits up to
 `--max-lines`), so their results describe the same work and can be read together.
 
     --mode timings   Phase-by-phase wall-clock breakdown (open, read, summary)

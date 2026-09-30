@@ -15,7 +15,7 @@ from tests.pipeline.corpus import PipelineCorpus, write_pipeline_corpus
 
 @pytest.fixture
 def pipeline_corpus(tmp_path: Path) -> PipelineCorpus:
-    """The corpus, materialised under `tmp_path` and no further.
+    """The corpus, materialized under `tmp_path` and no further.
 
     Deliberately stops at the Acquire layer rather than running any stage, so
     a test drives exactly the stage subset it is about and none of them

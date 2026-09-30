@@ -4,7 +4,7 @@ Measured with `scripts/analyze_token_zipf.py` on every live system.
 
 - The cleansed-name corpora fit a flatter rank-frequency slope than their general-language reference in every mapped language except German, whose spelled-out legal forms make it steeper.
 - Type-level OOV runs far above occurrence-weighted OOV.
-- The noise-word trim setting leaves slope and hapax incidence unchanged. Only occurrence-weighted OOV responds, rising as the trim gets more aggressive, which is the trim artefact the report header warns about rather than a property of the corpus.
+- The noise-word trim setting leaves slope and hapax incidence unchanged. Only occurrence-weighted OOV responds, rising as the trim gets more aggressive, which is the trim artifact the report header warns about rather than a property of the corpus.
 
 ## A confound in the raw tier
 

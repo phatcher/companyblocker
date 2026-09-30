@@ -103,7 +103,7 @@ def test_a_chain_keeps_the_order_it_was_authored_in():
     profile = _parse(
         scenarios=[
             {
-                "scenario_id": "recognise-then-corrupt",
+                "scenario_id": "recognize-then-corrupt",
                 "chain": [
                     {"operator_id": "legal_suffix.variant_substitution"},
                     {"operator_id": "typo.keyboard_substitution"},

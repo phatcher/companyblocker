@@ -1,6 +1,6 @@
 """The Shard stage: split a system's acquired source into parquet chunks.
 
-The orchestration here is generic; anything specific to one source lives in its own `sharding_<system>.py` module or handler, so parsing one source is tested and changed without touching another. After writing, shard schemas are harmonised, with a stable column order and nulls for fields a sparse chunk lacks, so a downstream reader never fails on per-chunk schema drift.
+The orchestration here is generic; anything specific to one source lives in its own `sharding_<system>.py` module or handler, so parsing one source is tested and changed without touching another. After writing, shard schemas are harmonized, with a stable column order and nulls for fields a sparse chunk lacks, so a downstream reader never fails on per-chunk schema drift.
 """
 
 from __future__ import annotations

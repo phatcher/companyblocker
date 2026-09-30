@@ -16,9 +16,9 @@ threshold.
 **No scenario-level default.** Every step states both its own numbers, and nothing
 is inherited from the scenario holding it.
 
-**Order is the author's, and it matters.** An operator that must recognise something
+**Order is the author's, and it matters.** An operator that must recognize something
 -- a legal suffix, a noise word -- has to run before one that perturbs characters,
-or it finds nothing left to recognise. `chain.ChainResult.steps_that_landed_nothing`
+or it finds nothing left to recognize. `chain.ChainResult.steps_that_landed_nothing`
 is what surfaces a chain ordered the wrong way round; nothing here enforces it.
 
 **One scenario per record, drawn by `weight`.** A profile is a set of corruption

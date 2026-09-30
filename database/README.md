@@ -1,14 +1,12 @@
 # Database
 
-This folder has the database related files including the docker-compose and the schemas used for the blocking system.
+A local Postgres 18 with the pgvector extension, defined in `docker-compose.yml`. `company_vectorize.pgvector` generates the SQL to create a vector table, index it and query it by distance; no pipeline stage connects to the database.
 
-Postgres was used due to the vector support via pgvector making the indexing/retrieval for blocking keys similar compared to say DuckDb where only DiskANN would be possible.
-
-If running on Windows, the docker image should be run from within WSL to obtain better performance.
+The user, password, database name and port (5432) are in `docker-compose.yml`. On Windows, run Docker inside WSL for better performance.
 
 ## Running
 
-To run this enter
+From this folder:
 
 ```
 docker compose up -d

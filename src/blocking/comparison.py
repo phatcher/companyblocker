@@ -7,7 +7,7 @@ cannot supply. Each row carries precision, recall, reduction ratio, candidate vo
 and recall at k, whether the backend is exact, the target's row count, the run's own
 phase timings and peak memory, and the axes a run varied on: `representation`,
 `similarity_backend`, `tokenizer`, `name_transform` and `accelerator_settings`. The last
-is `backend_options` plus `exact_name_filter` serialised canonically as one string,
+is `backend_options` plus `exact_name_filter` serialized canonically as one string,
 since the option set is per backend and owned by `company_vectorize`; settings that
 change what is measured rather than its cost are left out of it. Two runs that
 disagree on population or truth key for a country they both scored are refused unless
@@ -429,7 +429,7 @@ def build_strategy_comparison(
     metadata even without scoring.
 
     `accelerator_settings` records the accelerator configuration each run was
-    made under, canonically serialised from its `BlockingStrategyConfig` (see
+    made under, canonically serialized from its `BlockingStrategyConfig` (see
     `_encode_accelerator_settings()`). It is the column that stops two runs
     differing only in an accelerator -- a `sklearn` run with `prefix_filter`
     and the unpruned baseline it is being measured against -- from being

@@ -3,7 +3,7 @@
 Noise words are read at three levels of assembly: `get_manual_noise_words` (the hand-kept list,
 by `suffix` and `anywhere` scope), `get_profiled_noise_words` (the corpus-derived `strict`,
 `balanced` or `aggressive` profile), and `get_effective_noise_words`, the two combined into the
-tuple derivation uses by default. A caller customising noise words starts from the last, edits
+tuple derivation uses by default. A caller customizing noise words starts from the last, edits
 it, and passes it back as `noise_words`. The profiled lists are promoted from
 `company_tokenize`'s noise-word workflow, not hand-authored.
 """

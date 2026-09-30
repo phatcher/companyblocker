@@ -23,12 +23,12 @@ def test_a_name_has_at_most_one_suffix_site():
     assert len(sites) == 1
 
 
-def test_a_name_with_no_recognised_suffix_offers_no_site():
+def test_a_name_with_no_recognized_suffix_offers_no_site():
     assert _suffix_site("acme holdings", None) == ()
 
 
 def test_detection_ignores_the_country():
-    """Recognising that a suffix is present stays permissive across jurisdictions.
+    """Recognizing that a suffix is present stays permissive across jurisdictions.
 
     Only choosing a replacement is country-scoped.
     """

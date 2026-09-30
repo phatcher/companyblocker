@@ -39,7 +39,7 @@ INDEX_FILENAME = "index.json"
 
 # What an archived tokenizer *is*, so a reader can tell training experiment
 # from a stored candidate without inferring it from file layout:
-#   - "promoted": the candidate the optimiser's promotion stored and pointed
+#   - "promoted": the candidate the optimizer's promotion stored and pointed
 #     `promoted` at. Its entry carries that candidate's `reference`.
 #   - "naive": the candidate plain training stored and pointed `naive` at,
 #     with its `reference`.
@@ -554,7 +554,7 @@ def archive_promoted_tokenizer(
     precomputed_metrics: dict[str, float] | None = None,
     summary: dict[str, object] | None = None,
 ) -> Path:
-    """Archive the candidate the optimiser's promotion stored under `reference`.
+    """Archive the candidate the optimizer's promotion stored under `reference`.
 
     The entry carries `reference`, so a reader holding the reference the
     pointer names for `promoted` finds this entry's metrics and summary.

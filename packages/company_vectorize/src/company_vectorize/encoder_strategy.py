@@ -47,7 +47,7 @@ class _EncoderVectorizerAdapter:
 class EncoderClusteringStrategy(DenseEncoderClusteringStrategy):
     """Dense representation over any already-loaded encoder handle's vectors.
 
-    Generalises `SbertClusteringStrategy`'s shape to an encoder this package
+    Generalizes `SbertClusteringStrategy`'s shape to an encoder this package
     never loads itself: `EncoderTargetIndexBuildSettings.encoder` is already
     a ready-to-use handle, not a checkpoint name or path this strategy
     resolves and loads on its own -- that is what distinguishes it from
@@ -61,7 +61,7 @@ class EncoderClusteringStrategy(DenseEncoderClusteringStrategy):
     vectors without this strategy inspecting `encoder` itself.
 
     The caller already holds `build_settings.encoder`, so a rebuilt index
-    rewraps that same handle rather than this strategy serialising it. The
+    rewraps that same handle rather than this strategy serializing it. The
     dense backends' restrictions are `dense_encoder_strategy`'s.
     """
 

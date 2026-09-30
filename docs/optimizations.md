@@ -99,7 +99,7 @@ This document tracks performance and code optimizations over time.
   - After (raw_nosplit): elapsed 55.11s
   - Delta: -1.09s (~1.9% faster)
   - Matcher hotspot cumtime: 26.04s (`raw`) -> 25.57s (`raw_nosplit`)
-- Outcome: Small but consistent gain with no behavioral change in the tested scenario; candidate matching remains a major hotspot and I/O iteration is still dominant overall.
+- Outcome: Small but consistent gain with no behavioural change in the tested scenario; candidate matching remains a major hotspot and I/O iteration is still dominant overall.
 - Notes: Next profiling/optimization focus should be `io_eta_helpers._iter_raw_lines_from_handle` and line handling in the streaming loop.
 
 ## 2026-07-02 - Wikidata Two-Pass Optimization (Fast P31 Filter + Full Projection)
@@ -132,7 +132,7 @@ This document tracks performance and code optimizations over time.
   - Command/config: `.venv\Scripts\python.exe scripts/process_companies.py --systems wikidata --processes shard --allow-research --force --additional-args shard.max_rows=100000`
   - Before: 100,000 lines in 125.6s, line_rate=796/s
   - After: 100,000 lines in 99.9s, line_rate=1,001/s
-- Outcome: Prepared Wikidata throughput improved by about 26% on the same bounded slice while preserving the strict stage boundary behavior.
+- Outcome: Prepared Wikidata throughput improved by about 26% on the same bounded slice while preserving the strict stage boundary behaviour.
 - Notes: The next bottleneck is still the cost of parsing and scanning the surviving company candidates; a deeper raw-text P31 precheck may be possible, but it needs careful semantics validation.
 
 ## 2026-06-20 - Failed Candidate: Native Replace For Company-Type Mapping

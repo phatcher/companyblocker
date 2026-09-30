@@ -1011,7 +1011,7 @@ def compute_optimize_grid_hash(payload: dict[str, Any]) -> str:
     (`resolve_optimize_sweep_paths`) and reads a stored `grid_hash` back
     (`candidate_archive.py`), and a package here cannot depend on
     `src/workspace`. `src/training/optimize_execution.py` calls this exact
-    function rather than a second, `src`-tier canonicalisation, so every grid
+    function rather than a second, `src`-tier canonicalization, so every grid
     hash on disk comes from one implementation.
     """
     grid_subset = {key: payload[key] for key in _OPTIMIZE_GRID_HASH_FIELDS}

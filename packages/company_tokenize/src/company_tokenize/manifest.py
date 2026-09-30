@@ -4,7 +4,7 @@ The manifest, `metadata.json` in the tokenizer's folder, records what one traini
 took and produced. It is distinct from an optimize run's summary, the evidence for
 its choice, and from the archive index, the history across runs. `build_run_manifest()`
 validates what it builds, and `validate_run_manifest()` rejects a missing mandatory
-field, an unrecognised field or an unknown mode, so a field added to one mode's
+field, an unrecognized field or an unknown mode, so a field added to one mode's
 manifest and not the other fails rather than drifting. `corpus_content_hash` records
 the corpus's bytes, since `corpus_path` is routinely reused across a resample.
 

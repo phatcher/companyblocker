@@ -1354,7 +1354,7 @@ def _score_country(
     # `index_key`, so a target this run
     # already indexed -- under this same model, representation and text view
     # -- is reused rather than rebuilt. The target index build is the encode
-    # for a dense representation and the vectoriser fit for a sparse one: the
+    # for a dense representation and the vectorizer fit for a sparse one: the
     # phase whose cost decides whether a corpus needs remote batches, so it
     # is timed on its own regardless of whether it was a cache hit or miss.
     with _phase("target_index", rows_in=target_text.height) as target_index_phase:

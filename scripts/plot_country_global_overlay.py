@@ -4,7 +4,7 @@ One point per country per scope: a country scope's own single point (itself,
 at that scope's own winning vocab size) alongside `global`'s per-country
 breakdown (one point per constituent country, all sharing `global`'s one
 winning vocab size). Deliberately two different vocab sizes on the same
-x-axis per scope -- normalising them onto one shared axis would erase the
+x-axis per scope -- normalizing them onto one shared axis would erase the
 very difference this overlay exists to show, so scopes are deliberately never
 normalised onto a shared vocab size to make them comparable.
 

@@ -79,7 +79,7 @@ The platform's economics are already progressive: it tolerates loose precision b
 
 pyJedAI is not a dependency and no run has been scored against it, though its vector-based block building is the closest existing implementation. No DeepBlocker scheme has been scored either. Every family epic is measured against the classical track, whose own strength is unestablished. `Awaiting evidence` applies to the comparison as a whole.
 
-### What the reference artefacts can be held to
+### What the reference artifacts can be held to
 
 A conformance target has to come from published code, not the paper. DeepBlocker's reference implementation was run locally on Amazon-Google at K = 50 (figures in `docs/architecture/deepblocker.md`).
 

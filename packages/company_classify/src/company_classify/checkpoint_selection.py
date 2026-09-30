@@ -1,4 +1,4 @@
-"""Jurisdiction-scoped checkpoint selection, generalised over any registry.
+"""Jurisdiction-scoped checkpoint selection, generalized over any registry.
 
 `company_vectorize.clustering_policy.resolve_sbert_model_for_jurisdictions` picks one
 registered sentence-embedding checkpoint for a run's countries, with three fallbacks to a

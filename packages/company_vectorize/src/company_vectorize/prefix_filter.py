@@ -17,7 +17,7 @@ is scored only against the target rows whose prefix shares a column with its
 own, found through an inverted index built once over the target prefixes.
 
 Why that is exact. Every row is a unit vector (the vectorizers this backend
-accepts L2-normalise), so cosine is the dot product, and by Cauchy-Schwarz the
+accepts L2-normalize), so cosine is the dot product, and by Cauchy-Schwarz the
 dot product over any subset of one row's terms is at most that subset's norm.
 Two rows with disjoint prefixes share terms only outside their prefixes, and
 because one global order sizes both, every shared term lies in the remainder of

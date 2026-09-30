@@ -67,7 +67,7 @@ SELECT_ANY = "*"
 """What a selection's URI writes for a segment it leaves out."""
 
 MAX_REPORTED_REFERENCES = 20
-"""How many references an error lists before summarising the rest."""
+"""How many references an error lists before summarizing the rest."""
 
 
 class Side(StrEnum):

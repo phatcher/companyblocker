@@ -581,7 +581,7 @@ def build_blocking_run_identity(
 ) -> dict[str, object]:
     """What a run's `manifest.json` records as its identity: its four keys,
     which name its directory, and the settings its settings key digests, so a
-    caller who knows a run's parameters can recognise it by them."""
+    caller who knows a run's parameters can recognize it by them."""
     return {**keys.as_identity(), "settings": blocking_run_settings(config)}
 
 
@@ -598,7 +598,7 @@ _MATCHED_EDGES_ARTIFACT_SCHEMA: dict[str, PolarsDType] = {
 # and `is_exact_backend` are identical for a `sklearn` run made with
 # `prefix_filter` and one made without, so aggregating on those alone pools a
 # pruned run with the unpruned run it was meant to be measured against. It is
-# one serialised column rather than a named column per setting because the
+# one serialized column rather than a named column per setting because the
 # settings it records come from `BlockingStrategyConfig.backend_options`, an
 # open `dict[str, object]` whose key set is per-backend and owned by
 # `company_vectorize` -- naming them here would either add a mostly-null
@@ -630,7 +630,7 @@ _STRATEGY_COMPARISON_ARTIFACT_SCHEMA: dict[str, PolarsDType] = {
     "runtime_seconds": pl.Float64,
     # The run's own phase figures for this row's country, read from
     # `BlockingRunResult.timings`: the target index build (the encode for a
-    # dense representation, the vectoriser fit for a sparse one), the scan,
+    # dense representation, the vectorizer fit for a sparse one), the scan,
     # and the largest resident set size any phase recorded. These put cost
     # beside recall on one row, where `runtime_seconds` is a whole-run figure
     # measured outside the workflow. Null for a run made before the workflow

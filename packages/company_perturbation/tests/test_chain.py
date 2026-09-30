@@ -93,7 +93,7 @@ def test_a_step_that_was_never_asked_to_act_is_not_reported_as_landing_nothing()
     assert result.steps_that_landed_nothing == ()
 
 
-def test_recognise_then_corrupt_is_what_a_chain_is_for():
+def test_recognize_then_corrupt_is_what_a_chain_is_for():
     """`Ltd -> Limited -> Limiteda`: substitute the suffix, then mistype the result.
 
     Reversed, the typo mangles the suffix and the substitution finds nothing --

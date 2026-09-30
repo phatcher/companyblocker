@@ -1,14 +1,14 @@
 # scripts
 
-The repository's runnable scripts: pipeline stages, artefact producers, measurements, analyses and benchmarks. Each describes itself in its docstring and `--help`, and most offer `--dry-run`. What they share, the dry run, the overwrite report, argument errors, declared settings and how a run's inputs are named, is `cli_common.py`'s module docstring.
+The repository's runnable scripts: pipeline stages, artifact producers, measurements, analyses and benchmarks. Each describes itself in its docstring and `--help`, and most offer `--dry-run`. What they share, the dry run, the overwrite report, argument errors, declared settings and how a run's inputs are named, is `cli_common.py`'s module docstring.
 
 ## Categories
 
-Each script belongs to one category, and its name prefix follows the category.
+Each script belongs to one category.
 
 - **Pipeline entry points**: run a real pipeline stage against real data.
 - **Repo gates**: check or regenerate a repository-level invariant.
-- **Artefact producers**: write or promote a checked-in artefact, the only category that changes committed files.
+- **Artifact producers**: write or promote an artifact, most of them a checked-in one; the only category that changes committed files.
 - **Measurements**: answer one question, read-only; deleted once nothing still reads the answer.
 - **Analysis and comparison**: exploratory and read-only.
 - **Performance and profiling**: characterise the runtime or memory of an existing path.
@@ -39,9 +39,9 @@ Repository-wide gates live in `tooling/`.
 | `check_stale_layout_generations.py` | Report a layer holding two layout generations of one partition. |
 | `check_layer_path_literals.py` | Report hand-built `data/` layer paths, against the baseline `src/tests/workspace/test_layer_path_literals.py` pins. |
 | `validate_catalog.py` | Validate the acquisition catalog. |
-| `prune_artifacts.py` | Remove a keyed artefact, or stale temporary store directories, under `artifacts/store/`. |
+| `prune_artifacts.py` | Remove a keyed artifact, or stale temporary store directories, under `artifacts/store/`. |
 
-## Artefact producers
+## Artifact producers
 
 | Script | Purpose |
 | --- | --- |

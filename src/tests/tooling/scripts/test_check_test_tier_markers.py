@@ -2,7 +2,7 @@
 
 `tooling/check_test_tier_markers.py` is the measurement: a test matches when its own
 source, or the source of a fixture it depends on transitively, starts a subprocess,
-materialises a layer, or reads the real `data/` corpus, and it carries neither
+materializes a layer, or reads the real `data/` corpus, and it carries neither
 `@pytest.mark.integration` nor `@pytest.mark.performance`. This is the ratchet half of
 the rule: the 39 tests the measurement found the day it was settled are real
 `@pytest.mark.integration` decorators in their own files now (a reviewable diff, not a

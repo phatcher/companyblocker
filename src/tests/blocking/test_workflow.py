@@ -1590,7 +1590,7 @@ def test_execute_blocking_run_never_reads_the_layers_materialized_name_cleansed(
     the live cleanse says it is equal, and the run believes the live one:
     under `identity` the raw names differ, the live cleansed forms join, so
     the cascade resolves the pair at the `cleansed` level with no scan, where
-    the stale materialised forms would have left it to a scan that misses."""
+    the stale materialized forms would have left it to a scan that misses."""
     matched_dir = _write_partition(
         layer_fixture_dir,
         system="gleif",

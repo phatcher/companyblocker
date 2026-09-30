@@ -1,6 +1,6 @@
 """The Canonical stage: map each system's shards to the OpenCorporates-style schema, plus a name-variant sidecar.
 
-The entity pass and the name-row chain run concurrently, and the name rows are finalised once both finish. An identity field that cannot be derived from the source, such as a jurisdiction or company number, is left null rather than filled with a speculative default.
+The entity pass and the name-row chain run concurrently, and the name rows are finalized once both finish. An identity field that cannot be derived from the source, such as a jurisdiction or company number, is left null rather than filled with a speculative default.
 
 The name-variant sidecar (`<system>-names-*.parquet`) holds every other name a source records: GLEIF's previous names and predecessor names resolved through successor entities, Wikidata's labels, aliases, official and short names with each value's `language_code`, previous names for GB and OffeneRegister, and FR's SIRENE acronym, usual, usage and pseudonym names. IE's bulk source carries one current name per company, so it has none. Each row's `system_uri` is composed by `workspace.derived_uri.name_variant_uri` from the entity, the name's type and its value, so it is stable across reruns; rows sharing that triple across shards are collapsed before `name_variant_uri`'s uniqueness check, which can then fire only on a real hash collision.
 

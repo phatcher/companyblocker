@@ -162,7 +162,7 @@ def generate_cleansed_company_name(
 
 
 def derive_acronym_field(lf: pl.LazyFrame) -> pl.LazyFrame:
-    """Polars-native `acronym` derivation: the vectorised twin of `extract._derive_acronym`.
+    """Polars-native `acronym` derivation: the vectorized twin of `extract._derive_acronym`.
 
     Guard/intended constraint: computes the cleansed name's initials with the
     legal form excluded and only accepts `_short_name_norm` as `acronym` when

@@ -16,7 +16,7 @@ Three constraints shape it.
 
 The platform's goals, from the README: acquire and normalise company registry data from several systems; build stable intermediate datasets for matching and learning; support repeatable training, analysis and validation of entity-resolution quality.
 
-A **system** is one data source: a country registry (`gb`, `fr`, `ie` as bulk downloads; `dk`, `ee`, `fi` through APIs) or a non-country one (`gleif`, `offeneregister`, `wikidata`). A system is onboarded by adding catalogue metadata (see [design principles](architecture/design-principles.md#metadata-first-catalog-driven-onboarding)).
+A **system** is one data source: a country registry (`gb`, `fr`, `ie` as bulk downloads; `dk`, `ee`, `fi` through APIs) or a non-country one (`gleif`, `offeneregister`, `wikidata`). A system is onboarded by adding catalog metadata (see [design principles](architecture/design-principles.md#metadata-first-catalog-driven-onboarding)).
 
 ### Processing pipelines
 

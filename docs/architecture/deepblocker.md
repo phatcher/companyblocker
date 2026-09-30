@@ -98,7 +98,7 @@ Two branches in a local checkout of the reference code, both off `upstream/main`
 
 ### Environment, none of it in the diff
 
-`requirements.txt` is unpinned, so a reproduction fails without these. `pandas<3`, since pandas 3 rejects `deep_blocker.py`'s string `fillna` over the float64 `price` column. `pybind11<3` for the fastText build, since 3.x removes the `ssize_t` its pybind source uses. `CL=/std:c++17 /Dssize_t=ptrdiff_t`, since fastText's `setup.py` passes MSVC neither. A build path short enough for `MAX_PATH`, since the linker otherwise fails and leaves a zero-byte `.pyd` that a rerun reports as success, so the `.pyd` size is what says the build worked rather than the exit code. `update-torchtext` additionally pins `torch==2.3.1`, the ABI `torchtext` 0.18.0 is built against. All four build settings are MSVC artefacts and do not arise on Linux.
+`requirements.txt` is unpinned, so a reproduction fails without these. `pandas<3`, since pandas 3 rejects `deep_blocker.py`'s string `fillna` over the float64 `price` column. `pybind11<3` for the fastText build, since 3.x removes the `ssize_t` its pybind source uses. `CL=/std:c++17 /Dssize_t=ptrdiff_t`, since fastText's `setup.py` passes MSVC neither. A build path short enough for `MAX_PATH`, since the linker otherwise fails and leaves a zero-byte `.pyd` that a rerun reports as success, so the `.pyd` size is what says the build worked rather than the exit code. `update-torchtext` additionally pins `torch==2.3.1`, the ABI `torchtext` 0.18.0 is built against. All four build settings are MSVC artifacts and do not arise on Linux.
 
 ## Two tracks
 

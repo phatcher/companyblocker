@@ -1,6 +1,6 @@
 # analysis
 
-Measurements and pictures over the pipeline's outputs: token behaviour per corpus, match outcomes, and what each blocking run found. Every module reads what another area already wrote and changes none of it, and every artefact lands under `artifacts/analysis/<analysis>/runs/<run_date>/`.
+Measurements and pictures over the pipeline's outputs: token behaviour per corpus, match outcomes, and what each blocking run found. Every module reads what another area already wrote and changes none of it, and every artifact lands under `artifacts/analysis/<analysis>/runs/<run_date>/`.
 
 ## Modules
 
@@ -39,6 +39,10 @@ Two read-only measurement scripts over the matched layer sit beside these, `scri
 - `notebooks/analyse_pair_outcomes.ipynb`: Which pairs each run found.
 - `notebooks/analyse_perturbation_operators.ipynb`: Every registered perturbation operator run over sample names.
 - `notebooks/analyse_perturbation_profile.ipynb`: A perturbation profile's scenarios run over a sample, with what each step changed.
+- `notebooks/analyse_corpus_zipf.ipynb`: One system's rank-frequency curves across the `raw`, `basic` and `cleansed` name tiers, through `token_zipf`.
+- `notebooks/analyse_tfidf.ipynb`: Each tokenizer scope's token TF-IDF statistics, `global` included.
+- `notebooks/analyse_tokens.ipynb`: Tokenizer optimize runs across systems: winning parameters and how the candidate search went.
+- `notebooks/data_analyse.ipynb`: A finished `scripts/analyze_tokens.py` run read back: country and global token statistics and its summary report.
 
 ## Findings
 

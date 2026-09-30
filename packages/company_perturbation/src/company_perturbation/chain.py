@@ -9,7 +9,7 @@ reproducible samples of the same name -- which is what makes a robustness
 measurement able to carry an error bar rather than being a single fixed draw.
 
 **Order matters, and the chain does not reorder itself.** An operator that has to
-*recognise* something needs intact input: a legal suffix, a noise word, a word
+*recognize* something needs intact input: a legal suffix, a noise word, a word
 boundary. An operator that perturbs characters destroys what the first kind reads.
 So `legal_suffix.variant_substitution` then `typo.keyboard_substitution` models
 something real -- a source recorded `Ltd` as `Limited`, and someone later mistyped
@@ -64,7 +64,7 @@ class StepOutcome:
 
         Not an error: a name may simply offer the operator nowhere to act. It is
         worth surfacing because the commonest cause is a chain ordered so that an
-        earlier step destroyed what this one needed to recognise.
+        earlier step destroyed what this one needed to recognize.
         """
         return self.requested > 0 and not self.changes
 

@@ -21,7 +21,7 @@ Every exact-name match is taken before any scan, so recall is 1.0 at every name-
 Each module's docstring describes it.
 
 - [workflow.py](workflow.py): One run, country by country, and its identity.
-- [contracts.py](contracts.py): The run's configuration, result and artefact schemas.
+- [contracts.py](contracts.py): The run's configuration, result and artifact schemas.
 - [loader.py](loader.py): Which layer each side reads.
 - [name_transform.py](name_transform.py): The name forms a run derives, and which one it compares.
 - [truth.py](truth.py): Which target row a source row is equal to.
@@ -44,7 +44,7 @@ Under `scripts/` at the repository root, each documented by its `--help`:
 - `remeasure_blocking_truth.py`: A finished run's truth re-resolved, its candidates untouched.
 - `measure_short_name_recall.py`, `measure_name_variant_recall.py`: What scoring the short name, or recorded name variants, recovers.
 
-`run_blocking.py` caps Polars at four threads, which cut the memory a `gleif -> fr` run held before its target index from 28 GiB to 18 GiB; `POLARS_MAX_THREADS` overrides it.
+`run_blocking.py` caps Polars at four threads, since a run's memory follows its thread count; `POLARS_MAX_THREADS` overrides it.
 
 ## Further reading
 

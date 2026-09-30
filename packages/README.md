@@ -1,6 +1,13 @@
 # packages/
 
-Each subdirectory here is a standalone, independently-versionable library: its own `pyproject.toml`, no dependency on this repo's `src/`, consumable from an unrelated project. `company_cleanse`, `company_tokenize`, `company_vectorize`, `company_classify`, `company_perturbation` and `company_resolvers` are the six today. Each has its own `README.md` describing what it does; this file covers the one rule that binds all of them.
+Each subdirectory here is a standalone, independently-versionable library: its own `pyproject.toml`, no dependency on this repo's `src/`, consumable from an unrelated project. Each has its own `README.md`; this file covers the one rule that binds all of them.
+
+- `company_cleanse`: Deterministic company-name cleansing: normalization, company-type extraction and short-name derivation.
+- `company_tokenize`: Training, judging and applying WordPiece and SentencePiece tokenizers for company names, and deriving noise words.
+- `company_vectorize`: Candidate generation: index a target's names once, then score each source name against it.
+- `company_classify`: Classifiers for whether a text is a company name and whether two names are the same entity.
+- `company_resolvers`: Contracts for resolving a name to a decided entity, with no implementations of their own.
+- `company_perturbation`: Deterministic name-mutation operators for measuring robustness to real-world variation.
 
 ## Input contract
 

@@ -96,7 +96,7 @@ def test_migrate_legacy_flat_cleanse_chunks_is_a_noop_when_already_family_split(
 ):
     """A system already fully migrated to the `primary/`-family shape must
     not have a stray top-level flat file swept into `chunks/` --
-    `is_partitioned_layer` has to recognise the *current* shape, not only
+    `is_partitioned_layer` has to recognize the *current* shape, not only
     the pre-split one the other noop test above covers.
     """
     cleansed_dir = layer_fixture_dir("gleif", layer="cleansed")
@@ -226,7 +226,7 @@ def test_cleanse_canonical_view_normalises_cross_jurisdiction_suffixes(
     tmp_path: Path,
 ):
     """A registry's own jurisdiction must not narrow which legal-form suffix
-    cleansing recognises. Passing no company_type_regex/company_type_mapping
+    cleansing recognizes. Passing no company_type_regex/company_type_mapping
     lets `CleanseConfig`'s own default resolve the full, multi-jurisdiction
     rule set, so a UK-partitioned row named with a German (`GmbH`), French
     (`SARL`) or Dutch (`BV`) suffix normalises by its own suffix instead of

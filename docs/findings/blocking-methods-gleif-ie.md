@@ -1,6 +1,6 @@
 # Blocking methods on `gleif -> ie`
 
-What the finished runs on disk say about which truth pairs each method finds, what finding them costs, and how far a difference between two runs can be trusted. Every figure here was read on 2026-09-21 from the tables `scripts/report_strategy_comparison.py` writes, through `analysis.pair_outcomes` and `notebooks/analyse_pair_outcomes.ipynb`, and each table names the runs it read. Artefacts under `artifacts/` are regenerated, so a figure is evidence for the run key beside it and is re-read rather than trusted once that run is remade.
+What the finished runs on disk say about which truth pairs each method finds, what finding them costs, and how far a difference between two runs can be trusted. Every figure here was read on 2026-09-21 from the tables `scripts/report_strategy_comparison.py` writes, through `analysis.pair_outcomes` and `notebooks/analyse_pair_outcomes.ipynb`, and each table names the runs it read. Artifacts under `artifacts/` are regenerated, so a figure is evidence for the run key beside it and is re-read rather than trusted once that run is remade.
 
 All runs share `top_k` 20, `min_similarity` 0.75, the `cleanse` name transform under the `default` profiles and the exact-name filter. `tfidf`, `wordpiece` and `sentencepiece` ran on the `kmeans` backend and `sbert` (`all-MiniLM-L6-v2`) on `dense_brute`, which scans every target, so an `sbert` miss is never a routing miss and a `kmeans` miss may be. One run per method is read unless a table says otherwise.
 

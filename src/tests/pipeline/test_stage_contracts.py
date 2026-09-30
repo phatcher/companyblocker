@@ -155,7 +155,7 @@ def test_each_stage_consumes_the_previous_stage_s_real_output(
         shard_dir = corpus.source_root(system)
         assert resolve_primary_files(shard_dir, system_code=system), (
             f"Shard wrote no primary files for '{system}' that the layout "
-            "resolver recognises, so Canonical would find none either."
+            "resolver recognizes, so Canonical would find none either."
         )
 
     # --- Shard -> Canonical -------------------------------------------

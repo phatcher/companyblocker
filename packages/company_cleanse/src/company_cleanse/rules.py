@@ -1,6 +1,6 @@
-"""Company-type rules: recognising a legal-form suffix, and mapping it to a canonical form.
+"""Company-type rules: recognizing a legal-form suffix, and mapping it to a canonical form.
 
-`get_company_type_rules` recognises a suffix whichever country it came from, which is what
+`get_company_type_rules` recognizes a suffix whichever country it came from, which is what
 cleansing needs; `get_company_type_rules_for_country` restricts the rules to one country, for a
 caller choosing a realistic replacement, and raises `UnknownCompanyTypeCountryError` for a
 country with no rule data rather than returning a mapping that matches nothing.

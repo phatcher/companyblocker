@@ -28,11 +28,11 @@ wikisieve --input <dump.json.gz> --spec <spec.json> --output <output.jsonl> \
 ### Resumable chunked output
 
 ```
-wikisieve --input <dump.json.gz> --spec <spec.json> --output <chunk-dir> --resume \
-  [--state-path <state.json>] [--chunk-prefix <prefix>]
+wikisieve --input <dump.json.gz> --spec <spec.json> --output <destination.jsonl> --resume \
+  --chunk-dir <chunk-dir> --state-path <state.json> [--chunk-prefix <prefix>]
 ```
 
-With `--resume`, a run writes numbered chunk files (prefix `wikisieve-part-` by default) into the `--output` directory and records progress in the state file, so an interrupted scan resumes from the last completed chunk. A run bounded by `--max-rows` or `--max-records` keeps its chunks so a later run with a higher limit can extend it; only an unbounded run is complete. On a successful merge the state file is renamed to `.completed.json`.
+With `--resume`, `--chunk-dir` and `--state-path` are required. A run writes numbered chunk files (prefix `wikisieve-part-` by default) into `--chunk-dir` and records progress in the state file; `--output` is still required but not written, since `merge-chunks` assembles the flat file. An interrupted scan resumes from the last completed chunk. A run bounded by `--max-rows` or `--max-records` keeps its chunks so a later run with a higher limit can extend it; only an unbounded run is complete. On a successful merge the state file is renamed to `.completed.json`.
 
 Every chunk, raw-candidate companion, merge output and state write is fsynced before the rename that makes it visible, so the state never counts a chunk a restart would not find. A stop loses at most the batch in flight.
 

@@ -803,7 +803,7 @@ def _refused_reference_cells(
     Read from the failures this run itself recorded: a gate refusal surfaces
     as an ordinary subprocess error (`run_blocking.py`'s own handler prints
     the gate's `ValueError` message verbatim to stderr), with no distinct
-    `CellStatus` of its own, so this recognises it by
+    `CellStatus` of its own, so this recognizes it by
     `dense_vocabulary_gate.REFUSAL_MESSAGE_MARKER` rather than re-deriving the
     gate's scale check here (which needs the real target row count this
     script never loads directly). Only `wordpiece`/`sentencepiece` on

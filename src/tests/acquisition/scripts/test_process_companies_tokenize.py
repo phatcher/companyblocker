@@ -575,7 +575,7 @@ def test_process_companies_tokenize_finds_family_split_partitioned_cleansed_inpu
     tmp_path: Path, layer_fixture_dir, mocker
 ):
     """A real cleansed/ view partitioned under `primary/` must still be
-    recognised as tokenize input, not reported as missing.
+    recognized as tokenize input, not reported as missing.
     """
     partition_dir = (
         layer_fixture_dir("gb", layer="cleansed") / "primary" / "jurisdiction_code=gb"

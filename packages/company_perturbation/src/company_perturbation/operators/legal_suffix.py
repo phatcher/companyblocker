@@ -5,7 +5,7 @@ suffix match or none, so this is a site finder returning zero or one site and ne
 no special case anywhere: a step wanting the suffix touched asks for one attempt.
 
 **Detection is deliberately jurisdiction-blind.** Whether a suffix is *present* is
-recognised through `company_cleanse`'s whole-dataset regex, so a suffix is found
+recognized through `company_cleanse`'s whole-dataset regex, so a suffix is found
 whatever country it came from. Only choosing a *replacement* is country-scoped.
 
 **Replacement is curated, not arbitrary.** Always other spellings of the matched

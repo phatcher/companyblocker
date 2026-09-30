@@ -9,7 +9,7 @@ let each one read only what its predecessor actually wrote.
 **What the corpus is.** Two systems' Acquire-layer payloads, in the formats
 their real plans declare -- a GLEIF LEI-CDF XML inside a zip, and a
 Companies House CSV inside a zip -- written under `tmp_path`. Nothing below
-Acquire is materialised: the stages produce it.
+Acquire is materialized: the stages produce it.
 
 **Why these two systems.** They are the pair the production match flow
 already runs (`gleif` as the multi-jurisdiction source, `gb` as the national
@@ -129,7 +129,7 @@ _GB_BASIC_COMPANY_DATA_CSV = (
 
 @dataclass(frozen=True)
 class PipelineCorpus:
-    """A materialised corpus and the handful of facts a test needs to drive it.
+    """A materialized corpus and the handful of facts a test needs to drive it.
 
     Holds only what the fixture decided and a test cannot re-derive without
     repeating that decision: where the corpus is, which snapshot date it was
@@ -165,7 +165,7 @@ class PipelineCorpus:
 
 
 def write_pipeline_corpus(root: Path) -> PipelineCorpus:
-    """Materialise the corpus's Acquire-layer payloads under `root`.
+    """Materialize the corpus's Acquire-layer payloads under `root`.
 
     Separate from the fixture so a test needing a variant -- a second
     snapshot, a system removed -- can call it directly rather than having the

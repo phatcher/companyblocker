@@ -1,4 +1,4 @@
-"""Fixture-registry tests for the generalised jurisdiction selection rule.
+"""Fixture-registry tests for the generalized jurisdiction selection rule.
 
 No real checkpoint of any kind is loaded here -- `resolve_checkpoint_for_jurisdictions()` reads
 only `coverage`/`jurisdictions` off whatever entries it is handed, so a lightweight fixture

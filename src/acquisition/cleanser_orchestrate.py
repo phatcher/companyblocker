@@ -777,7 +777,7 @@ def cleanse_canonical_view(
     `primary/jurisdiction_code=gb/part-00001.parquet` becomes the same
     relative path under `cleansed/`, and `cleansed/` has a `primary/`
     because `canonical/` does -- not because this stage chose to. It does no
-    merging, dedupe, partition-column derivation, or schema normalisation:
+    merging, dedupe, partition-column derivation, or schema normalization:
     every one of those was a place a downstream stage could disagree with
     the layer it reads about what that layer's shape is.
 

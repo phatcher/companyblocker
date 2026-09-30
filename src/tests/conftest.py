@@ -8,11 +8,11 @@ test writes the production expression and wraps it rather than restating
 `"data" / <system> / <layer>` as a literal of its own. See
 `src/workspace/README.md`'s layer contract for the shape it composes, and
 `src/tests/pipeline/conftest.py`'s `pipeline_corpus` fixture for the same
-"materialise under an anchor the test hands in" idea applied to a whole
+"materialize under an anchor the test hands in" idea applied to a whole
 corpus rather than one directory.
 
 `repo_root` is its counterpart for the other kind of test: one that scans the
-checkout itself rather than materialising a fixture in a sandbox.
+checkout itself rather than materializing a fixture in a sandbox.
 
 `workspace_roots` is the resolved-roots value a test hands to any layout
 function, anchored under `tmp_path` with every root at its default, and the
@@ -54,7 +54,7 @@ def workspace_roots(tmp_path: Path) -> WorkspaceRoots:
 @pytest.fixture
 def repo_root() -> Path:
     """The checkout these tests live in, for a test that scans the repository
-    rather than materialising a fixture under `tmp_path`.
+    rather than materializing a fixture under `tmp_path`.
 
     Wraps `workspace.repository.repository_root`, which owns the walk and
     carries its own direct tests, so this fixture only supplies the starting

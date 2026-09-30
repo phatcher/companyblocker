@@ -1,7 +1,7 @@
 """Classify a test by what it does, not by where it sits or a marker on it.
 
 `docs/TESTSTYLE.md`'s unit tier is the default and is meant to exclude a test
-that materialises a layer, starts a subprocess, or reads a real corpus --
+that materializes a layer, starts a subprocess, or reads a real corpus --
 the three things that make a test slow or broad regardless of which area it
 lives in. Those were decided by a marker someone remembered to add, which is
 why almost nothing carried one: the fast selection was measured deselecting
@@ -15,7 +15,7 @@ signatures:
 
 - **subprocess**: a call to `subprocess.run`/`Popen`/`call`/`check_call`/
   `check_output`.
-- **layer materialisation**: a call to a `materialize_<something>` function
+- **layer materialization**: a call to a `materialize_<something>` function
   or to `swap_layer_into_place`, the repo's naming convention for the
   functions that publish a layer for real (`acquisition.match_ops.
   materialize_match_uri_artifact`, `validation.perturbation_materializer.
@@ -129,7 +129,7 @@ def classify_callable(function_source: str, module_source: str) -> TierSignal:
 
     Used for a test function itself, and equally for each fixture a test
     depends on (the checker calls this once per fixture too, since
-    a fixture that starts a subprocess or materialises a layer -- setting
+    a fixture that starts a subprocess or materializes a layer -- setting
     up a throwaway git repo, say -- makes the test that depends on it just
     as broad as if the test called it directly).
 

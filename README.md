@@ -25,8 +25,8 @@ Requires Windows PowerShell and Python 3.12 or later.
 pwsh -NoProfile -ExecutionPolicy Bypass -File .\recreate_venv.ps1
 . .\.venv\Scripts\Activate.ps1
 
-uv run python scripts\acquire_companies.py --systems gb
-uv run python scripts\process_companies.py --systems gb --processes shard canonical cleanse
+uv run python scripts\acquire_companies.py --systems gb gleif
+uv run python scripts\process_companies.py --systems gb gleif --processes shard canonical cleanse
 uv run python scripts\process_companies.py --systems gleif --processes match --additional-args match.target-system=gb
 uv run python scripts\run_blocking.py --source gleif --target gb --dry-run
 ```
@@ -92,8 +92,11 @@ A dependency fix is a version bump for a direct dependency, and an exact pin und
 - `src/workspace`: the on-disk shape of `data/`, `artifacts/` and `config/`, references, run identity and production records.
 - `src/rust/wikisieve`: the spec-driven Rust extractor over the Wikidata dump.
 - `packages/company_cleanse`, `company_tokenize`, `company_vectorize`, `company_classify`, `company_resolvers`, `company_perturbation`: standalone libraries for cleansing, tokenization, vectorization and similarity, classification, resolution and name perturbation.
-- `tooling`: repository-wide gates.
-
+- `scripts`: the command-line entry points over the areas, listed by category in `scripts/README.md`.
+- `tooling`: scripts that serve the repository itself, its gates and generators.
+- `config`: checked-in tokenizer promotions, perturbation profiles and reference data.
+- `notebooks`: analysis notebooks, committed with their outputs.
+- `database`: a local Postgres with pgvector, for the SQL `company_vectorize.pgvector` generates.
 ## Further reading
 
 - `docs/architecture.md`: architecture and design.

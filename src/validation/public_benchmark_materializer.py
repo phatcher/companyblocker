@@ -1,4 +1,4 @@
-"""Materialise a public two-table entity-matching benchmark into the blocking
+"""Materialize a public two-table entity-matching benchmark into the blocking
 loader's shape, so it runs through `scripts/run_blocking.py` unchanged.
 
 Reads the three-file shape the DeepMatcher/DeepBlocker/Magellan family of
