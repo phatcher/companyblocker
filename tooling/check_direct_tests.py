@@ -19,8 +19,8 @@ under the area owning the entry point each script runs, or under
 
 Usage::
 
-    uv run --no-sync python tooling/check_direct_tests.py            # list, by root
-    uv run --no-sync python tooling/check_direct_tests.py --json     # machine-readable
+    uv run python tooling/check_direct_tests.py            # list, by root
+    uv run python tooling/check_direct_tests.py --json     # machine-readable
 """
 
 from __future__ import annotations

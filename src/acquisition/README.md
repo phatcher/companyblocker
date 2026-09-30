@@ -3,7 +3,7 @@
 The catalog-driven pipeline that turns each source system's published data into the layers everything else reads: acquire, shard, canonical, match, cleanse and tokenize. Orchestration is generic and source-specific behaviour is isolated per system, so a source file can be traced through to its canonical and cleansed rows.
 
 ```
-uv run --no-sync python scripts/process_companies.py --systems gleif --processes match --additional-args match.target-system=ie
+uv run python scripts/process_companies.py --systems gleif --processes match --additional-args match.target-system=ie
 ```
 
 ## Stages

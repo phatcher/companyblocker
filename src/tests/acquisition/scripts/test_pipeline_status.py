@@ -143,7 +143,7 @@ def test_build_stage_refresh_command_derives_from_process_companies_choices() ->
     command = pipeline_status.build_stage_refresh_command(system="gb", stage="cleanse")
 
     assert command == (
-        "uv run --no-sync python scripts/process_companies.py "
+        "uv run python scripts/process_companies.py "
         "--systems gb --processes cleanse"
     )
 
@@ -185,7 +185,7 @@ def test_build_match_analysis_refresh_command_parses_scenario_name() -> None:
     command = pipeline_status.build_match_analysis_refresh_command("gleif_to_gb_gb")
 
     assert command == (
-        "uv run --no-sync python scripts/analyze_matches.py "
+        "uv run python scripts/analyze_matches.py "
         "--source gleif --target gb --country gb"
     )
 
@@ -308,6 +308,6 @@ def test_build_blocking_refresh_command() -> None:
     )
 
     assert command == (
-        "uv run --no-sync python scripts/run_blocking.py "
+        "uv run python scripts/run_blocking.py "
         "--source gleif --target gb --representation tfidf"
     )

@@ -6,29 +6,21 @@ repos:
   # script needs, none of which the documented `ruff check src scripts packages`
   # invocation ever saw. Every other Python hook here already runs `uv run`.
   #
-  # Every one of those carries `--no-sync`, and must. `uv run` syncs before executing
-  # unless told not to, and this repo's worktrees share one physical `.venv` by
-  # junction, so a hook running without it rebuilds all six editable installs and
-  # repoints them at whatever worktree invoked the gate -- silently changing which
-  # source tree the main checkout and every other worktree import from. A dispatched
-  # worker hit exactly this running the mandated gate before landing, and had
-  # to repair `.venv/Lib/site-packages/*.pth` by hand. The gate is not optional, so
-  # it must not be the thing that breaks the environment.
+  # Each checkout, every worktree included, has its own `.venv`, so the sync `uv run`
+  # makes before a hook touches only the checkout running the gate.
   #
-  # Invoke it as `pre-commit run ...`, never `uv run pre-commit run ...`: the outer
-  # `uv run` syncs on its own account before pre-commit starts, which no hook-level
-  # flag can prevent.
+  # Invoke it as `pre-commit run ...`, never `uv run pre-commit run ...`.
   - repo: local
     hooks:
       - id: ruff
         name: ruff
-        entry: uv run --no-sync ruff check --fix
+        entry: uv run ruff check --fix
         language: system
         types_or: [python, pyi]
         stages: [pre-commit]
       - id: ruff-format
         name: ruff-format
-        entry: uv run --no-sync ruff format
+        entry: uv run ruff format
         language: system
         types_or: [python, pyi]
         stages: [pre-commit]
@@ -40,7 +32,7 @@ repos:
       # clears its own lines. test_layer_path_literals.py pins the repo-wide backlogs.
       - id: workspace-paths
         name: workspace path contract
-        entry: uv run --no-sync python scripts/check_layer_path_literals.py
+        entry: uv run python scripts/check_layer_path_literals.py
         language: system
         types: [python]
         files: ^(src|scripts)/
@@ -76,7 +68,7 @@ repos:
     hooks:
       - id: bandit
         name: bandit
-        entry: uv run --no-sync bandit -c pyproject.toml -r src scripts packages -x "*/tests/*,*/tests" -s B105
+        entry: uv run bandit -c pyproject.toml -r src scripts packages -x "*/tests/*,*/tests" -s B105
         language: system
         pass_filenames: false
         stages: [pre-push]
@@ -85,7 +77,7 @@ repos:
     hooks:
       - id: mypy
         name: mypy
-        entry: uv run --no-sync mypy --ignore-missing-imports
+        entry: uv run mypy --ignore-missing-imports
         language: system
         types: [python]
         stages: [pre-commit]
@@ -95,7 +87,7 @@ repos:
     hooks:
       - id: tach-check
         name: tach check (module boundaries)
-        entry: uv run --no-sync tach check
+        entry: uv run tach check
         language: system
         pass_filenames: false
         stages: [pre-push]
@@ -104,7 +96,7 @@ repos:
     hooks:
       - id: check-package-docs
         name: package README consistency
-        entry: uv run --no-sync python tooling/check_package_docs.py
+        entry: uv run python tooling/check_package_docs.py
         language: system
         pass_filenames: false
         stages: [pre-push]
@@ -113,7 +105,7 @@ repos:
     hooks:
       - id: design-artifact-freshness
         name: design artifact freshness (pyscn/graphify)
-        entry: uv run --no-sync python tooling/design_artifact_status.py
+        entry: uv run python tooling/design_artifact_status.py
         language: system
         pass_filenames: false
         verbose: true
@@ -125,7 +117,7 @@ repos:
     hooks:
       - id: pip-audit
         name: pip-audit
-        entry: uv run --no-sync pip-audit --skip-editable
+        entry: uv run pip-audit --skip-editable
         language: system
         pass_filenames: false
         stages: [manual]

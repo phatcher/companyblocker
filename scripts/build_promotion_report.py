@@ -17,7 +17,7 @@ field names (`precision`, `recall`, `f1`, `pr_auc`, `recall_at_k`,
 key is exactly this shape.
 
 Usage:
-    uv run --no-sync python scripts/build_promotion_report.py \\
+    uv run python scripts/build_promotion_report.py \\
         --strategy tfidf --operating-point 0.5 \\
         --run-metrics-parquet tmp/promotion_report/run_metrics.parquet \\
         --source gleif --target ie --country ie \\

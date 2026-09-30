@@ -1,6 +1,6 @@
 # CompanyBlocker
 
-A data platform for acquiring company registry data from many sources, normalising it, and evaluating blocking strategies for entity resolution against ground truth built from the data itself. A system is a source: a country register (`gb`, `fr`, `ie`) or a cross-border one (`gleif`, `wikidata`, `offeneregister`).
+A data platform for acquiring company registry data from many sources, normalising it, and evaluating blocking strategies for entity resolution against ground truth built from the data itself. A system is a source: a country register (`gb`, `fr`, `ie`, `offeneregister` for Germany) or a cross-border one (`gleif`, `wikidata`).
 
 ## Pipeline
 
@@ -19,11 +19,10 @@ Acquire -> Shard -> Canonical -> Match -> Blocking
 
 ## Quick start
 
-Requires Windows PowerShell and Python 3.12 or later.
+Requires Windows PowerShell, Python 3.12 or later, and uv.
 
 ```powershell
-pwsh -NoProfile -ExecutionPolicy Bypass -File .\recreate_venv.ps1
-. .\.venv\Scripts\Activate.ps1
+uv sync
 
 uv run python scripts\acquire_companies.py --systems gb gleif
 uv run python scripts\process_companies.py --systems gb gleif --processes shard canonical cleanse

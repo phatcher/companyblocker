@@ -28,10 +28,8 @@ An area's tests live under `src/tests/<area>/`, so this area's live under `src/t
 
 ## Running a tool
 
-Every Python script here runs through the shared venv:
+Every Python script here runs through the checkout's own venv:
 
 ```
-uv run --no-sync python tooling/check_direct_tests.py --help
+uv run python tooling/check_direct_tests.py --help
 ```
-
-`--no-sync` is not optional in a worktree: a plain `uv run` re-syncs the shared `.venv` and repoints every editable install at whichever directory invoked it.

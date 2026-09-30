@@ -9,7 +9,7 @@ The two-dataset blocking workflow: load a labelled source and a target's canonic
 ## Running
 
 ```
-uv run --no-sync python scripts/run_blocking.py --source gleif --target ie --representation tfidf --similarity-backend kmeans --top-k 20 --min-similarity 0.75
+uv run python scripts/run_blocking.py --source gleif --target ie --representation tfidf --similarity-backend kmeans --top-k 20 --min-similarity 0.75
 ```
 
 A run scores one source against one target under one method, and is filed at `artifacts/blocking/data/<target>/<kind>/<source>/<representation>/<key>/`, the key being a digest of what the run consumed and was configured with. A run whose location already holds a finished record is reused rather than scored again. `--help` names every setting with its default, and `--dry-run` lists those that apply to the chosen method.

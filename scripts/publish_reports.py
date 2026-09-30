@@ -110,7 +110,7 @@ def residual_figures(roots: WorkspaceRoots) -> list[ReportFigure]:
         source = pairing.source_segment
         target = pairing.target_system
         command = (
-            "uv run --no-sync python scripts/plot_pair_outcomes.py "
+            "uv run python scripts/plot_pair_outcomes.py "
             f"--source {source} --target {target}"
         )
         for figure in RESIDUAL_FIGURES:
@@ -128,7 +128,7 @@ def residual_figures(roots: WorkspaceRoots) -> list[ReportFigure]:
 def _elbow_command(system: str, trainer: str) -> str:
     backend, _, encoding = trainer.partition("_")
     command = (
-        "uv run --no-sync python scripts/plot_optimize_elbow.py "
+        "uv run python scripts/plot_optimize_elbow.py "
         f"--systems {system} --tokenizer {backend}"
     )
     return f"{command} --encoding {encoding}" if encoding else command

@@ -62,7 +62,7 @@ MEMORY_PRESSURE_RETRY_WORKERS = 1
 # two evaluation passes) while still bounding a genuine hang.
 #
 # Tighten with real data: run, e.g.,
-#   uv run --no-sync python scripts/train_tokenizer.py --mode optimize \
+#   uv run python scripts/train_tokenizer.py --mode optimize \
 #     --systems ie --pilot-seed-count 1 --vocab-sizes 30000 --min-frequencies 3
 # (a single pilot candidate; `ie` is the smallest real corpus -- see
 # DEFAULT_VOCAB_GRID's module comment) and read `elapsed_seconds` from the

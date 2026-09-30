@@ -76,7 +76,7 @@ def build_stage_refresh_command(*, system: str, stage: str) -> str:
             f"one of {PROCESS_CHOICES_WITH_ACQUIRE}"
         )
     return (
-        "uv run --no-sync python scripts/process_companies.py "
+        "uv run python scripts/process_companies.py "
         f"--systems {system} --processes {stage}"
     )
 
@@ -260,7 +260,7 @@ def build_match_analysis_refresh_command(scenario: str) -> str | None:
         return None
     source_system, target_system, country = parsed
     return (
-        "uv run --no-sync python scripts/analyze_matches.py "
+        "uv run python scripts/analyze_matches.py "
         f"--source {source_system} --target {target_system} "
         f"--country {country}"
     )
@@ -386,7 +386,7 @@ def build_blocking_refresh_command(
     """
 
     return (
-        "uv run --no-sync python scripts/run_blocking.py "
+        "uv run python scripts/run_blocking.py "
         f"--source {source_system} --target {target_system} "
         f"--representation {representation}"
     )

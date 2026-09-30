@@ -3,7 +3,7 @@
 Directional source-to-target validation: runs a blocking representation over labelled systems, scores what it found against ground truth, and materializes the perturbed and public-benchmark datasets it is scored on.
 
 ```
-uv run --no-sync python scripts/validate_clustering.py --sources gleif --targets gb --dry-run
+uv run python scripts/validate_clustering.py --sources gleif --targets gb --dry-run
 ```
 
 ## Design contract

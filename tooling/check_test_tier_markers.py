@@ -45,8 +45,8 @@ collected. Either way the answer reaches
 
 Usage::
 
-    uv run --no-sync python tooling/check_test_tier_markers.py            # list
-    uv run --no-sync python tooling/check_test_tier_markers.py --json     # machine-readable
+    uv run python tooling/check_test_tier_markers.py            # list
+    uv run python tooling/check_test_tier_markers.py --json     # machine-readable
 """
 
 from __future__ import annotations

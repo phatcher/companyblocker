@@ -43,10 +43,10 @@ An exhaustive scan is affordable at `ie`'s scale (about 820,000 targets) and not
 
 ```bash
 # The mandatory suite over the fixed slices.
-uv run --no-sync python scripts/compare_blocking_strategies.py
+uv run python scripts/compare_blocking_strategies.py
 
 # The reference suite instead, run once per slice.
-uv run --no-sync python scripts/compare_blocking_strategies.py --reference-column
+uv run python scripts/compare_blocking_strategies.py --reference-column
 ```
 
 ## API

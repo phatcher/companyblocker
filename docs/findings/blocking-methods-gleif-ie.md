@@ -80,7 +80,7 @@ A cap of 3 brings the three corpora within a factor of 1.5 of each other in cost
 ## Reading it again
 
 ```
-uv run --no-sync python scripts/report_strategy_comparison.py
+uv run python scripts/report_strategy_comparison.py
 ```
 
 That rebuilds every pairing's comparison and pair tables from the runs on disk and runs nothing. `notebooks/analyse_pair_outcomes.ipynb` then reads any pairing's runs as made, at a cutoff per run, at one budget of candidates, or under a cap per source.
