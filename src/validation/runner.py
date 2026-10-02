@@ -1831,6 +1831,8 @@ def _build_run_metrics_output(
     if run_metrics_country.height == 0:
         return run_metrics_country
 
+    # The rollup sums each country's distinct targets, which is exact only while
+    # no target id is reused across countries.
     run_metrics_global = (
         run_metrics_country.group_by(["source_system", "target_system"])
         .agg(

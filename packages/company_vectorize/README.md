@@ -10,10 +10,10 @@ A representation is how a name becomes a vector. `resolve_clustering_strategy(re
 | --- | --- | --- |
 | `tfidf` | sparse tf-idf over character n-grams by default | `tfidf_strategy.py` |
 | `wordpiece`, `sentencepiece` | sparse tf-idf over a trained tokenizer's subwords | `token_list_strategy.py` |
-| `sbert` | dense sentence-transformer embedding, checkpoint named by registry slug or path | `sbert_strategy.py` |
+| `sbert` | dense sentence-transformer embedding, checkpoint named by registry slug or path; needs the package's `sbert` extra | `sbert_strategy.py` |
 | `encoder` | dense embedding from any encoder handle the caller already holds | `encoder_strategy.py` |
 
-Every strategy builds the target index once and scores source rows a chunk at a time. `target_index_storable_parts()` and `rebuild_target_index()` hand back a built index as arrays and frames and rebuild one that scores identically, so a caller can persist it.
+Every strategy builds the target index once and scores source rows a chunk at a time, returning one row per candidate: `source_id`, `target_id`, `similarity` and `rank`. `target_index_storable_parts()` and `rebuild_target_index()` hand back a built index as arrays and frames and rebuild one that scores identically, so a caller can persist it.
 
 ## Similarity backends
 
@@ -35,6 +35,7 @@ An exhaustive scan is affordable at `ie`'s scale (about 820,000 targets) and not
 - `hdbscan` routes a source row to the nearest cluster centroid, not by density membership, and target rows it labels noise are never reachable.
 - `lsh` scores are Jaccard estimates, not comparable with the cosine every other backend reports; a shortlist needs an exact rerank before the two are read together.
 - Neither `kmeans` nor `hdbscan` caps partition size; `partition_cluster_shape_frame()` reports the imbalance.
+- `sbert` adds no input prefix, so a checkpoint that needs one, such as `intfloat/multilingual-e5-*`, is not in the registry.
 - `HashVectorizer`, `pgvector.py` and `duckdb_sql.py` are scaffolding: a deterministic test vectorizer and SQL templates, with execution left to the caller.
 
 ## Comparison Protocol
@@ -57,7 +58,7 @@ Everything below imports from the package root. Each module's opening docstring 
 - `clustering_factory.py`: `resolve_clustering_strategy`, `resolve_target_index_build_settings`.
 - `sbert_strategy.py`: `SbertClusteringStrategy`, `DEFAULT_SBERT_MODEL_NAME`. `encoder_strategy.py`: `EncoderClusteringStrategy`.
 - `sbert_model_registry.py`: `SbertModelEntry`, `resolve_sbert_model_name`, `list_sbert_models`, `sbert_models_for_language`. Checkpoints named by slug.
-- `sbert_pooling_gate.py`: `ensure_sentence_embedding_checkpoint`, `checkpoint_pooling_status`, `UntrainedPoolingError`. Refusing a checkpoint with no trained pooling.
+- `sbert_pooling_gate.py`: `ensure_sentence_embedding_checkpoint`, `checkpoint_pooling_status`, `UntrainedPoolingError`. Refusing a checkpoint with no trained pooling, unless `force_untrained_pooling` is set on `SbertTargetIndexBuildSettings`.
 - `sparse_similarity.py`: `TargetSimilarityBackendIndex`, `TargetSvdRerankIndex`, `build_target_nearest_neighbors`.
 - `dense_brute_similarity.py`: `TargetDenseBruteIndex`, `build_target_dense_brute_index`, `DEFAULT_DENSE_BRUTE_BLOCK_BYTES`, `DEFAULT_DENSE_BRUTE_STORAGE_DTYPE`.
 - `partition_similarity.py`: `TargetPartitionIndex`, `build_target_partition_index`, `partition_cluster_shape_frame`, `DEFAULT_KMEANS_CLUSTERS`, `DEFAULT_HDBSCAN_MIN_CLUSTER_SIZE`.

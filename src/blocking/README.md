@@ -43,6 +43,7 @@ Under `scripts/` at the repository root, each documented by its `--help`:
 - `report_recall_curve.py`: A finished run's recall against comparisons spent.
 - `remeasure_blocking_truth.py`: A finished run's truth re-resolved, its candidates untouched.
 - `measure_short_name_recall.py`, `measure_name_variant_recall.py`: What scoring the short name, or recorded name variants, recovers.
+- `measure_initialism_recall.py`, `measure_prefix_suffix_divergence.py`: How many matched pairs differ by an initialism, or by a leading or trailing run of words.
 
 `run_blocking.py` caps Polars at four threads, since a run's memory follows its thread count; `POLARS_MAX_THREADS` overrides it.
 

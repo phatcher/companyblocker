@@ -14,7 +14,7 @@ Each stage's module docstring describes what it reads, writes and guarantees.
 2. Shard ([sharding.py](sharding.py) and a `sharding_<system>.py` per source): split the source into parquet chunks with harmonised schemas.
 3. Canonical ([canonical.py](canonical.py)): map to the OpenCorporates-style schema, with a name-variant sidecar per system.
 4. Match ([match_ops.py](match_ops.py)): label one source's canonical rows against a target's.
-5. Cleanse ([cleanser_orchestrate.py](cleanser_orchestrate.py)): `company_cleanse` over canonical rows, into a partitioned `cleansed/` layer.
+5. Cleanse ([cleanser_orchestrate.py](cleanser_orchestrate.py)): `company_cleanse` over canonical rows, into a partitioned `cleansed/` layer whose merged view carries `system_uri`, `name`, `name_cleansed_basic`, `name_cleansed` and `jurisdiction_code`.
 6. Tokenize ([tokenizer_ops.py](tokenizer_ops.py)): tokens over `cleansed/`, into `tokenized/`.
 
 `scripts/process_companies.py` runs any of them; `scripts/pipeline_status.py` reports which are stale and prints the command that refreshes each; `scripts/check_name_layer_identity.py` checks the name-variant sidecars carry per-row identity. [docs/scripts/acquisition.md](../../docs/scripts/acquisition.md) holds the invocations.

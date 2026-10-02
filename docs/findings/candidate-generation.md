@@ -39,7 +39,15 @@ All runs `tfidf`, `--min-similarity 0.75`, `--top-k 20`, one 25,000-row chunk, c
 
 ## Prefix filtering on `gleif -> ie`
 
-The L2AP bound admits 2.6% of the pairs, but scoring them pair by pair in Python is slower than the exhaustive scan's compiled sparse multiply, which touches only the columns two rows share. The filter is off by default for that reason.
+The L2AP bound admits 2.6% of the pairs, but scoring them pair by pair in Python is slower than the exhaustive scan's compiled sparse multiply, which touches only the columns two rows share. The filter is off by default for that reason. The filtered and the exhaustive run returned the same 35,939 candidate pairs. The filtered run took 21 s to generate candidates and about 200 s to score them, against 339 s for the exhaustive scan.
+
+## A short name on the source side
+
+Reading `short_name` on the source side while the target stays on `name` leaves recall flat, between -0.0001 and +0.0004, and raises precision by 5 to 7 points, from 25% to 35% fewer false-positive candidates.
+
+## Initialisms across records
+
+Measured with `scripts/measure_initialism_recall.py`. A matched pair where one name is the initials of the other is 50 of 391,684 real GLEIF matched pairs, about 0.013%, and 0.77% of the 6,462 pairs sharing no token at all.
 
 ## Word-level prefix and suffix divergence
 

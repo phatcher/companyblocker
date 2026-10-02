@@ -56,6 +56,8 @@ A profile names a set of weighted scenarios, each an ordered chain of steps:
 }
 ```
 
+A profile may carry `exclusions`, naming the records it does not apply to by `exclude_systems`, `exclude_countries` and `exclude_families`. A scenario's own `exclusions` replace the profile's entirely.
+
 Each record draws one scenario, so a corpus yields one perturbed row per source record, in order, joinable one-to-one against its source:
 
 ```python

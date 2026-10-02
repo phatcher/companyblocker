@@ -1,6 +1,6 @@
 # Test Style
 
-Conventions for the test suite: which tier a test belongs to, what each tier may touch, where a test lives, and the one rule that keeps the suite separable. `docs/DOCSTYLE.md` covers prose; this covers tests. `README.md`'s Quality Gates section says which invocations run at which stage, and is not repeated here.
+Conventions for the test suite: which tier a test belongs to, what each tier may touch, where a test lives, and the one rule that keeps the suite separable. The documentum plugin's `DOCSTYLE.md` covers prose; this covers tests. `README.md`'s Quality Gates section says which invocations run at which stage, and is not repeated here.
 
 ## Three tiers
 

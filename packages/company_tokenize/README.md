@@ -18,7 +18,7 @@ tokens = tokenize_name_dataframe(names, name_col="name", tokenizer_path=Path("wo
 
 Training is a greedy approximation and does not repeat exactly: two runs on one corpus differ in a handful of words. Keep the model that produced a result rather than expecting to train it again, and compare two vocabularies by their words, not their ids. SentencePiece's `model_type`, `character_coverage` and `byte_fallback` change what fertility and unknown-token rate mean, so a comparison holds them fixed.
 
-Tokenization removes no words unless given a noise-word profile, and returns variable-length token lists with no padding.
+Tokenization reads `name_cleansed` unless `name_col` names another column. It removes no words unless given a noise-word profile, and returns variable-length token lists with no padding; a blank name gives an empty list.
 
 ## Noise words
 
