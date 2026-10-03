@@ -36,6 +36,13 @@ from cli_common import (
     setting_was_given,
     source_system_from_args,
 )
+from company_classify import (
+    MeanPooledTokenVectorEncoder,
+    TokenVectorProvenance,
+    load_pretrained_fasttext_vectors,
+    resolve_fasttext_checkpoint_entry,
+    resolve_fasttext_slug_for_jurisdictions,
+)
 from company_tokenize._cli_helper import SETTINGS as TOKENIZE_SETTINGS
 from company_vectorize._cli_helper import SETTINGS as VECTORIZE_SETTINGS
 from company_vectorize.clustering_policy import resolve_sbert_model_for_jurisdictions
@@ -67,7 +74,9 @@ from blocking.workflow import execute_blocking_run, resolve_blocking_run_keys
 from validation.config import resolve_text_view_for_representation
 from validation.contracts import POPULATION_UNIVERSE
 from validation.runner import NAME_EQUALITY_NEVER, pair_truth_eval_row
+from workspace.artifact_layout import pretrained_vector_artifact_root
 from workspace.identity import current_commit
+from workspace.roots import WorkspaceRoots
 from workspace.run_inputs import DERIVED_TRUTH_COLUMN
 
 _DECLARATIONS = declared_settings(
@@ -91,6 +100,8 @@ _SURFACE: dict[str, dict[str, object]] = {
     "preprocess_profile": {"flag": "--preprocess-profile"},
     "cleanse_profile": {"flag": "--cleanse-profile"},
     "sbert_model_name": {"flag": "--sbert-model"},
+    "encoder": {"flag": "--encoder"},
+    "fasttext_checkpoint": {"flag": "--fasttext-checkpoint"},
     "top_k": {"flag": "--top-k"},
     "min_similarity": {"flag": "--min-similarity"},
     "max_candidates_per_source": {"flag": "--max-candidates-per-source"},
@@ -147,6 +158,98 @@ def build_parser() -> argparse.ArgumentParser:
         ),
     )
     return parser
+
+
+def _fasttext_checkpoint_slug(values: Mapping[str, Any]) -> str:
+    """The `--fasttext-checkpoint` slug, or the one the run's `--countries` pick."""
+    given = values["fasttext_checkpoint"]
+    if given is not None and str(given).strip():
+        return str(given).strip()
+    countries = values["countries"]
+    return resolve_fasttext_slug_for_jurisdictions(
+        tuple(str(country).strip().lower() for country in countries)
+        if countries
+        else None
+    )
+
+
+def _download_command(slug: str) -> str:
+    return (
+        "download it with: uv run python scripts/measure_fasttext_alias_hit_rate.py "
+        f"--download --slug {slug}"
+    )
+
+
+def _fasttext_encoder_name(slug: str) -> str:
+    """What a run using fastText checkpoint `slug` records as its encoder: the
+    slug and the registered checksum of the file, so a checkpoint swapped under
+    one slug is a different run."""
+    checksum = resolve_fasttext_checkpoint_entry(slug).checksum
+    if checksum is None:
+        raise ValueError(
+            f"fastText checkpoint '{slug}' has no registered checksum, so there is "
+            f"no verified file to name the run by; {_download_command(slug)}, then "
+            "record the checksum it prints in fasttext_checkpoints.json"
+        )
+    return f"fasttext:{slug}:{checksum}"
+
+
+def _fasttext_checkpoint_path(roots: WorkspaceRoots, slug: str) -> Path:
+    """Where the decompressed checkpoint for `slug` sits, in the pretrained-vectors
+    folder under its registered checksum.
+
+    Raises:
+        FileNotFoundError: The file is not there; the message carries the command
+            that downloads it.
+    """
+    entry = resolve_fasttext_checkpoint_entry(slug)
+    filename = entry.source_url.rsplit("/", maxsplit=1)[-1].removesuffix(".gz")
+    path = pretrained_vector_artifact_root(roots) / str(entry.checksum) / filename
+    if not path.is_file():
+        raise FileNotFoundError(
+            f"fastText checkpoint '{slug}' is not at {path}; {_download_command(slug)}"
+        )
+    return path
+
+
+def _load_fasttext_lookup(path: Path, provenance: TokenVectorProvenance):
+    return load_pretrained_fasttext_vectors(path, provenance=provenance)
+
+
+class _FastTextEncoder:
+    """The fastText encoder a run hands its blocking configuration: each name is
+    the mean of its words' vectors, the checkpoint read on first use so a dry run
+    or a refused configuration never loads several gigabytes."""
+
+    def __init__(self, path: Path, provenance: TokenVectorProvenance) -> None:
+        self._path = path
+        self._provenance = provenance
+        self._encoder: MeanPooledTokenVectorEncoder | None = None
+
+    def embed(self, name: str):
+        if self._encoder is None:
+            self._encoder = MeanPooledTokenVectorEncoder(
+                _load_fasttext_lookup(self._path, self._provenance)
+            )
+        return self._encoder.embed(name)
+
+
+def _encoder_for_run(
+    args: argparse.Namespace, strategy: BlockingStrategyConfig, roots: WorkspaceRoots
+) -> _FastTextEncoder | None:
+    """The encoder `--encoder` names, for a run that scores through one. Any other
+    representation is left without it, for the configuration to refuse."""
+    if strategy.encoder_name is None or strategy.representation != "encoder":
+        return None
+    resolved, _ = _resolve_settings(args)
+    slug = _fasttext_checkpoint_slug(resolved_setting_values(resolved))
+    entry = resolve_fasttext_checkpoint_entry(slug)
+    return _FastTextEncoder(
+        _fasttext_checkpoint_path(roots, slug),
+        TokenVectorProvenance(
+            slug=slug, source=entry.source_url, checksum=entry.checksum
+        ),
+    )
 
 
 def _resolve_settings(
@@ -216,6 +319,11 @@ def _strategy_from_settings(
     if sbert_model_name is not None:
         sbert_model_name = str(sbert_model_name).strip() or None
 
+    encoder_name = None
+    if values["encoder"] is not None:
+        # Only fasttext is declared, so naming an encoder is naming its checkpoint.
+        encoder_name = _fasttext_encoder_name(_fasttext_checkpoint_slug(values))
+
     return BlockingStrategyConfig(
         representation=str(values["representation"]).strip().lower(),
         top_k=int(values["top_k"]),
@@ -240,6 +348,7 @@ def _strategy_from_settings(
         max_candidates_per_target=values["max_candidates_per_target"],
         candidate_similarity_ratio=values["candidate_similarity_ratio"],
         sbert_model_name=sbert_model_name,
+        encoder_name=encoder_name,
         name_transform=str(values["name_transform"]).strip().lower(),
         cleanse_profile=str(values["cleanse_profile"]).strip(),
         target_neighbor_min_similarity=values["target_neighbor_min_similarity"],
@@ -294,6 +403,7 @@ def _build_config(
         countries=countries,
         strategy=strategy,
         truth=truth,
+        encoder=_encoder_for_run(args, strategy, roots),
     )
 
 
@@ -301,11 +411,15 @@ def _run_configuration(
     resolved: list[dict[str, object]], config: BlockingRunConfig
 ) -> dict[str, dict[str, object]]:
     """The applicable settings a run records, with the checkpoint an unset
-    `--sbert-model` resolves to named beside it."""
+    `--sbert-model` resolves to named beside it, and the encoder, checkpoint
+    included, `--encoder` names."""
     record = applicable_settings_record(resolved)
     sbert = record.get("sbert_model_name")
     if sbert is not None and sbert["value"] is None:
         sbert["resolved"] = resolve_sbert_model_for_jurisdictions(config.countries)
+    encoder = record.get("encoder")
+    if encoder is not None and config.strategy.encoder_name is not None:
+        encoder["resolved"] = config.strategy.encoder_name
     return record
 
 
@@ -420,12 +534,18 @@ def run_blocking(args: argparse.Namespace) -> int:
 
     if args.dry_run:
         sbert = configuration.get("sbert_model_name", {})
+        encoder = configuration.get("encoder", {})
         report_resolved_settings(
             "run_blocking",
             resolved,
             **(
                 {"sbert_model_resolved": sbert["resolved"]}
                 if "resolved" in sbert
+                else {}
+            ),
+            **(
+                {"encoder_resolved": encoder["resolved"]}
+                if "resolved" in encoder
                 else {}
             ),
             source_dir=config.source.system_dir,

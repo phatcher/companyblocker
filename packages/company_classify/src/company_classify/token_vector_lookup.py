@@ -201,3 +201,26 @@ def mean_pool_name_vector(
         return np.zeros(lookup.dimension)
     vectors = np.stack([lookup.vector(token) for token in tokens])
     return vectors.mean(axis=0)
+
+
+@dataclass(frozen=True)
+class MeanPooledTokenVectorEncoder:
+    """An encoder over a `TokenVectorLookup`: one name's vector is the mean of its tokens' vectors.
+
+    Has the one-name-at-a-time `embed()` a blocking run's `"encoder"` representation scores
+    through, so a static-vector ingredient (the pretrained fastText one here, a domain-trained
+    one later) is a row in a blocking comparison without that area importing this package.
+    `embed()` is `mean_pool_name_vector()` unchanged.
+
+    Attributes:
+        lookup: The token-vector ingredient the names are embedded under.
+        tokenize: How a name is split into the tokens `lookup` is asked for; lowercased
+            whitespace split by default.
+    """
+
+    lookup: TokenVectorLookup
+    tokenize: Callable[[str], Iterable[str]] = default_name_tokenizer
+
+    def embed(self, name: str) -> np.ndarray:
+        """`name`'s mean-pooled vector, all zeros for a name with no tokens."""
+        return mean_pool_name_vector(name, self.lookup, tokenize=self.tokenize)

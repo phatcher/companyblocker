@@ -42,12 +42,13 @@ The derived forms are stored per system and country under the two profiles, so a
 
 A strategy is a pair of choices: a **representation**, which decides how a name becomes a vector, and a **similarity backend**, which decides how neighbours are found in that space. They are chosen independently, but not every combination is permitted.
 
-Four representations are available:
+Five representations are available:
 
 - `tfidf`: N-gram term weighting over the name, character n-grams within word boundaries by default (`tfidf.analyzer`). The default representation, and the deterministic baseline the others are measured against.
 - `wordpiece`: The trained WordPiece tokenizer's subword units.
 - `sentencepiece`: The trained SentencePiece tokenizer's subword units.
 - `sbert`: Dense sentence embeddings. `--sbert-model` takes a registry slug, a hub checkpoint identifier or a local checkpoint path; omitted, it resolves a registered monolingual checkpoint matching every country given, when exactly one matches, and otherwise the pretrained English default.
+- `encoder`: Dense vectors from an encoder the caller supplies. `--encoder fasttext` is the one `run_blocking.py` offers: a pretrained fastText checkpoint, each name the unweighted mean of its words' vectors. The checkpoint is the registered one matching every country given, or `--fasttext-checkpoint <slug>`, read from the pretrained-vectors folder under its registered checksum; a run whose file is absent is refused with the command that downloads it. The run records the encoder as `fasttext:<slug>:<checksum>`, so runs differing only in checkpoint are separate runs. `--encoder` is required with this representation and refused with any other. A library caller passes the loaded encoder as `BlockingRunConfig.encoder` and its name as `BlockingStrategyConfig.encoder_name`.
 
 `wordpiece` and `sentencepiece` are the dense-vocabulary representations, and are the pair the row-count gate applies to.
 

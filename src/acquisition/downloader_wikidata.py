@@ -350,8 +350,8 @@ def _write_resolved_wikisieve_spec(
     wikisieve resolves `qid_closure_file` paths relative to the spec file's
     own directory (`CompiledSpec::load`), and the checked-in
     `src/acquisition/catalog/projections/wikidata-company.json` ships without
-    a real p279.json beside it -- each acquisition run downloads its own fresh copy alongside
-    the raw dump instead (`source_path.with_name("p279.json")`).
+    a real p279.json beside it -- the closure file is kept beside the raw dump instead
+    (`source_path.with_name("p279.json")`).
     """
     spec = json.loads(spec_path.read_text(encoding="utf-8"))
     for marker in spec.get("markers", []):

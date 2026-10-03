@@ -27,7 +27,7 @@ from company_tokenize.name_preprocessing import (
     DEFAULT_NAME_PREPROCESSING_PROFILE,
     parse_name_preprocessing_profile,
 )
-from company_vectorize.clustering_contract import TFIDF_ANALYZERS
+from company_vectorize.clustering_contract import TFIDF_ANALYZERS, EncoderHandle
 from company_vectorize.clustering_factory import resolve_clustering_strategy
 
 from validation.contracts import (
@@ -133,6 +133,14 @@ class BlockingStrategyConfig:
     identifier, or a local checkpoint path -- the same three forms
     `resolve_target_index_build_settings()` already accepts.
 
+    `encoder_name` names the encoder a `representation="encoder"` run scores
+    through, and is what identifies it: the handle itself rides on
+    `BlockingRunConfig.encoder`, an object that cannot be digested, so two
+    runs differing only in the encoder differ here. Required with that
+    representation and refused with any other; `None` (default) is left out
+    of the run's settings, so a run that names no encoder keeps the identity
+    it had.
+
     `name_transform` names the one function applied to *both* sides' names
     before the exact-name fast path, tokenization and the text view see
     either (`name_transform.py`): `identity` (default, each side scores the
@@ -190,6 +198,7 @@ class BlockingStrategyConfig:
     cleanse_profile: str = DEFAULT_CLEANSE_PROFILE
     target_neighbor_min_similarity: float | None = None
     target_neighbor_max_per_target: int | None = None
+    encoder_name: str | None = None
 
 
 @dataclass(slots=True, frozen=True)
@@ -210,6 +219,13 @@ class BlockingRunConfig:
     a perturbed dataset validated against the system it was made from, or a
     recorded name variant scored against its own system, whose truth is the
     identity each row was derived from. Part of the run identity.
+
+    `encoder` is the already-loaded encoder a `representation="encoder"` run
+    embeds names with (`company_vectorize.clustering_contract.EncoderHandle`):
+    the caller's, never resolved here. It is not part of the settings the run
+    is keyed on, since a loaded model is not a value; `strategy.encoder_name`
+    is, so the caller must name the encoder it hands over. Given with any
+    other representation, or without the name, the run is refused.
     """
 
     roots: WorkspaceRoots
@@ -220,6 +236,7 @@ class BlockingRunConfig:
     strategy: BlockingStrategyConfig
     emit_diagnostics: bool = False
     truth: SourceTruthResolver = field(default_factory=MatchedLayerTruth)
+    encoder: EncoderHandle | None = None
 
 
 @dataclass(slots=True, frozen=True)
@@ -522,10 +539,33 @@ def _validate_ground_truth_target(config: BlockingRunConfig) -> None:
     )
 
 
+def _validate_encoder(config: BlockingRunConfig) -> None:
+    strategy = config.strategy
+    name = strategy.encoder_name
+    if strategy.representation == "encoder":
+        if config.encoder is None:
+            raise ValueError(
+                "the 'encoder' representation requires an encoder: pass "
+                "BlockingRunConfig.encoder, the loaded encoder to embed names with"
+            )
+        if name is None or not name.strip():
+            raise ValueError(
+                "the 'encoder' representation requires strategy.encoder_name, "
+                "which names the encoder the run is identified by"
+            )
+        return
+    if config.encoder is not None or name is not None:
+        raise ValueError(
+            f"an encoder was given with representation {strategy.representation!r}; "
+            "an encoder is only used by the 'encoder' representation"
+        )
+
+
 def validate_blocking_run_config(config: BlockingRunConfig) -> None:
     if config.countries is not None and len(config.countries) == 0:
         raise ValueError("countries cannot be empty when provided")
     _validate_strategy(config.strategy)
+    _validate_encoder(config)
     _validate_ground_truth_target(config)
 
 
@@ -561,6 +601,8 @@ def blocking_run_settings(config: BlockingRunConfig) -> dict[str, object]:
                 for field, value in dataclasses.asdict(config.truth).items()
             }
         )
+    if strategy["strategy.encoder_name"] is None:
+        del strategy["strategy.encoder_name"]
     return {
         **strategy,
         **sides,

@@ -15,6 +15,7 @@ from pathlib import Path
 import numpy as np
 import pytest
 from company_classify.token_vector_lookup import (
+    MeanPooledTokenVectorEncoder,
     TokenVectorProvenance,
     default_name_tokenizer,
     load_pretrained_fasttext_vectors,
@@ -155,3 +156,29 @@ def test_load_pretrained_fasttext_vectors_over_a_real_tiny_checkpoint():
     assert lookup.total > 0
     assert lookup.count("landlady") > 0
     assert lookup.vector("landlord").shape == (lookup.dimension,)
+
+
+def test_mean_pooled_token_vector_encoder_embeds_a_name_as_its_pooled_vector():
+    lookup = load_pretrained_fasttext_vectors(
+        Path("unused"),
+        provenance=TokenVectorProvenance(slug="s", source="s", checksum=None),
+        loader=lambda _path: _fake_lookup(),
+    )
+    encoder = MeanPooledTokenVectorEncoder(lookup)
+
+    assert np.allclose(encoder.embed("Acme Holdings"), [0.5, 0.5, 0.0])
+    assert np.allclose(encoder.embed("acme"), mean_pool_name_vector("acme", lookup))
+    assert np.array_equal(encoder.embed("   "), np.zeros(3))
+
+
+def test_mean_pooled_token_vector_encoder_reads_names_through_its_tokenizer():
+    lookup = load_pretrained_fasttext_vectors(
+        Path("unused"),
+        provenance=TokenVectorProvenance(slug="s", source="s", checksum=None),
+        loader=lambda _path: _fake_lookup(),
+    )
+    encoder = MeanPooledTokenVectorEncoder(
+        lookup, tokenize=lambda name: name.split("-")
+    )
+
+    assert np.allclose(encoder.embed("acme-holdings"), [0.5, 0.5, 0.0])

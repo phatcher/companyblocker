@@ -4,8 +4,13 @@ import json
 from dataclasses import replace
 from pathlib import Path
 
+import numpy as np
 import polars as pl
 import pytest
+from company_classify import (
+    load_pretrained_fasttext_vectors,
+    resolve_fasttext_checkpoint_entry,
+)
 from company_vectorize.lsh_similarity import (
     DEFAULT_LSH_NUM_BANDS,
     DEFAULT_LSH_NUM_PERM,
@@ -34,6 +39,7 @@ from blocking.run_layout import iter_blocking_runs, resolve_pairing_dir
 from blocking.truth import MatchedLayerTruth
 from scripts import run_blocking
 from scripts.cli_common import applicable_settings_record
+from workspace.artifact_layout import pretrained_vector_artifact_root
 from workspace.data_layout import (
     CLEANSED_LAYER_NAME,
     layer_directory,
@@ -705,3 +711,206 @@ def test_run_blocking_refuses_gated_combination_with_a_readable_error(
     assert "--force" in stderr
     assert "--max-rows" in stderr
     assert not workspace_roots.artifacts.exists()
+
+
+class _FakeKeyedVectors:
+    """Stands in for a loaded fastText checkpoint: every word has a vector built
+    from its characters, so names sharing letters sit near each other."""
+
+    vector_size = 8
+
+    def __init__(self) -> None:
+        self.key_to_index: dict[str, int] = {}
+
+    def __getitem__(self, key: str):
+        vector = np.zeros(self.vector_size)
+        for character in key:
+            vector[ord(character) % self.vector_size] += 1.0
+        return vector
+
+    def get_vecattr(self, key: str, attr: str):
+        return 0
+
+    def has_index_for(self, key: str) -> bool:
+        return False
+
+
+def _use_fake_fasttext(monkeypatch, roots: WorkspaceRoots, *slugs: str) -> list[Path]:
+    """Put a checkpoint file where the registry says each of `slugs` sits, and
+    have the run load a fake lookup from it; returns the paths loaded."""
+    loaded: list[Path] = []
+    for slug in slugs:
+        entry = resolve_fasttext_checkpoint_entry(slug)
+        path = (
+            pretrained_vector_artifact_root(roots)
+            / str(entry.checksum)
+            / entry.source_url.rsplit("/", maxsplit=1)[-1].removesuffix(".gz")
+        )
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(b"")
+
+    def _load(path: Path, provenance):
+        loaded.append(path)
+        return load_pretrained_fasttext_vectors(
+            path, provenance=provenance, loader=lambda _path: _FakeKeyedVectors()
+        )
+
+    monkeypatch.setattr(run_blocking, "_load_fasttext_lookup", _load)
+    return loaded
+
+
+def _encoder_argv(roots: WorkspaceRoots, *extra: str) -> list[str]:
+    return [
+        *_roots_argv(roots),
+        "--source",
+        "gleif",
+        "--target",
+        "gb",
+        "--countries",
+        "gb",
+        "--top-k",
+        "2",
+        "--min-similarity",
+        "0.2",
+        *extra,
+    ]
+
+
+def test_run_blocking_encoder_fasttext_completes_and_the_record_names_the_encoder(
+    workspace_roots: WorkspaceRoots, layer_fixture_dir, monkeypatch
+) -> None:
+    _write_gleif_gb_fixture(layer_fixture_dir)
+    loaded = _use_fake_fasttext(monkeypatch, workspace_roots, "en-cc-300")
+    entry = resolve_fasttext_checkpoint_entry("en-cc-300")
+
+    exit_code = run_blocking.main(
+        _encoder_argv(
+            workspace_roots, "--representation", "encoder", "--encoder", "fasttext"
+        )
+    )
+
+    assert exit_code == 0
+    assert [path.name for path in loaded] == ["cc.en.300.bin"]
+    (run,) = list(iter_blocking_runs(workspace_roots))
+    manifest = json.loads((run.directory / "manifest.json").read_text(encoding="utf-8"))
+    name = f"fasttext:en-cc-300:{entry.checksum}"
+    assert manifest["identity"]["settings"]["strategy.encoder_name"] == name
+    assert manifest["configuration"]["encoder"]["value"] == "fasttext"
+    assert manifest["configuration"]["encoder"]["resolved"] == name
+    assert pl.read_parquet(run.directory / "matched_edges.parquet").height >= 1
+
+
+def test_run_blocking_encoder_representation_without_an_encoder_is_refused(
+    workspace_roots: WorkspaceRoots, layer_fixture_dir, capsys
+) -> None:
+    _write_gleif_gb_fixture(layer_fixture_dir)
+
+    exit_code = run_blocking.main(
+        _encoder_argv(workspace_roots, "--representation", "encoder")
+    )
+
+    assert exit_code == 1
+    assert "requires an encoder" in capsys.readouterr().err
+    assert list(iter_blocking_runs(workspace_roots)) == []
+
+
+def test_run_blocking_an_encoder_with_another_representation_is_refused(
+    workspace_roots: WorkspaceRoots, layer_fixture_dir, capsys
+) -> None:
+    _write_gleif_gb_fixture(layer_fixture_dir)
+
+    exit_code = run_blocking.main(
+        _encoder_argv(
+            workspace_roots, "--representation", "tfidf", "--encoder", "fasttext"
+        )
+    )
+
+    assert exit_code == 1
+    assert "only used by the" in capsys.readouterr().err
+    assert list(iter_blocking_runs(workspace_roots)) == []
+
+
+def test_run_blocking_an_absent_checkpoint_is_refused_with_the_download_command(
+    workspace_roots: WorkspaceRoots, layer_fixture_dir, capsys
+) -> None:
+    _write_gleif_gb_fixture(layer_fixture_dir)
+
+    exit_code = run_blocking.main(
+        _encoder_argv(
+            workspace_roots, "--representation", "encoder", "--encoder", "fasttext"
+        )
+    )
+
+    assert exit_code == 1
+    error = capsys.readouterr().err
+    assert (
+        "scripts/measure_fasttext_alias_hit_rate.py --download --slug en-cc-300"
+        in error
+    )
+    assert list(iter_blocking_runs(workspace_roots)) == []
+
+
+def test_run_blocking_the_checkpoint_follows_countries_unless_a_slug_is_given() -> None:
+    def name(*argv: str) -> str | None:
+        args = run_blocking.build_parser().parse_args(
+            ["--source", "gleif", "--target", "gb", *argv]
+        )
+        return run_blocking._resolve_strategy(args).encoder_name
+
+    en = resolve_fasttext_checkpoint_entry("en-cc-300")
+    fr = resolve_fasttext_checkpoint_entry("fr-cc-300")
+    de = resolve_fasttext_checkpoint_entry("de-cc-300")
+
+    assert name("--encoder", "fasttext") == f"fasttext:en-cc-300:{en.checksum}"
+    assert (
+        name("--encoder", "fasttext", "--countries", "fr")
+        == f"fasttext:fr-cc-300:{fr.checksum}"
+    )
+    assert (
+        name(
+            "--encoder",
+            "fasttext",
+            "--countries",
+            "fr",
+            "--fasttext-checkpoint",
+            "de-cc-300",
+        )
+        == f"fasttext:de-cc-300:{de.checksum}"
+    )
+    assert name() is None
+
+
+def test_run_blocking_runs_differing_only_in_checkpoint_land_in_different_directories(
+    workspace_roots: WorkspaceRoots, layer_fixture_dir, monkeypatch
+) -> None:
+    _write_gleif_gb_fixture(layer_fixture_dir)
+    _use_fake_fasttext(monkeypatch, workspace_roots, "en-cc-300", "fr-cc-300")
+    argv = _encoder_argv(
+        workspace_roots, "--representation", "encoder", "--encoder", "fasttext"
+    )
+
+    assert run_blocking.main(argv) == 0
+    assert run_blocking.main([*argv, "--fasttext-checkpoint", "fr-cc-300"]) == 0
+
+    runs = list(iter_blocking_runs(workspace_roots))
+    assert len({run.directory for run in runs}) == 2
+
+
+def test_run_blocking_a_dry_run_names_the_encoder_without_loading_it(
+    workspace_roots: WorkspaceRoots, layer_fixture_dir, monkeypatch, capsys
+) -> None:
+    _write_gleif_gb_fixture(layer_fixture_dir)
+    loaded = _use_fake_fasttext(monkeypatch, workspace_roots, "en-cc-300")
+
+    exit_code = run_blocking.main(
+        [
+            *_encoder_argv(
+                workspace_roots, "--representation", "encoder", "--encoder", "fasttext"
+            ),
+            "--dry-run",
+        ]
+    )
+
+    assert exit_code == 0
+    assert "encoder_resolved='fasttext:en-cc-300:" in capsys.readouterr().out
+    assert loaded == []

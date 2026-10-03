@@ -61,7 +61,9 @@ Everything is importable from `company_classify`. Each module's docstring gives 
 - `persistence.py`: `ModelProvenance`, `PersistedModel`, `MODEL_FILENAME`, `MANIFEST_FILENAME`, `save_classifier_model`, `load_classifier_model`, `save_pair_classifier_model`, `load_pair_classifier_model`.
 - `checkpoint_selection.py`: `resolve_checkpoint_for_jurisdictions`.
 - `fasttext_registry.py`: `FastTextCheckpointEntry`, `DEFAULT_FASTTEXT_CHECKPOINT_SLUG`, `load_fasttext_checkpoint_registry`, `list_fasttext_checkpoints`, `fasttext_checkpoints_for_language`, `resolve_fasttext_checkpoint_entry`, `resolve_fasttext_slug_for_jurisdictions`.
-- `token_vector_lookup.py`: `TokenVectorLookup`, `TokenVectorProvenance`, `PretrainedFastTextVectors`, `load_pretrained_fasttext_vectors`, `default_name_tokenizer`, `mean_pool_name_vector`.
+- `token_vector_lookup.py`: `TokenVectorLookup`, `TokenVectorProvenance`, `PretrainedFastTextVectors`, `load_pretrained_fasttext_vectors`, `default_name_tokenizer`, `mean_pool_name_vector`, `MeanPooledTokenVectorEncoder`.
 - `alias_probe.py`: `AliasProbeResult`, `nearest_neighbour_alias_hit_rate`.
+
+`MeanPooledTokenVectorEncoder(lookup)` is an encoder over any `TokenVectorLookup`: `embed(name)` is the unweighted mean of the name's token vectors (`mean_pool_name_vector`), all zeros for a name with no tokens. It has the one-method shape a caller's encoder needs, so a blocking run's `encoder` representation can score names through static vectors without importing this package.
 
 The package resolves no location and downloads nothing: a caller supplies every path, including where a model is saved and which fastText checkpoint file is loaded.

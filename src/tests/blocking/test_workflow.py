@@ -1,11 +1,15 @@
 import json
 from dataclasses import replace
+from itertools import pairwise
 from pathlib import Path
 from typing import Any
 
 import polars as pl
 import pytest
-from company_vectorize.clustering_contract import TfidfTargetIndexBuildSettings
+from company_vectorize.clustering_contract import (
+    EncoderHandle,
+    TfidfTargetIndexBuildSettings,
+)
 
 from blocking import workflow as workflow_module
 from blocking.comparison import (
@@ -17,6 +21,8 @@ from blocking.contracts import (
     BlockingRunConfig,
     BlockingStrategyConfig,
     EmptySourceLoadError,
+    blocking_run_settings,
+    build_blocking_run_identity,
     validate_blocking_run_config,
 )
 from blocking.loader import load_dataset_descriptor
@@ -25,6 +31,7 @@ from blocking.reporting import (
     write_blocking_report,
     write_run_manifest,
 )
+from blocking.run_layout import resolve_run_location_for
 from blocking.truth import ColumnTruth
 from blocking.workflow import (
     _CASEFOLD_COL,
@@ -136,6 +143,8 @@ def _build_config(
     candidate_similarity_ratio: float | None = None,
     similarity_backend: str = "sklearn",
     backend_options: dict[str, object] | None = None,
+    encoder: EncoderHandle | None = None,
+    encoder_name: str | None = None,
 ) -> BlockingRunConfig:
     source = load_dataset_descriptor(roots=roots, system="gleif")
     target = load_dataset_descriptor(
@@ -154,6 +163,7 @@ def _build_config(
         tokenizer=tokenizer,
         max_candidates_per_target=max_candidates_per_target,
         candidate_similarity_ratio=candidate_similarity_ratio,
+        encoder_name=encoder_name,
     )
     return BlockingRunConfig(
         roots=roots,
@@ -162,6 +172,7 @@ def _build_config(
         target=target,
         countries=None,
         strategy=strategy,
+        encoder=encoder,
     )
 
 
@@ -816,6 +827,122 @@ def test_the_lsh_backend_is_refused_for_a_dense_representation(
 
     with pytest.raises(ValueError, match="'lsh'.*dense representation 'sbert'"):
         validate_blocking_run_config(config)
+
+
+class _CharacterBigramEncoder:
+    """A fake encoder: a name's vector counts its character bigrams in 16
+    hashed buckets, so names sharing letters score near each other."""
+
+    def embed(self, name: str):
+        import numpy as np
+
+        vector = np.zeros(16)
+        for left, right in pairwise(name):
+            vector[(ord(left) * 31 + ord(right)) % 16] += 1.0
+        return vector
+
+
+def test_a_run_completes_with_a_caller_supplied_encoder_and_records_its_name(
+    workspace_roots: WorkspaceRoots, layer_fixture_dir
+) -> None:
+    _write_gleif_gb_fixture(layer_fixture_dir)
+    config = _build_config(
+        workspace_roots,
+        representation="encoder",
+        encoder=_CharacterBigramEncoder(),
+        encoder_name="bigrams-v1",
+    )
+
+    result = execute_blocking_run(config, source_chunk_size=1)
+
+    assert result.matched_edges.height >= 1
+    assert result.keys is not None
+    identity = build_blocking_run_identity(config, keys=result.keys)
+    settings = identity["settings"]
+    assert isinstance(settings, dict)
+    assert settings["strategy.encoder_name"] == "bigrams-v1"
+
+
+def test_an_encoder_representation_without_a_handle_is_refused(
+    workspace_roots: WorkspaceRoots, layer_fixture_dir
+) -> None:
+    _write_gleif_gb_fixture(layer_fixture_dir)
+    config = _build_config(
+        workspace_roots, representation="encoder", encoder_name="bigrams-v1"
+    )
+
+    with pytest.raises(ValueError, match="requires an encoder"):
+        validate_blocking_run_config(config)
+
+
+def test_an_encoder_representation_without_a_name_is_refused(
+    workspace_roots: WorkspaceRoots, layer_fixture_dir
+) -> None:
+    _write_gleif_gb_fixture(layer_fixture_dir)
+    config = _build_config(
+        workspace_roots, representation="encoder", encoder=_CharacterBigramEncoder()
+    )
+
+    with pytest.raises(ValueError, match="requires strategy.encoder_name"):
+        validate_blocking_run_config(config)
+
+
+@pytest.mark.parametrize("representation", ["tfidf", "sbert"])
+def test_an_encoder_handle_with_another_representation_is_refused(
+    workspace_roots: WorkspaceRoots, layer_fixture_dir, representation: str
+) -> None:
+    _write_gleif_gb_fixture(layer_fixture_dir)
+    config = _build_config(
+        workspace_roots,
+        representation=representation,
+        encoder=_CharacterBigramEncoder(),
+        encoder_name="bigrams-v1",
+    )
+
+    with pytest.raises(ValueError, match="only used by the 'encoder' representation"):
+        validate_blocking_run_config(config)
+
+
+def test_a_name_without_a_handle_on_another_representation_is_refused(
+    workspace_roots: WorkspaceRoots, layer_fixture_dir
+) -> None:
+    _write_gleif_gb_fixture(layer_fixture_dir)
+    config = _build_config(workspace_roots, encoder_name="bigrams-v1")
+
+    with pytest.raises(ValueError, match="only used by the 'encoder' representation"):
+        validate_blocking_run_config(config)
+
+
+def test_two_runs_differing_only_in_encoder_name_resolve_to_different_run_directories(
+    workspace_roots: WorkspaceRoots, layer_fixture_dir
+) -> None:
+    _write_gleif_gb_fixture(layer_fixture_dir)
+    first = _build_config(
+        workspace_roots,
+        representation="encoder",
+        encoder=_CharacterBigramEncoder(),
+        encoder_name="bigrams-v1",
+    )
+    second = replace(first, strategy=replace(first.strategy, encoder_name="bigrams-v2"))
+
+    first_keys = resolve_blocking_run_keys(first)
+    second_keys = resolve_blocking_run_keys(second)
+
+    assert first_keys.settings != second_keys.settings
+    assert (
+        resolve_run_location_for(first, keys=first_keys).directory
+        != resolve_run_location_for(second, keys=second_keys).directory
+    )
+
+
+def test_a_run_that_names_no_encoder_keeps_the_settings_it_always_had(
+    workspace_roots: WorkspaceRoots, layer_fixture_dir
+) -> None:
+    _write_gleif_gb_fixture(layer_fixture_dir)
+
+    settings = blocking_run_settings(_build_config(workspace_roots))
+
+    assert "strategy.encoder_name" not in settings
 
 
 def test_execute_blocking_run_reuses_target_index_cache(

@@ -68,7 +68,7 @@ from __future__ import annotations
 import json
 from collections.abc import Callable, Iterator, Mapping, Sequence
 from contextlib import AbstractContextManager, contextmanager
-from dataclasses import asdict, dataclass, replace
+from dataclasses import dataclass, fields, replace
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -277,6 +277,22 @@ def _digest_noise_words(level: str) -> str:
     )
 
 
+def _build_settings_identity(
+    build_settings: TargetIndexBuildSettings,
+) -> dict[str, object]:
+    """`build_settings` as the values its index key digests.
+
+    A loaded encoder is an object, not a value: `asdict` would copy it and a
+    digest of it would name its address, so it is left out and its
+    `encoder_name`, which the run's caller supplies to identify it, stays.
+    """
+    return {
+        field.name: getattr(build_settings, field.name)
+        for field in fields(build_settings)
+        if field.name != "encoder"
+    }
+
+
 def _index_part_key(
     config: BlockingRunConfig,
     *,
@@ -302,7 +318,7 @@ def _index_part_key(
         "preprocess_profile": strategy.preprocess_profile,
         "representation": strategy.representation,
         "text_view": effective_text_view,
-        "build_settings": asdict(build_settings),
+        "build_settings": _build_settings_identity(build_settings),
     }
     noise_words_level = parse_name_preprocessing_profile(
         strategy.preprocess_profile
@@ -1999,6 +2015,8 @@ def _resolve_run_setup(config: BlockingRunConfig) -> _RunSetup:
         tfidf_ngram_max=strategy.tfidf_ngram_max,
         tfidf_analyzer=strategy.tfidf_analyzer,
         sbert_model_name=sbert_model_name,
+        encoder=config.encoder,
+        encoder_name=strategy.encoder_name or "",
     )
     effective_text_view = resolve_text_view_for_representation(
         representation=strategy.representation,
@@ -2272,6 +2290,8 @@ def execute_name_variant_recovery_run(
         tfidf_ngram_max=strategy.tfidf_ngram_max,
         tfidf_analyzer=strategy.tfidf_analyzer,
         sbert_model_name=sbert_model_name,
+        encoder=config.encoder,
+        encoder_name=strategy.encoder_name or "",
     )
     effective_text_view = resolve_text_view_for_representation(
         representation=strategy.representation,
@@ -2430,6 +2450,8 @@ def execute_name_variant_cross_system_run(
         tfidf_ngram_max=strategy.tfidf_ngram_max,
         tfidf_analyzer=strategy.tfidf_analyzer,
         sbert_model_name=sbert_model_name,
+        encoder=config.encoder,
+        encoder_name=strategy.encoder_name or "",
     )
     effective_text_view = resolve_text_view_for_representation(
         representation=strategy.representation,

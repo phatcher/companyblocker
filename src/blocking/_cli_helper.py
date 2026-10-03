@@ -91,6 +91,29 @@ SETTINGS: tuple[dict[str, object], ...] = (
         "help": "company_cleanse normalization profile both sides' name forms are derived under.",
     },
     {
+        "name": "encoder",
+        "type": "str",
+        "default": None,
+        "choices": ("fasttext",),
+        "help": (
+            "The encoder an encoder representation embeds names with: fasttext is "
+            "a pretrained fastText checkpoint, each name the mean of its words' "
+            "vectors. Required with the encoder representation, refused with any "
+            "other."
+        ),
+        "applies": {"representation": ("encoder",)},
+    },
+    {
+        "name": "fasttext_checkpoint",
+        "type": "str",
+        "default": None,
+        "help": (
+            "A registered fastText checkpoint slug; unset picks one from the run's "
+            "countries."
+        ),
+        "applies": {"representation": ("encoder",)},
+    },
+    {
         "name": "top_k",
         "type": "int",
         "default": 20,

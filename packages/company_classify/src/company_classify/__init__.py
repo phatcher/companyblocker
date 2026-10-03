@@ -89,6 +89,7 @@ from .persistence import (
 from .schema import DatasetSplit, LabeledExample, MetricBundle, Prediction
 from .split import split_examples
 from .token_vector_lookup import (
+    MeanPooledTokenVectorEncoder,
     PretrainedFastTextVectors,
     TokenVectorLookup,
     TokenVectorProvenance,
@@ -129,6 +130,7 @@ __all__ = [
     "PersistedModel",
     "PooledSubwordContrastiveEncoder",
     "Prediction",
+    "MeanPooledTokenVectorEncoder",
     "PretrainedFastTextVectors",
     "RealAliasPairProducer",
     "RepeatabilityResult",

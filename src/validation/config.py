@@ -27,10 +27,11 @@ _VALID_TEXT_VIEWS = {"name", "tokens"}
 # defaulted onto `"tokens"` fails outright (`SbertClusteringStrategy.
 # build_target_index` casts the `List(Utf8)` column to `Utf8`), so a new
 # representation must be added here deliberately rather than inheriting a
-# fallback.
+# fallback. `"encoder"` is a caller-supplied dense encoder, which embeds the name as it is.
 _REPRESENTATION_TEXT_VIEWS = {
     "tfidf": "name",
     "sbert": "name",
+    "encoder": "name",
     "wordpiece": "tokens",
     "sentencepiece": "tokens",
 }
